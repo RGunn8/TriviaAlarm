@@ -1,0 +1,441 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F7D27EDE1B5F700300EEF085 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */; };
+		F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */; };
+		F7D27EE31B5F700300EEF085 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EE21B5F700300EEF085 /* ViewController.swift */; };
+		F7D27EE61B5F700300EEF085 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7D27EE41B5F700300EEF085 /* Main.storyboard */; };
+		F7D27EE81B5F700300EEF085 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7D27EE71B5F700300EEF085 /* Images.xcassets */; };
+		F7D27EEB1B5F700300EEF085 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7D27EE91B5F700300EEF085 /* LaunchScreen.xib */; };
+		F7D27EF71B5F700300EEF085 /* TrivaAlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EF61B5F700300EEF085 /* TrivaAlarmTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F7D27EF11B5F700300EEF085 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7D27ED01B5F700300EEF085 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7D27ED71B5F700300EEF085;
+			remoteInfo = TrivaAlarm;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrivaAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7D27EDC1B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F7D27EE01B5F700300EEF085 /* TrivaAlarm.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrivaAlarm.xcdatamodel; sourceTree = "<group>"; };
+		F7D27EE21B5F700300EEF085 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F7D27EE51B5F700300EEF085 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F7D27EE71B5F700300EEF085 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F7D27EEA1B5F700300EEF085 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		F7D27EF01B5F700300EEF085 /* TrivaAlarmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrivaAlarmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7D27EF51B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F7D27EF61B5F700300EEF085 /* TrivaAlarmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrivaAlarmTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F7D27ED51B5F700300EEF085 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7D27EED1B5F700300EEF085 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F7D27ECF1B5F700300EEF085 = {
+			isa = PBXGroup;
+			children = (
+				F7D27EDA1B5F700300EEF085 /* TrivaAlarm */,
+				F7D27EF31B5F700300EEF085 /* TrivaAlarmTests */,
+				F7D27ED91B5F700300EEF085 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F7D27ED91B5F700300EEF085 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */,
+				F7D27EF01B5F700300EEF085 /* TrivaAlarmTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F7D27EDA1B5F700300EEF085 /* TrivaAlarm */ = {
+			isa = PBXGroup;
+			children = (
+				F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */,
+				F7D27EE21B5F700300EEF085 /* ViewController.swift */,
+				F7D27EE41B5F700300EEF085 /* Main.storyboard */,
+				F7D27EE71B5F700300EEF085 /* Images.xcassets */,
+				F7D27EE91B5F700300EEF085 /* LaunchScreen.xib */,
+				F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */,
+				F7D27EDB1B5F700300EEF085 /* Supporting Files */,
+			);
+			path = TrivaAlarm;
+			sourceTree = "<group>";
+		};
+		F7D27EDB1B5F700300EEF085 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F7D27EDC1B5F700300EEF085 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F7D27EF31B5F700300EEF085 /* TrivaAlarmTests */ = {
+			isa = PBXGroup;
+			children = (
+				F7D27EF61B5F700300EEF085 /* TrivaAlarmTests.swift */,
+				F7D27EF41B5F700300EEF085 /* Supporting Files */,
+			);
+			path = TrivaAlarmTests;
+			sourceTree = "<group>";
+		};
+		F7D27EF41B5F700300EEF085 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F7D27EF51B5F700300EEF085 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F7D27ED71B5F700300EEF085 /* TrivaAlarm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7D27EFA1B5F700300EEF085 /* Build configuration list for PBXNativeTarget "TrivaAlarm" */;
+			buildPhases = (
+				F7D27ED41B5F700300EEF085 /* Sources */,
+				F7D27ED51B5F700300EEF085 /* Frameworks */,
+				F7D27ED61B5F700300EEF085 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrivaAlarm;
+			productName = TrivaAlarm;
+			productReference = F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F7D27EEF1B5F700300EEF085 /* TrivaAlarmTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7D27EFD1B5F700300EEF085 /* Build configuration list for PBXNativeTarget "TrivaAlarmTests" */;
+			buildPhases = (
+				F7D27EEC1B5F700300EEF085 /* Sources */,
+				F7D27EED1B5F700300EEF085 /* Frameworks */,
+				F7D27EEE1B5F700300EEF085 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F7D27EF21B5F700300EEF085 /* PBXTargetDependency */,
+			);
+			name = TrivaAlarmTests;
+			productName = TrivaAlarmTests;
+			productReference = F7D27EF01B5F700300EEF085 /* TrivaAlarmTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F7D27ED01B5F700300EEF085 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Ryan  Gunn";
+				TargetAttributes = {
+					F7D27ED71B5F700300EEF085 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					F7D27EEF1B5F700300EEF085 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = F7D27ED71B5F700300EEF085;
+					};
+				};
+			};
+			buildConfigurationList = F7D27ED31B5F700300EEF085 /* Build configuration list for PBXProject "TrivaAlarm" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F7D27ECF1B5F700300EEF085;
+			productRefGroup = F7D27ED91B5F700300EEF085 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F7D27ED71B5F700300EEF085 /* TrivaAlarm */,
+				F7D27EEF1B5F700300EEF085 /* TrivaAlarmTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F7D27ED61B5F700300EEF085 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7D27EE61B5F700300EEF085 /* Main.storyboard in Resources */,
+				F7D27EEB1B5F700300EEF085 /* LaunchScreen.xib in Resources */,
+				F7D27EE81B5F700300EEF085 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7D27EEE1B5F700300EEF085 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F7D27ED41B5F700300EEF085 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7D27EE31B5F700300EEF085 /* ViewController.swift in Sources */,
+				F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */,
+				F7D27EDE1B5F700300EEF085 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7D27EEC1B5F700300EEF085 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7D27EF71B5F700300EEF085 /* TrivaAlarmTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F7D27EF21B5F700300EEF085 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7D27ED71B5F700300EEF085 /* TrivaAlarm */;
+			targetProxy = F7D27EF11B5F700300EEF085 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F7D27EE41B5F700300EEF085 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F7D27EE51B5F700300EEF085 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F7D27EE91B5F700300EEF085 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F7D27EEA1B5F700300EEF085 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F7D27EF81B5F700300EEF085 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F7D27EF91B5F700300EEF085 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F7D27EFB1B5F700300EEF085 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TrivaAlarm/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F7D27EFC1B5F700300EEF085 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TrivaAlarm/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		F7D27EFE1B5F700300EEF085 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TrivaAlarmTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrivaAlarm.app/TrivaAlarm";
+			};
+			name = Debug;
+		};
+		F7D27EFF1B5F700300EEF085 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TrivaAlarmTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrivaAlarm.app/TrivaAlarm";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F7D27ED31B5F700300EEF085 /* Build configuration list for PBXProject "TrivaAlarm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7D27EF81B5F700300EEF085 /* Debug */,
+				F7D27EF91B5F700300EEF085 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7D27EFA1B5F700300EEF085 /* Build configuration list for PBXNativeTarget "TrivaAlarm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7D27EFB1B5F700300EEF085 /* Debug */,
+				F7D27EFC1B5F700300EEF085 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F7D27EFD1B5F700300EEF085 /* Build configuration list for PBXNativeTarget "TrivaAlarmTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7D27EFE1B5F700300EEF085 /* Debug */,
+				F7D27EFF1B5F700300EEF085 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F7D27EE01B5F700300EEF085 /* TrivaAlarm.xcdatamodel */,
+			);
+			currentVersion = F7D27EE01B5F700300EEF085 /* TrivaAlarm.xcdatamodel */;
+			path = TrivaAlarm.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = F7D27ED01B5F700300EEF085 /* Project object */;
+}
