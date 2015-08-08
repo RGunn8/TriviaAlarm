@@ -14,7 +14,7 @@ class Alarms: NSManagedObject {
     @NSManaged var alertSound: String
     @NSManaged var name: String
     @NSManaged var numOfQuestionsToEnd: NSNumber
-    @NSManaged var on: NSNumber
+    @NSManaged var on: Bool
     @NSManaged var questionType: String
     @NSManaged var snooze: NSNumber
     @NSManaged var time: NSDate

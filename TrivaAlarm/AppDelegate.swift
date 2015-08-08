@@ -16,8 +16,212 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        application.cancelAllLocalNotifications()
+       let defualts = NSUserDefaults.standardUserDefaults()
+        defualts.setValue(22.5, forKey: "boss")
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let isPreloaded = defaults.boolForKey("isPreloaded")
+        if !isPreloaded {
+            preloadData()
+            defaults.setBool(true, forKey: "isPreloaded")
+        }
+      
+        let nc = NSNotificationCenter.defaultCenter()
+        application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: UIUserNotificationType.Sound | UIUserNotificationType.Alert |
+            UIUserNotificationType.Badge, categories: nil))
+
+        if let options = launchOptions {
+
+            if let notification = options[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
+
+
+//                self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+//
+//                var storyboard = UIStoryboard(name: "Main", bundle: nil)
+//
+//                var initialViewController:QuestionViewController = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
+//
+//                self.window?.rootViewController = initialViewController
+//
+//                self.window?.makeKeyAndVisible()
+                            NSNotificationCenter.defaultCenter().postNotificationName("questionSegue", object: nil)
+                            let numbOfQuestion:AnyObject = notification.userInfo!["NumberOfQuestion"]!
+                            let typeOfQuestion:AnyObject = notification.userInfo!["TypeOfQuestion"]!
+                            let nc = NSNotificationCenter.defaultCenter()
+                            nc.postNotificationName("localNotficaionUserInfo", object: nil, userInfo: ["NumberOfQuestion":numbOfQuestion , "TypeOfQuestion": typeOfQuestion])
+
+
+            }
+        }
+
+
         return true
+    }
+  
+        func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+            application.cancelAllLocalNotifications()
+
+//                    let nc = NSNotificationCenter.defaultCenter()
+//            
+//                    self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+//            
+//                    var storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            
+//                    var initialViewController:QuestionViewController = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
+//            
+//                    self.window?.rootViewController = initialViewController
+//            
+//                    self.window?.makeKeyAndVisible()
+//                    let numbOfQuestion:AnyObject = notification.userInfo!["NumberOfQuestion"]!
+//                    let typeOfQuestion:AnyObject = notification.userInfo!["TypeOfQuestion"]!
+//            
+//                    nc.postNotificationName("localNotficaionUserInfo", object: nil, userInfo: ["NumberOfQuestion":numbOfQuestion , "TypeOfQuestion": typeOfQuestion])
+
+//            let alert = UIAlertView()
+//
+//            alert.title = "Alert"
+//            alert.message = "Here's a message"
+//            alert.addButtonWithTitle("Understod")
+//            alert.show()
+
+
+
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
+                self.window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
+                // NSNotificationCenter.defaultCenter().postNotificationName("questionSegue", object: nil)
+                let numbOfQuestion:AnyObject = notification.userInfo!["NumberOfQuestion"]!
+                let typeOfQuestion:AnyObject = notification.userInfo!["TypeOfQuestion"]!
+                let alarmDate:AnyObject = notification.userInfo!["AlarmDate"]!
+            let alarmSound:AnyObject = notification.userInfo!["AlarmSound"]!
+                let nc = NSNotificationCenter.defaultCenter()
+                nc.postNotificationName("localNotficaionUserInfo", object: nil, userInfo: ["NumberOfQuestion":numbOfQuestion , "TypeOfQuestion": typeOfQuestion, "AlarmDate": alarmDate, "AlarmSound":alarmSound])
+                application.cancelLocalNotification(notification)
+
+
+
+//             let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
+//            self.window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
+//           // NSNotificationCenter.defaultCenter().postNotificationName("questionSegue", object: nil)
+//            let numbOfQuestion:AnyObject = notification.userInfo!["NumberOfQuestion"]!
+//            let typeOfQuestion:AnyObject = notification.userInfo!["TypeOfQuestion"]!
+//            let nc = NSNotificationCenter.defaultCenter()
+//            nc.postNotificationName("localNotficaionUserInfo", object: nil, userInfo: ["NumberOfQuestion":numbOfQuestion , "TypeOfQuestion": typeOfQuestion])
+
+         //            println(UIApplication.sharedApplication().cancelAllLocalNotifications())
+
+
+
+
+
+    }
+
+    func parseCSV (contentsOfURL: NSURL, encoding: NSStringEncoding, error: NSErrorPointer) -> [(question:String, type:String, optionA: String, optionB: String, optionC:String, optionD:String, correctAnswer:String)]? {
+        // Load the CSV file and parse it
+        let delimiter = ","
+        var items:[(question:String, type:String, optionA: String, optionB: String, optionC:String, optionD:String, correctAnswer:String)]?
+
+        if let content = String(contentsOfURL: contentsOfURL, encoding: encoding, error: error) {
+            items = []
+            let lines:[String] = content.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet()) as [String]
+
+            for line in lines {
+                var values:[String] = []
+                if line != "" {
+                    // For a line with double quotes
+                    // we use NSScanner to perform the parsing
+                    if line.rangeOfString("\"") != nil {
+                        var textToScan:String = line
+                        var value:NSString?
+                        var textScanner:NSScanner = NSScanner(string: textToScan)
+                        while textScanner.string != "" {
+
+                            if (textScanner.string as NSString).substringToIndex(1) == "\"" {
+                                textScanner.scanLocation += 1
+                                textScanner.scanUpToString("\"", intoString: &value)
+                                textScanner.scanLocation += 1
+                            } else {
+                                textScanner.scanUpToString(delimiter, intoString: &value)
+                            }
+
+                            // Store the value into the values array
+                            values.append(value as! String)
+
+                            // Retrieve the unscanned remainder of the string
+                            if textScanner.scanLocation < count(textScanner.string) {
+                                textToScan = (textScanner.string as NSString).substringFromIndex(textScanner.scanLocation + 1)
+                            } else {
+                                textToScan = ""
+                            }
+                            textScanner = NSScanner(string: textToScan)
+                        }
+
+                        // For a line without double quotes, we can simply separate the string
+                        // by using the delimiter (e.g. comma)
+                    } else  {
+                        values = line.componentsSeparatedByString(delimiter)
+                    }
+                    
+                    // Put the values into the tuple and add it to the items array
+                    let item = (question: values[0], type: values[1], optionA: values[2], optionB: values[3], optionC: values[4], optionD: values[5], correctAnswer: values[6])
+                    items?.append(item)
+                }
+            }
+        }
+        
+        return items
+    }
+
+    func preloadData () {
+        // Retrieve data from the source file
+        if let contentsOfURL = NSBundle.mainBundle().URLForResource("questionCSV", withExtension: "csv") {
+
+            // Remove all the menu items before preloading
+            removeData()
+
+            var error:NSError?
+            if let items = parseCSV(contentsOfURL, encoding: NSUTF8StringEncoding, error: &error) {
+                // Preload the menu items
+                if let managedObjectContext = self.managedObjectContext {
+                    for item in items {
+                        let questionItem = NSEntityDescription.insertNewObjectForEntityForName("Questions", inManagedObjectContext: managedObjectContext) as! Questions
+                        questionItem.question = item.question
+                        questionItem.type = item.type
+                        questionItem.optionA = item.optionA
+                        questionItem.optionB = item.optionB
+                        questionItem.optionC = item.optionC
+                        questionItem.optionD = item.optionD
+                        questionItem.correctAnswer = item.correctAnswer
+
+
+                        if managedObjectContext.save(&error) != true {
+                            println("insert error: \(error!.localizedDescription)")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func removeData () {
+        // Remove the existing items
+        if let managedObjectContext = self.managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: "Questions")
+            var e: NSError?
+            let questionItems = managedObjectContext.executeFetchRequest(fetchRequest, error: &e) as! [Questions]
+
+            if e != nil {
+                println("Failed to retrieve record: \(e!.localizedDescription)")
+
+            } else {
+                
+                for question in questionItems {
+                    managedObjectContext.deleteObject(question)
+                }
+            }
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -41,6 +245,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        application.cancelAllLocalNotifications()
         self.saveContext()
     }
 
