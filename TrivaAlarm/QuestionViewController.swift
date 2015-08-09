@@ -45,6 +45,7 @@ class QuestionViewController: UIViewController {
 
         wrongLabel.hidden = true
         correctLabel.hidden = true
+        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, error: nil)
 
 
           }
@@ -72,7 +73,7 @@ class QuestionViewController: UIViewController {
             wrongLabel.hidden = true
 
         }else{
-            numberOfQuestion = numberOfQuestion + 1
+            //numberOfQuestion = numberOfQuestion + 1
              numOfQuestionLabel.text = "\(numberOfQuestion)"
             wrongLabel.hidden = false
             correctLabel.hidden = true
@@ -80,7 +81,7 @@ class QuestionViewController: UIViewController {
         }
 
        randomIndex()
-        println("\(correctAnswer) and optionA is \(theQuestion?.optionA)")
+
         if numberOfQuestion == 0 {
             self.dismissViewControllerAnimated(true, completion: {});
             // self.performSegueWithIdentifier("finishAlarm", sender: self)
@@ -103,14 +104,14 @@ class QuestionViewController: UIViewController {
             wrongLabel.hidden = false
 
         }else{
-            numberOfQuestion = numberOfQuestion + 1
+            //numberOfQuestion = numberOfQuestion + 1
              numOfQuestionLabel.text = "\(numberOfQuestion)"
             wrongLabel.hidden = false
             correctLabel.hidden = true
 
         }
         randomIndex()
-        println("\(correctAnswer) and optionA is \(theQuestion?.optionB)")
+
 
         if numberOfQuestion == 0 {
             self.dismissViewControllerAnimated(true, completion: {});
@@ -136,14 +137,14 @@ class QuestionViewController: UIViewController {
             wrongLabel.hidden = true
 
         }else{
-            numberOfQuestion = numberOfQuestion + 1
+            //numberOfQuestion = numberOfQuestion + 1
              numOfQuestionLabel.text = "\(numberOfQuestion)"
             wrongLabel.hidden = false
             correctLabel.hidden = true
 
         }
         randomIndex()
-        println("\(correctAnswer) and optionA is \(theQuestion?.optionC)")
+
         if numberOfQuestion == 0 {
             self.dismissViewControllerAnimated(true, completion: {});
             //self.performSegueWithIdentifier("finishAlarm", sender: self)
@@ -168,14 +169,14 @@ class QuestionViewController: UIViewController {
 
 
         }else{
-            numberOfQuestion = numberOfQuestion + 1
+            //numberOfQuestion = numberOfQuestion
              numOfQuestionLabel.text = "\(numberOfQuestion)"
             wrongLabel.hidden = false
             correctLabel.hidden = true
 
 
         }
-        println("\(correctAnswer) and optionA is \(theQuestion?.optionD)")
+       
 
         randomIndex()
         if numberOfQuestion == 0 {

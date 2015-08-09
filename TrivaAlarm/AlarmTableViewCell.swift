@@ -21,7 +21,7 @@ class AlarmTableViewCell: UITableViewCell {
         dateFormatter.dateStyle = .ShortStyle
 
         timeLabel.text = formatter.stringFromDate(time)
-        dateLabel.text = dateFormatter.stringFromDate(time)
+        //dateLabel.text = dateFormatter.stringFromDate(time)
        
         alarmSwitch.setOn(isOn, animated: true)
 

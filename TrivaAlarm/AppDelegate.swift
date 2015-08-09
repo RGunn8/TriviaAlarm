@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             preloadData()
             defaults.setBool(true, forKey: "isPreloaded")
         }
-
+        preloadData()
       
        
         let nc = NSNotificationCenter.defaultCenter()
