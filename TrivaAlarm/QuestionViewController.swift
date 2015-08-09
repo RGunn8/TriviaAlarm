@@ -11,6 +11,8 @@ import CoreData
 import AVFoundation
 class QuestionViewController: UIViewController {
     var numberOfQuestion = Int()
+    var typeOfQuestion = "Random"
+    var audioPlayer:AVAudioPlayer!
      var managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     var questions = [Questions]()
     var alarmSound = String()
@@ -36,11 +38,15 @@ class QuestionViewController: UIViewController {
         super.viewDidLoad()
 
                NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVC:", name: "localNotficaionUserInfo", object: nil)
-        fetchLog()
+        optionAButton.titleLabel?.numberOfLines = 0
+        optionBButton.titleLabel?.numberOfLines = 0
+        optionCButton.titleLabel?.numberOfLines = 0
+        optionDButton.titleLabel?.numberOfLines = 0
 
         wrongLabel.hidden = true
         correctLabel.hidden = true
-                      
+
+
           }
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(true)
@@ -76,11 +82,13 @@ class QuestionViewController: UIViewController {
        randomIndex()
         println("\(correctAnswer) and optionA is \(theQuestion?.optionA)")
         if numberOfQuestion == 0 {
-             self.performSegueWithIdentifier("finishAlarm", sender: self)
+            self.dismissViewControllerAnimated(true, completion: {});
+            // self.performSegueWithIdentifier("finishAlarm", sender: self)
             UIApplication.sharedApplication().cancelAllLocalNotifications()
             timer.invalidate()
             theAlarm!.on = false
             isZero = true
+            audioPlayer.stop()
             save()
            
         }
@@ -105,11 +113,13 @@ class QuestionViewController: UIViewController {
         println("\(correctAnswer) and optionA is \(theQuestion?.optionB)")
 
         if numberOfQuestion == 0 {
-            self.performSegueWithIdentifier("finishAlarm", sender: self)
+            self.dismissViewControllerAnimated(true, completion: {});
+            //self.performSegueWithIdentifier("finishAlarm", sender: self)
             UIApplication.sharedApplication().cancelAllLocalNotifications()
             theAlarm!.on = false
             isZero = true
             timer.invalidate()
+            audioPlayer.stop()
             save()
 
         }
@@ -135,11 +145,13 @@ class QuestionViewController: UIViewController {
         randomIndex()
         println("\(correctAnswer) and optionA is \(theQuestion?.optionC)")
         if numberOfQuestion == 0 {
-            self.performSegueWithIdentifier("finishAlarm", sender: self)
+            self.dismissViewControllerAnimated(true, completion: {});
+            //self.performSegueWithIdentifier("finishAlarm", sender: self)
              UIApplication.sharedApplication().cancelAllLocalNotifications()
             timer.invalidate()
             theAlarm!.on = false
             isZero = true
+            audioPlayer.stop()
             save()
 
         }
@@ -167,11 +179,12 @@ class QuestionViewController: UIViewController {
 
         randomIndex()
         if numberOfQuestion == 0 {
-             self.performSegueWithIdentifier("finishAlarm", sender: self)
+           self.dismissViewControllerAnimated(true, completion: {});
+            // self.performSegueWithIdentifier("finishAlarm", sender: self)
              UIApplication.sharedApplication().cancelAllLocalNotifications()
             theAlarm!.on = false
             timer.invalidate()
-            isZero = true
+            audioPlayer.stop()
             save()
 
         }
@@ -182,8 +195,10 @@ class QuestionViewController: UIViewController {
 
         var userInfo:Dictionary<String,String!> = notficaiton.userInfo as! Dictionary<String,String!>
 
-        let typeOfQuestion = userInfo["TypeOfQuestion"]
+         typeOfQuestion = userInfo["TypeOfQuestion"]!
        var numberOfQuestionString = userInfo["NumberOfQuestion"]
+
+        println("The type of question is " + typeOfQuestion)
 
         let date = userInfo["AlarmDate"]!
 
@@ -191,6 +206,12 @@ class QuestionViewController: UIViewController {
         let rangeOfWav = Range(start: alarmSoundWav.startIndex,
             end: advance(alarmSoundWav.endIndex, -4))
         alarmSound = alarmSoundWav.substringWithRange(rangeOfWav)
+
+
+        let soundURL = NSBundle.mainBundle().URLForResource(alarmSound, withExtension: "wav")
+
+        audioPlayer = AVAudioPlayer(contentsOfURL: soundURL, error: nil)
+        audioPlayer.play()
 
 
         let dateFormatter = NSDateFormatter()
@@ -201,35 +222,22 @@ class QuestionViewController: UIViewController {
         numberOfQuestion = numberOfQuestionString!.toInt()!
         numOfQuestionLabel.text = "\(numberOfQuestion)"
 
-        timer = NSTimer.scheduledTimerWithTimeInterval(3, target:self, selector: Selector("playSound"), userInfo: nil, repeats: true)
-
+        timer = NSTimer.scheduledTimerWithTimeInterval(10, target:self, selector: Selector("playSound"), userInfo: nil, repeats: true)
+        fetchLog()
 
         fetchalarm()
+
 
 
     }
 
     func playSound(){
+
         let soundURL = NSBundle.mainBundle().URLForResource(alarmSound, withExtension: "wav")
-        //let soundFilePath = NSBundle.mainBundle().pathForResource(alarmSound, ofType: "wav")
-        var mySound: SystemSoundID = 0
-       AudioServicesCreateSystemSoundID(soundURL, &mySound)
-//        var audioPlayer:AVAudioPlayer!
-//        var audioFileURL = NSURL.fileURLWithPath(soundFilePath!)
-//        audioPlayer = AVAudioPlayer(contentsOfURL: audioFileURL, error: nil)
-//         audioPlayer.prepareToPlay()
-        // Play
-//        AudioServicesPlaySystemSound(mySound);
-//         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        if isZero == true {
-            //audioPlayer.stop()
-            AudioServicesRemoveSystemSoundCompletion(mySound)
-            AudioServicesRemoveSystemSoundCompletion(SystemSoundID(kSystemSoundID_Vibrate))
-        }else{
-            //audioPlayer.play()
-            AudioServicesPlaySystemSound(mySound);
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        }
+
+        audioPlayer = AVAudioPlayer(contentsOfURL: soundURL, error: nil)
+        audioPlayer.play()
+
     }
     
 
@@ -272,11 +280,33 @@ class QuestionViewController: UIViewController {
         //
         //        // Set the predicate on the fetch request
                //fetchRequest.predicate = firstPredicate
+        if typeOfQuestion != "Random" {
+            let firstPredicate = NSPredicate(format: "type == %@", typeOfQuestion)
+            fetchRequest.predicate = firstPredicate
+            if let fetchResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: nil) as? [Questions] {
+                questions = fetchResults
+                println("\(questions[0])")
+                let randomIndex = Int(arc4random_uniform(UInt32(questions.count)))
+                theQuestion = questions[randomIndex]
+                if let theQuestion = theQuestion{
 
+                    questionLabel.text = theQuestion.question
+                    optionAButton.setTitle(theQuestion.optionA, forState: .Normal)
+                    optionBButton.setTitle(theQuestion.optionB, forState: .Normal)
+                    optionCButton.setTitle(theQuestion.optionC, forState: .Normal)
+                    optionDButton.setTitle(theQuestion.optionD, forState: .Normal)
+                    correctAnswer = theQuestion.correctAnswer
+                    
+                }
+                
+                
+            }
+
+        }else {
         
         if let fetchResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: nil) as? [Questions] {
             questions = fetchResults
-
+            println("\(questions[0])")
             let randomIndex = Int(arc4random_uniform(UInt32(questions.count)))
             theQuestion = questions[randomIndex]
             if let theQuestion = theQuestion{
@@ -291,6 +321,7 @@ class QuestionViewController: UIViewController {
             }
 
 
+        }
         }
     }
 
@@ -318,6 +349,8 @@ func fetchalarm() {
     //
     //        // Set the predicate on the fetch request
     //        fetchRequest.predicate = predicate
+
+
 
      let firstPredicate = NSPredicate(format: "time == %@", theAlarmDate)
         fetchAlarm.predicate = firstPredicate

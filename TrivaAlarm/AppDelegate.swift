@@ -19,14 +19,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.cancelAllLocalNotifications()
        let defualts = NSUserDefaults.standardUserDefaults()
         defualts.setValue(22.5, forKey: "boss")
-        
+
         let defaults = NSUserDefaults.standardUserDefaults()
         let isPreloaded = defaults.boolForKey("isPreloaded")
         if !isPreloaded {
             preloadData()
             defaults.setBool(true, forKey: "isPreloaded")
         }
+
       
+       
         let nc = NSNotificationCenter.defaultCenter()
         application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: UIUserNotificationType.Sound | UIUserNotificationType.Alert |
             UIUserNotificationType.Badge, categories: nil))

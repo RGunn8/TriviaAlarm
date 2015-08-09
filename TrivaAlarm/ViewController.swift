@@ -23,11 +23,15 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTime"), userInfo: nil, repeats: true)
-        let clear:UIColor = UIColor.clearColor()
-       // tableView.backgroundColor = clear
+
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle
         let now = NSDate()
+      
+        
+
+         navigationItem.leftBarButtonItem = editButtonItem()
+        
         
         self.clockLabel?.text = formatter.stringFromDate(now)
 
@@ -101,6 +105,15 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         }
             }
 
+    @IBAction func EditButtonPressed(sender: UIBarButtonItem) {
+       // self.tableView.setEditing(true, animated: true)
+    }
+
+    override func  setEditing(editing: Bool, animated: Bool) {
+            super.setEditing(editing, animated: animated)
+            tableView.setEditing(editing, animated: animated)
+      
+    }
     func onAlarmsNotification() ->Void{
 
         let fetchRequest = NSFetchRequest(entityName: "Alarms")
@@ -162,7 +175,9 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
     }
 
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+
+   func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    
         if(editingStyle == .Delete ) {
             // Find the LogItem object the user is trying to delete
             let deleteAlarms = alarms[indexPath.row]
@@ -182,6 +197,8 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             save()
         }
     }
+
+    
 
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true

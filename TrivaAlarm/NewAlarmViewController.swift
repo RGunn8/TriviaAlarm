@@ -22,7 +22,7 @@ class NewAlarmViewController: ViewController {
     @IBOutlet var saveButton: UINavigationItem!
     @IBOutlet var questionTypeSegmentedControl: UISegmentedControl!
     var numberOfQuestions = 1
-    var typeOfQuestion = "Sports"
+    var typeOfQuestion = "Random"
     var theAlarmSound = "LoudAlarm.wav"
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +64,7 @@ class NewAlarmViewController: ViewController {
             let theNewDateString = formatter.stringFromDate(alarmDate)
             let nowString = formatter.stringFromDate(now)
 
-            println("\(theNewDateString), and now is \(nowString) and this time is later " )
+
 
         }else{
             alarmDate = zeroSecondDate
@@ -104,13 +104,13 @@ class NewAlarmViewController: ViewController {
 
     func selectSegmented () ->NSString {
         if questionTypeSegmentedControl.selectedSegmentIndex == 0 {
-            typeOfQuestion = "Sports"
+            typeOfQuestion =  "Random"
         }else if questionTypeSegmentedControl.selectedSegmentIndex == 1 {
-            typeOfQuestion = "Movies"
+            typeOfQuestion =  "Sports"
         }else if questionTypeSegmentedControl.selectedSegmentIndex == 2{
-            typeOfQuestion = "Televsion"
+            typeOfQuestion =  "Movies"
         }else{
-            typeOfQuestion = "Random"
+            typeOfQuestion = "Televsion"
         }
 
         return typeOfQuestion
