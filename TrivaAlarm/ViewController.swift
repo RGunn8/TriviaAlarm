@@ -263,5 +263,16 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         return cell
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "oldAlarmSegue") {
+            let viewController:NewAlarmViewController = segue.destinationViewController as! NewAlarmViewController
+            let indexPath = self.tableView.indexPathForSelectedRow()
+            viewController.segueAlarm = self.alarms[indexPath!.row]
+            viewController.updateAlarm = true
+        }
+    }
+
 }
+
+
 

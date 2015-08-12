@@ -21,18 +21,47 @@ class NewAlarmViewController: ViewController {
 
     @IBOutlet var saveButton: UINavigationItem!
     @IBOutlet var questionTypeSegmentedControl: UISegmentedControl!
+    var updateAlarm:Bool = Bool()
     var numberOfQuestions = 1
     var typeOfQuestion = "Random"
     var theAlarmSound = "LoudAlarm.wav"
+    var segueAlarm:Alarms?
+    var updateAlarmArray = [Alarms]()
+    var theAlarm = Alarms()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        subtractQuesitonButton.hidden = true
+               subtractQuesitonButton.hidden = true
          UIApplication.sharedApplication().cancelAllLocalNotifications()
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "back:")
         self.navigationItem.leftBarButtonItem = newBackButton;
+
+        if let segueAlarm = segueAlarm {
+            numberOfQuestions = segueAlarm.numOfQuestionsToEnd as Int
+            typeOfQuestion = segueAlarm.questionType
+            alarmNameTextField.text = segueAlarm.name
+            theAlarmSound = segueAlarm.alertSound
+            datePicker.date = segueAlarm.time
+             numberOfQuestionLabel.text? = String(numberOfQuestions)
+        }
+    }
+
+    override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+        if numberOfQuestions == 1 {
+            subtractQuesitonButton.hidden = true
+        }else{
+            subtractQuesitonButton.hidden = false
+        }
+
+        if numberOfQuestions == 5{
+            addQuestionButton.hidden = true
+        }else{
+            addQuestionButton.hidden = false
+        }
     }
 
     func back(sender: UIBarButtonItem) {
@@ -48,8 +77,6 @@ class NewAlarmViewController: ViewController {
         components.second = 0
         let zeroSecondDate:NSDate = calendar.dateFromComponents(components)!
         var alarmDate:NSDate
-
-
         let formatter = NSDateFormatter()
         formatter.dateStyle = NSDateFormatterStyle.ShortStyle
         formatter.timeStyle = .MediumStyle
@@ -58,13 +85,9 @@ class NewAlarmViewController: ViewController {
 
             let dayComponent = NSDateComponents()
             dayComponent.day = 1
-
-
             alarmDate = calendar.dateByAddingComponents(dayComponent, toDate: zeroSecondDate, options: NSCalendarOptions(0))!
             let theNewDateString = formatter.stringFromDate(alarmDate)
             let nowString = formatter.stringFromDate(now)
-
-
 
         }else{
             alarmDate = zeroSecondDate
@@ -72,33 +95,49 @@ class NewAlarmViewController: ViewController {
 
         let dateString = formatter.stringFromDate(datePicker.date)
         let newDateString = formatter.stringFromDate(zeroSecondDate)
-        //      println("type of quesiton \(selectSegmented()) and the newdate is \(newDateString) and the datepicker date is \(dateString)" )
 
-        let appDelegate =
-        UIApplication.sharedApplication().delegate as! AppDelegate
-
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
-        let alarmName = alarmNameTextField.text as String
-        let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext: managedContext)
-        let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-        alarm.setValue(alarmName, forKey: "name")
-        alarm.setValue(alarmDate, forKey: "time")
-        alarm.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
-        alarm.setValue(false, forKey: "snooze")
-        alarm.setValue(selectSegmented(), forKey: "questionType")
-        alarm.setValue(theAlarmSound, forKey: "alertSound")
-        alarm.setValue(false, forKey: "on")
+        if updateAlarm {
 
-        println("\(alarm)")
+                      if let segueAlarm = segueAlarm{
+                        
 
+                    segueAlarm.setValue(alarmNameTextField.text, forKey: "name")
+                    segueAlarm.setValue(alarmDate, forKey: "time")
+                    segueAlarm.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
+                    segueAlarm.setValue(false, forKey: "snooze")
+                    segueAlarm.setValue(selectSegmented(), forKey: "questionType")
+                    segueAlarm.setValue(theAlarmSound, forKey: "alertSound")
+                    segueAlarm.setValue(false, forKey: "on")
+                }
+
+
+
+
+        }else{
+
+            let alarmName = alarmNameTextField.text as String
+            let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext: managedContext)
+            let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+            alarm.setValue(alarmName, forKey: "name")
+            alarm.setValue(alarmDate, forKey: "time")
+            alarm.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
+            alarm.setValue(false, forKey: "snooze")
+            alarm.setValue(selectSegmented(), forKey: "questionType")
+            alarm.setValue(theAlarmSound, forKey: "alertSound")
+            alarm.setValue(false, forKey: "on")
+            println("\(alarm)")
+
+
+        }
 
         var error:NSError?
         if !managedContext.save(&error){
             println("Error has occued \(error),Error info: \(error?.userInfo) ")
         }
-        
-        
-    
+
+
     }
 
 
@@ -112,6 +151,8 @@ class NewAlarmViewController: ViewController {
         }else{
             typeOfQuestion = "Televsion"
         }
+
+
 
         return typeOfQuestion
     }
