@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NewAlarmViewController: ViewController {
+class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
 
     @IBOutlet var alarmNameTextField: UITextField!
@@ -38,6 +38,7 @@ class NewAlarmViewController: ViewController {
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "back:")
         self.navigationItem.leftBarButtonItem = newBackButton;
+        alarmNameTextField.delegate = self
 
         if let segueAlarm = segueAlarm {
             numberOfQuestions = segueAlarm.numOfQuestionsToEnd as Int
@@ -62,6 +63,11 @@ class NewAlarmViewController: ViewController {
         }else{
             addQuestionButton.hidden = false
         }
+    }
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {   //delegate method
+        textField.resignFirstResponder()
+        return true
     }
 
     func back(sender: UIBarButtonItem) {
