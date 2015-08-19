@@ -21,26 +21,25 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
     @IBOutlet var saveButton: UINavigationItem!
     @IBOutlet var questionTypeSegmentedControl: UISegmentedControl!
-    var updateAlarm:Bool = Bool()
     var numberOfQuestions = 1
     var typeOfQuestion = "Random"
     var theAlarmSound = "LoudAlarm.wav"
-    var segueAlarm:Alarms?
+    var segueAlarm:Alarms? = nil
     var updateAlarmArray = [Alarms]()
     var theAlarm = Alarms()
+    let theManagedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
+    @IBOutlet weak var cancel: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
                subtractQuesitonButton.hidden = true
-         UIApplication.sharedApplication().cancelAllLocalNotifications()
-        self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "back:")
-        self.navigationItem.leftBarButtonItem = newBackButton;
+        self.navigationItem.leftBarButtonItem = cancel
+
         alarmNameTextField.delegate = self
 
-        if let segueAlarm = segueAlarm {
+            if let segueAlarm = segueAlarm {
             numberOfQuestions = segueAlarm.numOfQuestionsToEnd as Int
             typeOfQuestion = segueAlarm.questionType
             alarmNameTextField.text = segueAlarm.name
@@ -69,12 +68,14 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    func dismissViewController() {
+        navigationController?.popViewControllerAnimated(true)
+    }
+    @IBAction func cancelButtonPressed(sender: AnyObject) {
+        dismissViewController()
+    }
 
-    func back(sender: UIBarButtonItem) {
-        // Perform your custom actions
-        // ...
-        // Go back to the previous ViewController
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func saveButton(sender: UIBarButtonItem) {
         let now = NSDate()
         let calendar = NSCalendar.currentCalendar()
 
@@ -94,6 +95,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
             alarmDate = calendar.dateByAddingComponents(dayComponent, toDate: zeroSecondDate, options: NSCalendarOptions(0))!
             let theNewDateString = formatter.stringFromDate(alarmDate)
             let nowString = formatter.stringFromDate(now)
+            println("\(nowString)")
 
         }else{
             alarmDate = zeroSecondDate
@@ -102,47 +104,45 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         let dateString = formatter.stringFromDate(datePicker.date)
         let newDateString = formatter.stringFromDate(zeroSecondDate)
 
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext!
-        if updateAlarm {
-
-                      if let segueAlarm = segueAlarm{
-                        
-
-                    segueAlarm.setValue(alarmNameTextField.text, forKey: "name")
-                    segueAlarm.setValue(alarmDate, forKey: "time")
-                    segueAlarm.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
-                    segueAlarm.setValue(false, forKey: "snooze")
-                    segueAlarm.setValue(selectSegmented(), forKey: "questionType")
-                    segueAlarm.setValue(theAlarmSound, forKey: "alertSound")
-                    segueAlarm.setValue(false, forKey: "on")
-                }
-
-
-
-
+        if segueAlarm != nil{
+            editAlarm(alarmDate)
         }else{
-
-            let alarmName = alarmNameTextField.text as String
-            let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext: managedContext)
-            let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-            alarm.setValue(alarmName, forKey: "name")
-            alarm.setValue(alarmDate, forKey: "time")
-            alarm.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
-            alarm.setValue(false, forKey: "snooze")
-            alarm.setValue(selectSegmented(), forKey: "questionType")
-            alarm.setValue(theAlarmSound, forKey: "alertSound")
-            alarm.setValue(false, forKey: "on")
-            println("\(alarm)")
-
-
+            createAlarm(alarmDate)
         }
+        navigationController?.popViewControllerAnimated(true)
+
+    }
+
+        func editAlarm(alarmDate:NSDate){
+
+        segueAlarm?.setValue(alarmNameTextField.text, forKey: "name")
+        segueAlarm?.setValue(alarmDate, forKey: "time")
+        segueAlarm?.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
+        segueAlarm?.setValue(false, forKey: "snooze")
+        segueAlarm?.setValue(selectSegmented(), forKey: "questionType")
+        segueAlarm?.setValue(theAlarmSound, forKey: "alertSound")
+        segueAlarm?.setValue(true, forKey: "on")
+
+       managedObjectContext?.save(nil)
+
+    }
+
+    func createAlarm(alarmDate:NSDate) {
+
+        let alarmName = alarmNameTextField.text as String
+        let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext:managedObjectContext!)
+        let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        alarm.setValue(alarmName, forKey: "name")
+        alarm.setValue(alarmDate, forKey: "time")
+        alarm.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
+        alarm.setValue(false, forKey: "snooze")
+        alarm.setValue(selectSegmented(), forKey: "questionType")
+        alarm.setValue(theAlarmSound, forKey: "alertSound")
+        alarm.setValue(true, forKey: "on")
+        println("\(alarm)")
 
         var error:NSError?
-        if !managedContext.save(&error){
-            println("Error has occued \(error),Error info: \(error?.userInfo) ")
-        }
-
+      managedObjectContext?.save(nil)
 
     }
 
@@ -157,8 +157,6 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         }else{
             typeOfQuestion = "Televsion"
         }
-
-
 
         return typeOfQuestion
     }
@@ -211,8 +209,6 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
             (alert: UIAlertAction!) -> Void in
 
         })
-
-
         // 4
         optionMenu.addAction(bombSound)
         optionMenu.addAction(railRoad)

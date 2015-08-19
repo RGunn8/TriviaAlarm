@@ -9,10 +9,11 @@
 import UIKit
 import CoreData
 //import AlarmTableViewCell.swift
-class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegate,  NSFetchedResultsControllerDelegate {
 
     var alarms = [Alarms]()
     var onAlarms = [Alarms]()
+     var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController()
 
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
@@ -28,7 +29,9 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         formatter.timeStyle = .ShortStyle
         let now = NSDate()
       
-        
+        fetchedResultController = getFetchedResultController()
+        fetchedResultController.delegate = self
+        fetchedResultController.performFetch(nil)
 
          navigationItem.leftBarButtonItem = editButtonItem()
         
@@ -37,6 +40,11 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "questionSegue", name: "questionSegue", object: nil)
 
+    }
+
+    func getFetchedResultController() -> NSFetchedResultsController {
+    fetchedResultController = NSFetchedResultsController(fetchRequest: fetchAlarms(), managedObjectContext: managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+    return fetchedResultController
     }
 
      override func viewWillAppear(animated: Bool) {
@@ -58,13 +66,17 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle
         let now = NSDate()
-        fetchLog()
+
         if let tableView = tableView {
             tableView.reloadData()
             println("relod")
         }
 
 
+    }
+
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        tableView.reloadData()
     }
 
     func questionSegue(){
@@ -74,35 +86,13 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
     }
 
-    func fetchLog() {
+    func fetchAlarms() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: "Alarms")
         fetchRequest.returnsObjectsAsFaults = false
 
-//        // Create a sort descriptor object that sorts on the "title"
-//        // property of the Core Data object
-//        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
-//
-//        // Set the list of sort descriptors in the fetch request,
-//        // so it includes the sort descriptor
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//
-//        // Create a new predicate that filters out any object that
-//        // doesn't have a title of "Best Language" exactly.
-//        let firstPredicate = NSPredicate(format: "title == %@", "Best Language")
-//
-//        // Search for only items using the substring "Worst"
-//        let thPredicate = NSPredicate(format: "title contains %@", "Worst")
-//
-//        // Combine the two predicates above in to one compound predicate
-//        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [firstPredicate, thPredicate])
-//
-//        // Set the predicate on the fetch request
-//        fetchRequest.predicate = predicate
-
-        if let fetchResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: nil) as? [Alarms] {
-
-            alarms = fetchResults
-        }
+        let sortDescriptor = NSSortDescriptor(key: "time", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        return fetchRequest
             }
 
     @IBAction func EditButtonPressed(sender: UIBarButtonItem) {
@@ -180,19 +170,17 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     
         if(editingStyle == .Delete ) {
             // Find the LogItem object the user is trying to delete
-            let deleteAlarms = alarms[indexPath.row]
+            let deleteAlarms:Alarms = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
             deleteAlarms.on = false
 
             // Delete it from the managedObjectContext
             managedObjectContext?.deleteObject(deleteAlarms)
 
             // Refresh the table view to indicate that it's deleted
-            self.fetchLog()
+
             onAlarmsNotification()
 
-            // Tell the table view to animate out that row
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            tableView.reloadData()
+            managedObjectContext?.save(nil)
             //println("\(deleteAlarms.on)")
             save()
         }
@@ -204,7 +192,8 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         return true
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return alarms.count
+        let numberOfRowsInSection = fetchedResultController.sections?[section].numberOfObjects
+        return numberOfRowsInSection!
     }
     @IBAction func onAlarmClockSwitch(sender: UISwitch) {
         var alarmAtIndex:Alarms = alarms[sender.tag]
@@ -249,7 +238,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:AlarmTableViewCell = tableView.dequeueReusableCellWithIdentifier("MyCellID") as! AlarmTableViewCell
-        var alarm = alarms[indexPath.row]
+        var alarm = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
         cell.backgroundColor = UIColor.clearColor()
 
         let alarmDate = alarm.valueForKey("time") as! NSDate
@@ -264,11 +253,16 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if (segue.identifier == "oldAlarmSegue") {
+        if (segue.identifier == "oldAlarm") {
             let viewController:NewAlarmViewController = segue.destinationViewController as! NewAlarmViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
-            viewController.segueAlarm = self.alarms[indexPath!.row]
-            viewController.updateAlarm = true
+
+            let cell = sender as! UITableViewCell
+            let indexPath = tableView.indexPathForCell(cell)
+
+            let theAlarm:Alarms = self.fetchedResultController.objectAtIndexPath(indexPath!) as! Alarms
+             viewController.segueAlarm = theAlarm
+         
+           
         }
     }
 

@@ -362,19 +362,7 @@ func fetchalarm() {
         theAlarm = alarm[0]
         println("How many alarms do in \(alarm[0]) and \(theAlarmDate)")
 
-     //  let randomIndex = Int(arc4random_uniform(UInt32(questions.count)))
-//        theQuestion = questions[randomIndex]
-//        if let theQuestion = theQuestion{
-//
-//            questionLabel.text = theQuestion.question
-//            optionAButton.setTitle(theQuestion.optionA, forState: .Normal)
-//            optionBButton.setTitle(theQuestion.optionB, forState: .Normal)
-//            optionCButton.setTitle(theQuestion.optionC, forState: .Normal)
-//            optionDButton.setTitle(theQuestion.optionD, forState: .Normal)
-//            correctAnswer = theQuestion.correctAnswer
-//
-//        }
-
+   
 
     }
 }
