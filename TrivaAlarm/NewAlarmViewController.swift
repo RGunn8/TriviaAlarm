@@ -19,14 +19,12 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     @IBOutlet var addQuestionButton: UIButton!
     @IBOutlet var subtractQuesitonButton: UIButton!
 
-    @IBOutlet var saveButton: UINavigationItem!
     @IBOutlet var questionTypeSegmentedControl: UISegmentedControl!
     var numberOfQuestions = 1
     var typeOfQuestion = "Random"
     var theAlarmSound = "LoudAlarm.wav"
     var segueAlarm:Alarms? = nil
-    var updateAlarmArray = [Alarms]()
-    var theAlarm = Alarms()
+
     let theManagedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
     @IBOutlet weak var cancel: UIBarButtonItem!
