@@ -34,7 +34,10 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         fetchedResultController.performFetch(nil)
 
          navigationItem.leftBarButtonItem = editButtonItem()
-        
+        if let tableview = tableView{
+            tableview.allowsSelectionDuringEditing = true
+            tableview.allowsSelection = false
+        }
         
         self.clockLabel?.text = formatter.stringFromDate(now)
 
@@ -246,7 +249,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
         cell.loadItem(alarmDate, isOn:alarm.on);
         cell.alarmSwitch.tag = indexPath.row
-        
+        cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
 
         return cell
