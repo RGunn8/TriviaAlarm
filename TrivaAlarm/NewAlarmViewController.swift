@@ -112,8 +112,12 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     }
 
         func editAlarm(alarmDate:NSDate){
+            if alarmNameTextField.text == ""{
+                segueAlarm?.setValue("Wake Up", forKey: "name")
+            }else{
+                segueAlarm?.setValue(alarmNameTextField.text, forKey: "name")
+            }
 
-        segueAlarm?.setValue(alarmNameTextField.text, forKey: "name")
         segueAlarm?.setValue(alarmDate, forKey: "time")
         segueAlarm?.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
         segueAlarm?.setValue(false, forKey: "snooze")
@@ -130,14 +134,19 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         let alarmName = alarmNameTextField.text as String
         let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext:managedObjectContext!)
         let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-        alarm.setValue(alarmName, forKey: "name")
+        if alarmNameTextField.text == ""{
+            alarm.setValue("Wake Up", forKey: "name")
+        }else{
+            alarm.setValue(alarmNameTextField.text, forKey: "name")
+        }
+
         alarm.setValue(alarmDate, forKey: "time")
         alarm.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
         alarm.setValue(false, forKey: "snooze")
         alarm.setValue(selectSegmented(), forKey: "questionType")
         alarm.setValue(theAlarmSound, forKey: "alertSound")
         alarm.setValue(true, forKey: "on")
-        println("\(alarm)")
+
 
         var error:NSError?
       managedObjectContext?.save(nil)
@@ -187,30 +196,67 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     @IBAction func selectSoundButtonPressed(sender: UIButton) {
         let optionMenu = UIAlertController(title: nil, message: "Choose Sound", preferredStyle: .ActionSheet)
 
-        // 2
-        let bombSound = UIAlertAction(title: "Bomb Sound", style: .Default, handler: {
+        if theAlarmSound == "BombSound.wav" {
+        let bombSound = UIAlertAction(title: "Bomb Sound", style: .Destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             self.theAlarmSound = "BombSound.wav"
+
         })
-        let railRoad = UIAlertAction(title: "RailRoad Sound", style: .Default, handler: {
+             optionMenu.addAction(bombSound)
+        }else {
+            let bombSound = UIAlertAction(title: "Bomb Sound", style: .Default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.theAlarmSound = "BombSound.wav"
+
+            })
+            optionMenu.addAction(bombSound)
+
+        }
+
+        if theAlarmSound == "railRoadSound.wav" {
+
+        let railRoad = UIAlertAction(title: "RailRoad Sound", style: .Destructive, handler: {
             (alert: UIAlertAction!) -> Void in
              self.theAlarmSound = "railRoadSound.wav"
         })
+             optionMenu.addAction(railRoad)
 
-        let alarmSound = UIAlertAction(title: "Default Alarm Sound", style: .Default, handler: {
+        }else {
+            let railRoad = UIAlertAction(title: "RailRoad Sound", style: .Default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.theAlarmSound = "railRoadSound.wav"
+            })
+            optionMenu.addAction(railRoad)
+
+        }
+
+        if theAlarmSound == "LoudAlarm.wav"{
+        let alarmSound = UIAlertAction(title: "Default Alarm Sound", style: .Destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             self.theAlarmSound = "LoudAlarm.wav"
+
+
         })
+            optionMenu.addAction(alarmSound)
+        }else{
+            let alarmSound = UIAlertAction(title: "Default Alarm Sound", style: .Default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.theAlarmSound = "LoudAlarm.wav"
+
+
+            })
+            optionMenu.addAction(alarmSound)
+        }
 
         //
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
             (alert: UIAlertAction!) -> Void in
 
         })
-        // 4
-        optionMenu.addAction(bombSound)
-        optionMenu.addAction(railRoad)
-        optionMenu.addAction(alarmSound)
+
+
+
+
         optionMenu.addAction(cancelAction)
         
         // 5

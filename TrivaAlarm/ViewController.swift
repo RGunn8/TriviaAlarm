@@ -18,18 +18,9 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var clockLabel: UILabel!
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTime"), userInfo: nil, repeats: true)
-
-        let formatter = NSDateFormatter()
-        formatter.timeStyle = .ShortStyle
-        let now = NSDate()
-      
-        fetchedResultController = getFetchedResultController()
+              fetchedResultController = getFetchedResultController()
         fetchedResultController.delegate = self
         fetchedResultController.performFetch(nil)
 
@@ -38,23 +29,15 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             tableview.allowsSelectionDuringEditing = true
             tableview.allowsSelection = false
         }
-        
-        self.clockLabel?.text = formatter.stringFromDate(now)
-
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "questionSegue", name: "questionSegue", object: nil)
 
     }
 
-    func getFetchedResultController() -> NSFetchedResultsController {
-    fetchedResultController = NSFetchedResultsController(fetchRequest: fetchAlarms(), managedObjectContext: managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-    return fetchedResultController
-    }
+
 
      override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
         UIApplication.sharedApplication().cancelAllLocalNotifications()
 
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "questionSegue", name: "questionSegue", object: nil)
 
          if let moc = self.managedObjectContext {
         let appDelegate =
@@ -72,21 +55,24 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
         if let tableView = tableView {
             tableView.reloadData()
-            println("relod")
+
         }
 
 
     }
 
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        tableView.reloadData()
+    func save() {
+        var error:NSError?
+        if managedObjectContext!.save(&error){
+            println(error?.localizedDescription)
+        }
+
     }
+    //NSFetchController Methods
 
-    func questionSegue(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
-       self.presentViewController(vc, animated: true, completion: nil)
-
+    func getFetchedResultController() -> NSFetchedResultsController {
+        fetchedResultController = NSFetchedResultsController(fetchRequest: fetchAlarms(), managedObjectContext: managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchedResultController
     }
 
     func fetchAlarms() -> NSFetchRequest {
@@ -96,78 +82,31 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         let sortDescriptor = NSSortDescriptor(key: "time", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         return fetchRequest
-            }
-
-    @IBAction func EditButtonPressed(sender: UIBarButtonItem) {
-       // self.tableView.setEditing(true, animated: true)
     }
+
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        if let tableview = tableView{
+        tableview.reloadData()
+        }
+    }
+
+    func questionSegue(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
+       self.presentViewController(vc, animated: true, completion: nil)
+
+    }
+
+
+
+
+    //Editing TableView Methods
 
     override func  setEditing(editing: Bool, animated: Bool) {
-            super.setEditing(editing, animated: animated)
-            tableView.setEditing(editing, animated: animated)
-      
-    }
-    func onAlarmsNotification() ->Void{
-
-        let fetchRequest = NSFetchRequest(entityName: "Alarms")
-        let predicate = NSPredicate(format: "on == %@", "1")
-
-        // Set the predicate on the fetch request
-        fetchRequest.predicate = predicate
-
-        if let fetchResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: nil) as? [Alarms] {
-            onAlarms = fetchResults
-        }
-        print(onAlarms)
-
-
-        for alarm in onAlarms {
-
-
-            var notification = UILocalNotification()
-
-             let notificationDate:NSDate = NSDate(timeInterval: 5, sinceDate: alarm.time)
-            notification.alertBody = "It Time, It Time to Wake Up and Be Great" // text that will be displayed in the notification
-            notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
-            notification.fireDate =  alarm.time // todo item due date (when notification will be fired)
-            notification.soundName = alarm.alertSound// play default sound
-            notification.timeZone = NSCalendar.currentCalendar().timeZone
-            notification.repeatInterval = NSCalendarUnit.CalendarUnitMinute
-            var userInfo:[String:String] = [String:String]()
-
-            let numOfQuestion = "\(alarm.numOfQuestionsToEnd)" as String
-             let formatter = NSDateFormatter()
-            formatter.dateStyle = NSDateFormatterStyle.LongStyle
-            formatter.timeStyle = NSDateFormatterStyle.LongStyle
-            let alarmDate = formatter.stringFromDate(alarm.time)
-
-            userInfo["NumberOfQuestion"] = numOfQuestion ?? "1"
-
-            userInfo["TypeOfQuestion"] = alarm.questionType ?? "Random"
-
-            userInfo["AlarmDate"] = alarmDate ?? "nil"
-
-            userInfo["AlarmSound"] = alarm.alertSound ?? "LoudAlarm.wav"
-
-//            println("This is the date \(alarmDate)")
-            notification.userInfo = userInfo
-
-
-            UIApplication.sharedApplication().scheduleLocalNotification(notification)
-
-
-        }
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: animated)
 
     }
-
-    func updateTime() ->Void {
-        let formatter = NSDateFormatter()
-        formatter.timeStyle = .ShortStyle
-        let now = NSDate()
-         self.clockLabel?.text = formatter.stringFromDate(now)
-
-    }
-
 
    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     
@@ -189,17 +128,69 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         }
     }
 
-    
+    //On alarms methods
+    func onAlarmsNotification() ->Void{
 
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+        let fetchRequest = NSFetchRequest(entityName: "Alarms")
+        let predicate = NSPredicate(format: "on == %@", "1")
+
+        // Set the predicate on the fetch request
+        fetchRequest.predicate = predicate
+
+        if let fetchResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: nil) as? [Alarms] {
+            onAlarms = fetchResults
+        }
+        for alarm in onAlarms {
+
+
+            var notification = UILocalNotification()
+
+            notification.alertBody = "It Time, It Time to Wake Up and Be Great" // text that will be displayed in the notification
+            notification.fireDate =  alarm.time // todo item due date (when notification will be fired)
+            notification.soundName = alarm.alertSound
+            notification.timeZone = NSCalendar.currentCalendar().timeZone
+            notification.repeatInterval = NSCalendarUnit.CalendarUnitMinute
+            var userInfo:[String:String] = [String:String]()
+
+            let numOfQuestion = "\(alarm.numOfQuestionsToEnd)" as String
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.LongStyle
+            formatter.timeStyle = NSDateFormatterStyle.LongStyle
+            let alarmDate = formatter.stringFromDate(alarm.time)
+
+            userInfo["NumberOfQuestion"] = numOfQuestion ?? "1"
+
+            userInfo["TypeOfQuestion"] = alarm.questionType ?? "Random"
+
+            userInfo["AlarmDate"] = alarmDate ?? "nil"
+
+            userInfo["AlarmSound"] = alarm.alertSound ?? "LoudAlarm.wav"
+
+            notification.userInfo = userInfo
+
+
+            UIApplication.sharedApplication().scheduleLocalNotification(notification)
+            var notification2 = UILocalNotification()
+
+            let notification2Date:NSDate = alarm.time.dateByAddingTimeInterval(30)
+            notification2.alertBody = "It Time, It Time to Wake Up and Be Great" // text that will be displayed in the notification
+            notification2.fireDate =  notification2Date // todo item due date (when notification will be fired)
+            notification2.soundName = alarm.alertSound
+            notification2.timeZone = NSCalendar.currentCalendar().timeZone
+            notification2.repeatInterval = NSCalendarUnit.CalendarUnitMinute
+
+            notification2.userInfo = userInfo
+            UIApplication.sharedApplication().scheduleLocalNotification(notification2)
+        }
+        
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfRowsInSection = fetchedResultController.sections?[section].numberOfObjects
-        return numberOfRowsInSection!
-    }
+
+
     @IBAction func onAlarmClockSwitch(sender: UISwitch) {
-        var alarmAtIndex:Alarms = alarms[sender.tag]
+
+        let senderTag = sender.tag as Int
+        let indexPath = NSIndexPath(forRow: senderTag, inSection: 0)
+       var alarmAtIndex:Alarms = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
         let now = NSDate()
         if sender.on {
            alarmAtIndex.on = true
@@ -210,10 +201,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
 
                 var alarmDate:NSDate = calendar.dateByAddingComponents(dayComponent, toDate: alarmAtIndex.time, options: NSCalendarOptions(0))!
-//                let theNewDateString = formatter.stringFromDate(alarmDate)
-//                let nowString = formatter.stringFromDate(now)
-//
-//                println("\(theNewDateString), and now is \(nowString) and this time is later " )
+
                 alarmAtIndex.time = alarmDate
 
             }
@@ -232,28 +220,38 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         }
 
     }
-    func save() {
-        var error:NSError?
-        if managedObjectContext!.save(&error){
-            println(error?.localizedDescription)
-        }
 
+    //tableView delegate methods
+
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let numberOfRowsInSection = fetchedResultController.sections?[section].numberOfObjects
+        return numberOfRowsInSection!
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:AlarmTableViewCell = tableView.dequeueReusableCellWithIdentifier("MyCellID") as! AlarmTableViewCell
-        var alarm = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
+        var theAlarm = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
         cell.backgroundColor = UIColor.clearColor()
-
-        let alarmDate = alarm.valueForKey("time") as! NSDate
+        cell.alarmNameLabel.text = theAlarm.name
+        let alarmDate = theAlarm.valueForKey("time") as! NSDate
         //let alarmIsOn = alarm.valueForKey("on") as! Bool
 
-        cell.loadItem(alarmDate, isOn:alarm.on);
+        cell.loadItem(alarmDate, isOn:theAlarm.on);
         cell.alarmSwitch.tag = indexPath.row
         cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        
+
+        if theAlarm.on{
+           cell.backgroundColor = UIColor.redColor()
+
+        }else{
+             cell.backgroundColor = UIColor.blueColor()
+        }
 
         return cell
     }
+    //Segue to NewAlarmVC
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "oldAlarm") {
