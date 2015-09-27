@@ -23,8 +23,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     var numberOfQuestions = 1
     var typeOfQuestion = "Random"
     var theAlarmSound = "LoudAlarm.wav"
-    var segueAlarm:Alarms? = nil
-
+    var segueAlarm:Alarms?
     let theManagedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
     @IBOutlet weak var cancel: UIBarButtonItem!
@@ -34,6 +33,9 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
                subtractQuesitonButton.hidden = true
         self.navigationItem.leftBarButtonItem = cancel
+
+      cancel.tintColor = UIColor.whiteColor()
+
 
         alarmNameTextField.delegate = self
 
@@ -74,10 +76,11 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     }
 
     @IBAction func saveButton(sender: UIBarButtonItem) {
+        
         let now = NSDate()
         let calendar = NSCalendar.currentCalendar()
 
-        let components = calendar.components(.CalendarUnitYear | .CalendarUnitDay | .CalendarUnitHour | .CalendarUnitMinute | .CalendarUnitMonth, fromDate: datePicker.date)
+        let components = calendar.components([.Year, .Day, .Hour, .Minute, .Month], fromDate: datePicker.date)
 
         components.second = 0
         let zeroSecondDate:NSDate = calendar.dateFromComponents(components)!
@@ -90,17 +93,17 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
             let dayComponent = NSDateComponents()
             dayComponent.day = 1
-            alarmDate = calendar.dateByAddingComponents(dayComponent, toDate: zeroSecondDate, options: NSCalendarOptions(0))!
-            let theNewDateString = formatter.stringFromDate(alarmDate)
+            alarmDate = calendar.dateByAddingComponents(dayComponent, toDate: zeroSecondDate, options: NSCalendarOptions(rawValue: 0))!
+//            let theNewDateString = formatter.stringFromDate(alarmDate)
             let nowString = formatter.stringFromDate(now)
-            println("\(nowString)")
+            print("\(nowString)")
 
         }else{
             alarmDate = zeroSecondDate
         }
 
-        let dateString = formatter.stringFromDate(datePicker.date)
-        let newDateString = formatter.stringFromDate(zeroSecondDate)
+//        let dateString = formatter.stringFromDate(datePicker.date)
+//        let newDateString = formatter.stringFromDate(zeroSecondDate)
 
         if segueAlarm != nil{
             editAlarm(alarmDate)
@@ -125,13 +128,16 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         segueAlarm?.setValue(theAlarmSound, forKey: "alertSound")
         segueAlarm?.setValue(true, forKey: "on")
 
-       managedObjectContext?.save(nil)
+        do {
+            try managedObjectContext?.save()
+        } catch _ {
+        }
 
     }
 
     func createAlarm(alarmDate:NSDate) {
 
-        let alarmName = alarmNameTextField.text as String
+//        let alarmName = alarmNameTextField.text as String!
         let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext:managedObjectContext!)
         let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
         if alarmNameTextField.text == ""{
@@ -148,8 +154,11 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         alarm.setValue(true, forKey: "on")
 
 
-        var error:NSError?
-      managedObjectContext?.save(nil)
+       
+        do {
+            try managedObjectContext?.save()
+        } catch _ {
+        }
 
     }
 
@@ -194,18 +203,18 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
 
     @IBAction func selectSoundButtonPressed(sender: UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Choose Sound", preferredStyle: .ActionSheet)
+        let optionMenu = UIAlertController(title: "Sound", message: "Choose Sound", preferredStyle: .ActionSheet)
 
         if theAlarmSound == "BombSound.wav" {
         let bombSound = UIAlertAction(title: "Bomb Sound", style: .Destructive, handler: {
-            (alert: UIAlertAction!) -> Void in
+            (alert: UIAlertAction) -> Void in
             self.theAlarmSound = "BombSound.wav"
 
         })
              optionMenu.addAction(bombSound)
         }else {
             let bombSound = UIAlertAction(title: "Bomb Sound", style: .Default, handler: {
-                (alert: UIAlertAction!) -> Void in
+                (alert: UIAlertAction) -> Void in
                 self.theAlarmSound = "BombSound.wav"
 
             })
@@ -216,14 +225,14 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         if theAlarmSound == "railRoadSound.wav" {
 
         let railRoad = UIAlertAction(title: "RailRoad Sound", style: .Destructive, handler: {
-            (alert: UIAlertAction!) -> Void in
+            (alert: UIAlertAction) -> Void in
              self.theAlarmSound = "railRoadSound.wav"
         })
              optionMenu.addAction(railRoad)
 
         }else {
             let railRoad = UIAlertAction(title: "RailRoad Sound", style: .Default, handler: {
-                (alert: UIAlertAction!) -> Void in
+                (alert: UIAlertAction) -> Void in
                 self.theAlarmSound = "railRoadSound.wav"
             })
             optionMenu.addAction(railRoad)
@@ -232,7 +241,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
         if theAlarmSound == "LoudAlarm.wav"{
         let alarmSound = UIAlertAction(title: "Default Alarm Sound", style: .Destructive, handler: {
-            (alert: UIAlertAction!) -> Void in
+            (alert: UIAlertAction) -> Void in
             self.theAlarmSound = "LoudAlarm.wav"
 
 
@@ -240,7 +249,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
             optionMenu.addAction(alarmSound)
         }else{
             let alarmSound = UIAlertAction(title: "Default Alarm Sound", style: .Default, handler: {
-                (alert: UIAlertAction!) -> Void in
+                (alert: UIAlertAction) -> Void in
                 self.theAlarmSound = "LoudAlarm.wav"
 
 
@@ -250,7 +259,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
         //
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
+            (alert: UIAlertAction) -> Void in
 
         })
 

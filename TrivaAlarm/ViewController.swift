@@ -13,6 +13,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
     var alarms = [Alarms]()
     var onAlarms = [Alarms]()
+    var offAlarms = [Alarms]()
      var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController()
 
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
@@ -20,10 +21,24 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     @IBOutlet var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.tintColor = UIColor.blueColor()
+        //let swift color =
+
+//        tableView.backgroundView?.backgroundColor = UIColor(red: 0, green: (128/255), blue: (255/255), alpha: 1)
+//        tableView.backgroundColor =  UIColor(red: 0, green: (128/255), blue: (255/255), alpha: 1)
+
+
+//        self.nav.barStyle = UIBarStyle.Black
+//        self.navigationBar.tintColor = UIColor.whiteColor()
               fetchedResultController = getFetchedResultController()
         fetchedResultController.delegate = self
-        fetchedResultController.performFetch(nil)
+        do {
+            try fetchedResultController.performFetch()
+        } catch _ {
+        }
 
+
+        editButtonItem().tintColor = UIColor.whiteColor()
          navigationItem.leftBarButtonItem = editButtonItem()
         if let tableview = tableView{
             tableview.allowsSelectionDuringEditing = true
@@ -36,11 +51,9 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
      override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
-
-
+       
          if let moc = self.managedObjectContext {
-        let appDelegate =
+       let appDelegate =
         UIApplication.sharedApplication().delegate as! AppDelegate
             onAlarmsNotification()
 
@@ -51,7 +64,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle
-        let now = NSDate()
+
 
         if let tableView = tableView {
             tableView.reloadData()
@@ -63,8 +76,13 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
     func save() {
         var error:NSError?
-        if managedObjectContext!.save(&error){
-            println(error?.localizedDescription)
+        do {
+            try managedObjectContext!.save()
+            if error != nil{
+                print("\(error)")
+            }
+        } catch let error1 as NSError {
+            error = error1
         }
 
     }
@@ -122,12 +140,42 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
             onAlarmsNotification()
 
-            managedObjectContext?.save(nil)
+            do {
+                try managedObjectContext?.save()
+            } catch _ {
+            }
             //println("\(deleteAlarms.on)")
             save()
         }
     }
+    func offAlarmsNotificaion() {
+        let fetchRequest = NSFetchRequest(entityName: "Alarms")
+        let predicate = NSPredicate(format: "on == %@", "0")
 
+        fetchRequest.predicate = predicate
+        let notifications = UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]!
+
+        if let fetchResults = (try? managedObjectContext!.executeFetchRequest(fetchRequest)) as? [Alarms] {
+            offAlarms = fetchResults
+        }
+
+        for alarm in offAlarms {
+            for notificaion in notifications{
+                let formatter = NSDateFormatter()
+                formatter.dateStyle = NSDateFormatterStyle.LongStyle
+                formatter.timeStyle = NSDateFormatterStyle.LongStyle
+                let alarmDate = formatter.stringFromDate(alarm.time)
+                if let notifDate = notificaion.userInfo?["AlarmDate"] as? String{
+                    if alarmDate == notifDate{
+                         UIApplication.sharedApplication().cancelLocalNotification(notificaion)
+                        print("\(notificaion)")
+                    }
+                }
+            }
+            
+        }
+
+    }
     //On alarms methods
     func onAlarmsNotification() ->Void{
 
@@ -137,19 +185,19 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         // Set the predicate on the fetch request
         fetchRequest.predicate = predicate
 
-        if let fetchResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: nil) as? [Alarms] {
+        if let fetchResults = (try? managedObjectContext!.executeFetchRequest(fetchRequest)) as? [Alarms] {
             onAlarms = fetchResults
         }
         for alarm in onAlarms {
 
 
-            var notification = UILocalNotification()
+            let notification = UILocalNotification()
 
             notification.alertBody = "It Time, It Time to Wake Up and Be Great" // text that will be displayed in the notification
             notification.fireDate =  alarm.time // todo item due date (when notification will be fired)
             notification.soundName = alarm.alertSound
             notification.timeZone = NSCalendar.currentCalendar().timeZone
-            notification.repeatInterval = NSCalendarUnit.CalendarUnitMinute
+            notification.repeatInterval = NSCalendarUnit.Minute
             var userInfo:[String:String] = [String:String]()
 
             let numOfQuestion = "\(alarm.numOfQuestionsToEnd)" as String
@@ -170,14 +218,14 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
 
             UIApplication.sharedApplication().scheduleLocalNotification(notification)
-            var notification2 = UILocalNotification()
+            let notification2 = UILocalNotification()
 
             let notification2Date:NSDate = alarm.time.dateByAddingTimeInterval(30)
             notification2.alertBody = "It Time, It Time to Wake Up and Be Great" // text that will be displayed in the notification
             notification2.fireDate =  notification2Date // todo item due date (when notification will be fired)
             notification2.soundName = alarm.alertSound
             notification2.timeZone = NSCalendar.currentCalendar().timeZone
-            notification2.repeatInterval = NSCalendarUnit.CalendarUnitMinute
+            notification2.repeatInterval = NSCalendarUnit.Minute
 
             notification2.userInfo = userInfo
             UIApplication.sharedApplication().scheduleLocalNotification(notification2)
@@ -188,34 +236,75 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
     @IBAction func onAlarmClockSwitch(sender: UISwitch) {
 
+
+//         var notifications = UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]!
+
+        //println("\(notifications)")
         let senderTag = sender.tag as Int
         let indexPath = NSIndexPath(forRow: senderTag, inSection: 0)
-       var alarmAtIndex:Alarms = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
+       let alarmAtIndex:Alarms = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
         let now = NSDate()
         if sender.on {
            alarmAtIndex.on = true
             if alarmAtIndex.time.compare(now) == NSComparisonResult.OrderedAscending{
                 let calendar = NSCalendar.currentCalendar()
-                let dayComponent = NSDateComponents()
-                dayComponent.day = 1
 
 
-                var alarmDate:NSDate = calendar.dateByAddingComponents(dayComponent, toDate: alarmAtIndex.time, options: NSCalendarOptions(0))!
+//                let components = calendar.components([.Month, .Year, .Hour, .Minute, .Second, .Nanosecond], fromDate: now)
+
+                let year = calendar.component(.Year, fromDate: now)
+                let month = calendar.component(.Month, fromDate: now)
+                var day = calendar.component(.Day, fromDate: now)
+                let hour = calendar.component(.Hour, fromDate: alarmAtIndex.time)
+                let mins = calendar.component(.Minute, fromDate: alarmAtIndex.time)
+                let nowHour = calendar.component(.Hour, fromDate: now)
+                let nowmin = calendar.component(.Minute, fromDate: now)
+
+                if nowHour > hour {
+                    day++
+
+                }else if nowHour == hour{
+                    if nowmin > mins{
+                        day++
+                    }
+
+                }
+//                let second = 0
+                let newAlarmDateComponents = NSDateComponents()
+                newAlarmDateComponents.year = year
+                newAlarmDateComponents.month = month
+                newAlarmDateComponents.day = day
+                newAlarmDateComponents.hour = hour
+                newAlarmDateComponents.minute = mins
+                newAlarmDateComponents.second = 0
+
+
+                let alarmDate:NSDate = calendar.dateFromComponents(newAlarmDateComponents)!
+
 
                 alarmAtIndex.time = alarmDate
 
-            }
-            
-            var error:NSError?
-            save()
+                let formatter = NSDateFormatter()
+                formatter.dateStyle = NSDateFormatterStyle.LongStyle
+                formatter.timeStyle = .MediumStyle
+               let alarmStirng = formatter.stringFromDate(alarmDate)
+//                let datestring = formatter.stringFromDate(alarmAtIndex.time)
+//                let nowstring = formatter.stringFromDate(now)
+//                let theAalrm = calendar.getTimeFromDate(alarmDate)
+                print("\(alarmStirng)");
+                save()
                 onAlarmsNotification()
+
+            }
+
 
 
         }else{
             alarmAtIndex.on = false
-            var error:NSError?
+//            var error:NSError?
            save()
-           onAlarmsNotification()
+           //onAlarmsNotification()
+            offAlarmsNotificaion()
 
         }
 
@@ -231,9 +320,9 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         return numberOfRowsInSection!
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:AlarmTableViewCell = tableView.dequeueReusableCellWithIdentifier("MyCellID") as! AlarmTableViewCell
-        var theAlarm = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
-        cell.backgroundColor = UIColor.clearColor()
+        let cell:AlarmTableViewCell = tableView.dequeueReusableCellWithIdentifier("MyCellID") as! AlarmTableViewCell
+        let theAlarm = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
+//        cell.backgroundColor = UIColor.redColor()
         cell.alarmNameLabel.text = theAlarm.name
         let alarmDate = theAlarm.valueForKey("time") as! NSDate
         //let alarmIsOn = alarm.valueForKey("on") as! Bool
@@ -269,5 +358,14 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
 }
 
+extension NSCalendar {
+    /// Returns the hour, minute, second, and nanoseconds of a given date.
+    func getTimeFromDate(date: NSDate) -> (hour: Int, minute: Int, second: Int, nanosecond: Int) {
+        var (hour, minute, second, nanosecond) = (0, 0, 0, 0)
+        getHour(&hour, minute: &minute, second: &second, nanosecond: &nanosecond, fromDate: date)
+        return (hour, minute, second, nanosecond)
+    }
 
+    /// Returns the era, year, month, and day of a given date.
+  }
 

@@ -20,6 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        let defualts = NSUserDefaults.standardUserDefaults()
         defualts.setValue(22.5, forKey: "boss")
 
+        UINavigationBar.appearance().barTintColor = UIColor.blueColor()
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+
         let defaults = NSUserDefaults.standardUserDefaults()
         let isPreloaded = defaults.boolForKey("isPreloaded")
         if !isPreloaded {
@@ -29,9 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
       
        
-        let nc = NSNotificationCenter.defaultCenter()
-        application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: UIUserNotificationType.Sound | UIUserNotificationType.Alert |
-            UIUserNotificationType.Badge, categories: nil))
+//        let nc = NSNotificationCenter.defaultCenter()
+        application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge], categories: nil))
 
         if let options = launchOptions {
 
@@ -120,12 +123,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
 
-    func parseCSV (contentsOfURL: NSURL, encoding: NSStringEncoding, error: NSErrorPointer) -> [(question:String, type:String, optionA: String, optionB: String, optionC:String, optionD:String, correctAnswer:String)]? {
+    func parseCSV (contentsOfURL: NSURL, encoding: NSStringEncoding) throws -> [(question:String, type:String, optionA: String, optionB: String, optionC:String, optionD:String, correctAnswer:String)] {
+        var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
         // Load the CSV file and parse it
         let delimiter = ","
         var items:[(question:String, type:String, optionA: String, optionB: String, optionC:String, optionD:String, correctAnswer:String)]?
 
-        if let content = String(contentsOfURL: contentsOfURL, encoding: encoding, error: error) {
+        do {
+            let content = try String(contentsOfURL: contentsOfURL, encoding: encoding)
             items = []
             let lines:[String] = content.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet()) as [String]
 
@@ -152,7 +157,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             values.append(value as! String)
 
                             // Retrieve the unscanned remainder of the string
-                            if textScanner.scanLocation < count(textScanner.string) {
+                            if textScanner.scanLocation < textScanner.string.characters.count {
                                 textToScan = (textScanner.string as NSString).substringFromIndex(textScanner.scanLocation + 1)
                             } else {
                                 textToScan = ""
@@ -171,10 +176,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     items?.append(item)
                 }
             }
+        } catch let error1 as NSError {
+            error = error1
         }
         
-        return items
+        if let value = items {
+            return value
+        }
+        throw error
     }
+
+    
 
     func preloadData () {
         // Retrieve data from the source file
@@ -183,8 +195,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Remove all the menu items before preloading
             removeData()
 
-            var error:NSError?
-            if let items = parseCSV(contentsOfURL, encoding: NSUTF8StringEncoding, error: &error) {
+
+            do {
+                let items = try parseCSV(contentsOfURL, encoding: NSUTF8StringEncoding)
                 // Preload the menu items
                 if let managedObjectContext = self.managedObjectContext {
                     for item in items {
@@ -197,12 +210,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         questionItem.optionD = item.optionD
                         questionItem.correctAnswer = item.correctAnswer
 
+                        try self.managedObjectContext!.save()
 
-                        if managedObjectContext.save(&error) != true {
-                            println("insert error: \(error!.localizedDescription)")
-                        }
-                    }
+                    
                 }
+                }
+            } catch let error1 as NSError {
+               print("\(error1)")
             }
         }
     }
@@ -211,18 +225,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Remove the existing items
         if let managedObjectContext = self.managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: "Questions")
-            var e: NSError?
-            let questionItems = managedObjectContext.executeFetchRequest(fetchRequest, error: &e) as! [Questions]
 
-            if e != nil {
-                println("Failed to retrieve record: \(e!.localizedDescription)")
+            do{
+            let questionItems = (try! managedObjectContext.executeFetchRequest(fetchRequest)) as! [Questions]
 
-            } else {
-                
                 for question in questionItems {
                     managedObjectContext.deleteObject(question)
                 }
+
+                try self.managedObjectContext!.save()
+
             }
+            catch{
+                print(error)
+            }
+
+
         }
     }
 
@@ -256,7 +274,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "Ryan-Gunn.TrivaAlarm" in the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as! NSURL
+        return urls[urls.count-1] 
     }()
 
     lazy var managedObjectModel: NSManagedObjectModel = {
@@ -272,7 +290,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("TrivaAlarm.sqlite")
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
-        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
+        do {
+            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+        } catch var error1 as NSError {
+            error = error1
             coordinator = nil
             // Report any error we got.
             var dict = [String: AnyObject]()
@@ -284,6 +305,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog("Unresolved error \(error), \(error!.userInfo)")
             abort()
+        } catch {
+            fatalError()
         }
         
         return coordinator
@@ -305,11 +328,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func saveContext () {
         if let moc = self.managedObjectContext {
             var error: NSError? = nil
-            if moc.hasChanges && !moc.save(&error) {
-                // Replace this implementation with code to handle the error appropriately.
-                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                NSLog("Unresolved error \(error), \(error!.userInfo)")
-                abort()
+            if moc.hasChanges {
+                do {
+                    try moc.save()
+                } catch let error1 as NSError {
+                    error = error1
+                    // Replace this implementation with code to handle the error appropriately.
+                    // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                    NSLog("Unresolved error \(error), \(error!.userInfo)")
+                    abort()
+                }
             }
         }
     }

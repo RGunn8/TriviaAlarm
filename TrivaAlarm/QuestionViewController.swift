@@ -46,7 +46,10 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         navBar.delegate = self
         wrongLabel.hidden = true
         correctLabel.hidden = true
-        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, error: nil)
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        } catch _ {
+        }
 
 
           }
@@ -59,7 +62,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
     func positionForBar(bar: UIBarPositioning) -> UIBarPosition  {
         if (bar === self.navBar){
-             println("move down")
+             print("move down")
            return UIBarPosition.TopAttached
 
         }
@@ -79,8 +82,29 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
     func save() {
         var error:NSError?
-        if managedObjectContext!.save(&error){
-            println(error?.localizedDescription)
+        do {
+            try managedObjectContext!.save()
+            if error != nil {
+            print(error?.localizedDescription)
+            }
+        } catch let error1 as NSError {
+            error = error1
+        }
+    }
+
+    func cancelAlarmNotificaion() {
+        let notifications = UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]!
+        for notificaion in notifications{
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.LongStyle
+            formatter.timeStyle = NSDateFormatterStyle.LongStyle
+            let alarmDate = formatter.stringFromDate(theAlarm!.time)
+            if let notifDate = notificaion.userInfo?["AlarmDate"] as? String{
+                if alarmDate == notifDate{
+                    UIApplication.sharedApplication().cancelLocalNotification(notificaion)
+                    print("\(notificaion)")
+                }
+            }
         }
     }
 
@@ -90,21 +114,21 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         var userInfo:Dictionary<String,String!> = notficaiton.userInfo as! Dictionary<String,String!>
 
         typeOfQuestion = userInfo["TypeOfQuestion"]!
-        var numberOfQuestionString = userInfo["NumberOfQuestion"]
+        let numberOfQuestionString = userInfo["NumberOfQuestion"]
 
-        println("The type of question is " + typeOfQuestion)
+        print("The type of question is " + typeOfQuestion)
 
         let date = userInfo["AlarmDate"]!
 
-        var alarmSoundWav = userInfo["AlarmSound"]!
+        let alarmSoundWav = userInfo["AlarmSound"]!
         let rangeOfWav = Range(start: alarmSoundWav.startIndex,
-            end: advance(alarmSoundWav.endIndex, -4))
+            end: alarmSoundWav.endIndex.advancedBy(-4))
         alarmSound = alarmSoundWav.substringWithRange(rangeOfWav)
 
 
         let soundURL = NSBundle.mainBundle().URLForResource(alarmSound, withExtension: "wav")
 
-        audioPlayer = AVAudioPlayer(contentsOfURL: soundURL, error: nil)
+        audioPlayer = try? AVAudioPlayer(contentsOfURL: soundURL!)
         audioPlayer.play()
 
 
@@ -113,7 +137,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         dateFormatter.timeStyle = NSDateFormatterStyle.LongStyle
 
         theAlarmDate = dateFormatter.dateFromString(date)!
-        numberOfQuestion = numberOfQuestionString!.toInt()!
+        numberOfQuestion = Int(numberOfQuestionString!)!
         numOfQuestionLabel.text = "\(numberOfQuestion)"
 
         timer = NSTimer.scheduledTimerWithTimeInterval(10, target:self, selector: Selector("playSound"), userInfo: nil, repeats: true)
@@ -127,7 +151,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
         let soundURL = NSBundle.mainBundle().URLForResource(alarmSound, withExtension: "wav")
         
-        audioPlayer = AVAudioPlayer(contentsOfURL: soundURL, error: nil)
+        audioPlayer = try? AVAudioPlayer(contentsOfURL: soundURL!)
         audioPlayer.play()
         
     }
@@ -155,7 +179,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         if numberOfQuestion == 0 {
             self.dismissViewControllerAnimated(true, completion: {});
             // self.performSegueWithIdentifier("finishAlarm", sender: self)
-            UIApplication.sharedApplication().cancelAllLocalNotifications()
+            cancelAlarmNotificaion()
             timer.invalidate()
             theAlarm!.on = false
             isZero = true
@@ -184,7 +208,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         if numberOfQuestion == 0 {
             self.dismissViewControllerAnimated(true, completion: {});
             //self.performSegueWithIdentifier("finishAlarm", sender: self)
-            UIApplication.sharedApplication().cancelAllLocalNotifications()
+           cancelAlarmNotificaion()
             theAlarm!.on = false
             isZero = true
             timer.invalidate()
@@ -216,7 +240,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         if numberOfQuestion == 0 {
             self.dismissViewControllerAnimated(true, completion: {});
             //self.performSegueWithIdentifier("finishAlarm", sender: self)
-             UIApplication.sharedApplication().cancelAllLocalNotifications()
+           cancelAlarmNotificaion()
             timer.invalidate()
             theAlarm!.on = false
             isZero = true
@@ -249,8 +273,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         randomIndex()
         if numberOfQuestion == 0 {
            self.dismissViewControllerAnimated(true, completion: {});
-            // self.performSegueWithIdentifier("finishAlarm", sender: self)
-             UIApplication.sharedApplication().cancelAllLocalNotifications()
+          cancelAlarmNotificaion()
             theAlarm!.on = false
             timer.invalidate()
             audioPlayer.stop()
@@ -284,7 +307,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         if typeOfQuestion != "Random" {
             let firstPredicate = NSPredicate(format: "type == %@", typeOfQuestion)
             fetchRequest.predicate = firstPredicate
-            if let fetchResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: nil) as? [Questions] {
+            if let fetchResults = (try? managedObjectContext!.executeFetchRequest(fetchRequest)) as? [Questions] {
                 questions = fetchResults
 
                 let randomIndex = Int(arc4random_uniform(UInt32(questions.count)))
@@ -304,7 +327,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
         }else {
         
-        if let fetchResults = managedObjectContext!.executeFetchRequest(fetchRequest, error: nil) as? [Questions] {
+        if let fetchResults = (try? managedObjectContext!.executeFetchRequest(fetchRequest)) as? [Questions] {
             questions = fetchResults
 
             let randomIndex = Int(arc4random_uniform(UInt32(questions.count)))
@@ -334,7 +357,7 @@ func fetchAlarm() {
         fetchAlarm.predicate = firstPredicate
 
 
-    if let fetchAlarm = managedObjectContext!.executeFetchRequest(fetchAlarm, error: nil) as? [Alarms] {
+    if let fetchAlarm = (try? managedObjectContext!.executeFetchRequest(fetchAlarm)) as? [Alarms] {
         alarm = fetchAlarm
         theAlarm = alarm[0]
          }
