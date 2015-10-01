@@ -52,15 +52,15 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
      override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
        
-         if let moc = self.managedObjectContext {
-       let appDelegate =
+         //if let moc = self.managedObjectContext {
+       //let appDelegate =
         UIApplication.sharedApplication().delegate as! AppDelegate
             onAlarmsNotification()
 
         //3
-        var error: NSError?
+        //var error: NSError?
 
-        }
+        //}
 
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle

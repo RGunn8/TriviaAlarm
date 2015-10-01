@@ -12,12 +12,12 @@
 		F71992881B76992500E91FDE /* LoudAlarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992851B76992500E91FDE /* LoudAlarm.wav */; };
 		F71992891B76992500E91FDE /* BombSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992861B76992500E91FDE /* BombSound.wav */; };
 		F73703931B77FAB600FEE940 /* questionCSV.csv in Resources */ = {isa = PBXBuildFile; fileRef = F73703921B77FAB600FEE940 /* questionCSV.csv */; };
+		F76B0C9B1BBCDC1700D84692 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F76B0C9A1BBCDC1700D84692 /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
 		F77470731B6366E500D289F1 /* Alarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77470721B6366E500D289F1 /* Alarms.swift */; };
 		F7D27EDE1B5F700300EEF085 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */; };
 		F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */; };
 		F7D27EE31B5F700300EEF085 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EE21B5F700300EEF085 /* ViewController.swift */; };
 		F7D27EE61B5F700300EEF085 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7D27EE41B5F700300EEF085 /* Main.storyboard */; };
-		F7D27EE81B5F700300EEF085 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7D27EE71B5F700300EEF085 /* Images.xcassets */; };
 		F7D27EEB1B5F700300EEF085 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7D27EE91B5F700300EEF085 /* LaunchScreen.xib */; };
 		F7D27EF71B5F700300EEF085 /* TrivaAlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EF61B5F700300EEF085 /* TrivaAlarmTests.swift */; };
 		F7D85A121B604E1B00CB2AA0 /* NewAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D85A111B604E1B00CB2AA0 /* NewAlarmViewController.swift */; };
@@ -41,6 +41,7 @@
 		F71992851B76992500E91FDE /* LoudAlarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = LoudAlarm.wav; sourceTree = "<group>"; };
 		F71992861B76992500E91FDE /* BombSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BombSound.wav; sourceTree = "<group>"; };
 		F73703921B77FAB600FEE940 /* questionCSV.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = questionCSV.csv; sourceTree = "<group>"; };
+		F76B0C9A1BBCDC1700D84692 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F77470721B6366E500D289F1 /* Alarms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alarms.swift; path = ../Alarms.swift; sourceTree = "<group>"; };
 		F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrivaAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7D27EDC1B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,7 +49,6 @@
 		F7D27EE01B5F700300EEF085 /* TrivaAlarm.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrivaAlarm.xcdatamodel; sourceTree = "<group>"; };
 		F7D27EE21B5F700300EEF085 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F7D27EE51B5F700300EEF085 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		F7D27EE71B5F700300EEF085 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F7D27EEA1B5F700300EEF085 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F7D27EF01B5F700300EEF085 /* TrivaAlarmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrivaAlarmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7D27EF51B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 				F7D85A131B60863800CB2AA0 /* AlarmTableViewCell.swift */,
 				F7D85A111B604E1B00CB2AA0 /* NewAlarmViewController.swift */,
 				F7D27EE41B5F700300EEF085 /* Main.storyboard */,
-				F7D27EE71B5F700300EEF085 /* Images.xcassets */,
+				F76B0C9A1BBCDC1700D84692 /* Images.xcassets */,
 				F7D27EE91B5F700300EEF085 /* LaunchScreen.xib */,
 				F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */,
 				F73703921B77FAB600FEE940 /* questionCSV.csv */,
@@ -232,10 +232,10 @@
 			files = (
 				F73703931B77FAB600FEE940 /* questionCSV.csv in Resources */,
 				F71992881B76992500E91FDE /* LoudAlarm.wav in Resources */,
+				F76B0C9B1BBCDC1700D84692 /* Images.xcassets in Resources */,
 				F7D27EE61B5F700300EEF085 /* Main.storyboard in Resources */,
 				F71992871B76992500E91FDE /* railRoadSound.wav in Resources */,
 				F7D27EEB1B5F700300EEF085 /* LaunchScreen.xib in Resources */,
-				F7D27EE81B5F700300EEF085 /* Images.xcassets in Resources */,
 				F71992891B76992500E91FDE /* BombSound.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
