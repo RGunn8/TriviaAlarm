@@ -20,9 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        let defualts = NSUserDefaults.standardUserDefaults()
         defualts.setValue(22.5, forKey: "boss")
 
-        UINavigationBar.appearance().barTintColor = UIColor.blueColor()
+        UINavigationBar.appearance().barTintColor = UIColor(red: (49/255), green: (128/255), blue: (197/255), alpha: 1)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+
 
         let defaults = NSUserDefaults.standardUserDefaults()
         let isPreloaded = defaults.boolForKey("isPreloaded")
@@ -30,7 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             preloadData()
             defaults.setBool(true, forKey: "isPreloaded")
         }
-        
+
+        UINavigationBar.appearance().barStyle = .Black
       
        
 //        let nc = NSNotificationCenter.defaultCenter()
@@ -318,7 +320,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if coordinator == nil {
             return nil
         }
-        var managedObjectContext = NSManagedObjectContext()
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()

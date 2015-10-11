@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		F703FE981B66F9C5002308C4 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F703FE971B66F9C5002308C4 /* QuestionViewController.swift */; };
+		F705C1431BC21D0C00C5A813 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F705C1421BC21D0C00C5A813 /* Image.xcassets */; settings = {ASSET_TAGS = (); }; };
 		F71992871B76992500E91FDE /* railRoadSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992841B76992500E91FDE /* railRoadSound.wav */; };
 		F71992881B76992500E91FDE /* LoudAlarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992851B76992500E91FDE /* LoudAlarm.wav */; };
 		F71992891B76992500E91FDE /* BombSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992861B76992500E91FDE /* BombSound.wav */; };
 		F73703931B77FAB600FEE940 /* questionCSV.csv in Resources */ = {isa = PBXBuildFile; fileRef = F73703921B77FAB600FEE940 /* questionCSV.csv */; };
-		F76B0C9B1BBCDC1700D84692 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F76B0C9A1BBCDC1700D84692 /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
 		F77470731B6366E500D289F1 /* Alarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77470721B6366E500D289F1 /* Alarms.swift */; };
 		F7D27EDE1B5F700300EEF085 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */; };
 		F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */; };
@@ -37,11 +37,11 @@
 
 /* Begin PBXFileReference section */
 		F703FE971B66F9C5002308C4 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
+		F705C1421BC21D0C00C5A813 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Image.xcassets; path = ../Image.xcassets; sourceTree = "<group>"; };
 		F71992841B76992500E91FDE /* railRoadSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = railRoadSound.wav; sourceTree = "<group>"; };
 		F71992851B76992500E91FDE /* LoudAlarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = LoudAlarm.wav; sourceTree = "<group>"; };
 		F71992861B76992500E91FDE /* BombSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BombSound.wav; sourceTree = "<group>"; };
 		F73703921B77FAB600FEE940 /* questionCSV.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = questionCSV.csv; sourceTree = "<group>"; };
-		F76B0C9A1BBCDC1700D84692 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F77470721B6366E500D289F1 /* Alarms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alarms.swift; path = ../Alarms.swift; sourceTree = "<group>"; };
 		F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrivaAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7D27EDC1B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -97,6 +97,7 @@
 		F7D27EDA1B5F700300EEF085 /* TrivaAlarm */ = {
 			isa = PBXGroup;
 			children = (
+				F705C1421BC21D0C00C5A813 /* Image.xcassets */,
 				F77470721B6366E500D289F1 /* Alarms.swift */,
 				F7F88BB71B6BD0B600EA36E8 /* Questions.swift */,
 				F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */,
@@ -105,7 +106,6 @@
 				F7D85A131B60863800CB2AA0 /* AlarmTableViewCell.swift */,
 				F7D85A111B604E1B00CB2AA0 /* NewAlarmViewController.swift */,
 				F7D27EE41B5F700300EEF085 /* Main.storyboard */,
-				F76B0C9A1BBCDC1700D84692 /* Images.xcassets */,
 				F7D27EE91B5F700300EEF085 /* LaunchScreen.xib */,
 				F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */,
 				F73703921B77FAB600FEE940 /* questionCSV.csv */,
@@ -232,10 +232,10 @@
 			files = (
 				F73703931B77FAB600FEE940 /* questionCSV.csv in Resources */,
 				F71992881B76992500E91FDE /* LoudAlarm.wav in Resources */,
-				F76B0C9B1BBCDC1700D84692 /* Images.xcassets in Resources */,
 				F7D27EE61B5F700300EEF085 /* Main.storyboard in Resources */,
 				F71992871B76992500E91FDE /* railRoadSound.wav in Resources */,
 				F7D27EEB1B5F700300EEF085 /* LaunchScreen.xib in Resources */,
+				F705C1431BC21D0C00C5A813 /* Image.xcassets in Resources */,
 				F71992891B76992500E91FDE /* BombSound.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,7 +340,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -378,7 +378,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -413,10 +413,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -433,10 +429,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = TrivaAlarmTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Ryan-Gunn.$(PRODUCT_NAME:rfc1034identifier)";

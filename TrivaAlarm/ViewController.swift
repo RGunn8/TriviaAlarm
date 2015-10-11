@@ -21,7 +21,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     @IBOutlet var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.tintColor = UIColor.blueColor()
+        navigationController?.navigationBar.tintColor = UIColor(red: 49, green: 128, blue: 197, alpha: 1)
         //let swift color =
 
 //        tableView.backgroundView?.backgroundColor = UIColor(red: 0, green: (128/255), blue: (255/255), alpha: 1)
@@ -47,6 +47,9 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
     }
 
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
 
 
      override func viewWillAppear(animated: Bool) {
@@ -331,11 +334,21 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         cell.alarmSwitch.tag = indexPath.row
         cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator
 
+
         if theAlarm.on{
-           cell.backgroundColor = UIColor.redColor()
+           //cell.backgroundColor = UIColor.redColor()
+
+         let imageView = UIImageView(image: UIImage(named: "enabledAlarm_Bg"))
+            cell.backgroundView = imageView
 
         }else{
-             cell.backgroundColor = UIColor.blueColor()
+             //cell.backgroundColor = UIColor(red: 49, green: 128, blue: 197, alpha: 1)
+            let imageView = UIImageView(image: UIImage(named: "disabledAlarm_Bg"))
+            //cell.backgroundView = UIView()
+            //cell.backgroundView = imageView
+
+            cell.backgroundView = imageView
+
         }
 
         return cell

@@ -24,6 +24,8 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
     var timer = NSTimer()
     var isZero = false
 
+    
+    @IBOutlet var answerLabel: UILabel!
     var theAlarm:Alarms?
     @IBOutlet weak var wrongLabel: UILabel!
     @IBOutlet weak var correctLabel: UILabel!
@@ -38,14 +40,18 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-               NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVC:", name: "localNotficaionUserInfo", object: nil)
+        navigationItem.title = "One"
+      
+        self.navBar.delegate = self
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVC:", name: "localNotficaionUserInfo", object: nil)
         optionAButton.titleLabel?.numberOfLines = 0
         optionBButton.titleLabel?.numberOfLines = 0
         optionCButton.titleLabel?.numberOfLines = 0
         optionDButton.titleLabel?.numberOfLines = 0
-        navBar.delegate = self
-        wrongLabel.hidden = true
-        correctLabel.hidden = true
+      
+//        wrongLabel.hidden = true
+//        correctLabel.hidden = true
+        answerLabel.hidden = true
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         } catch _ {
@@ -60,15 +66,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         
     }
 
-    func positionForBar(bar: UIBarPositioning) -> UIBarPosition  {
-        if (bar === self.navBar){
-             print("move down")
-           return UIBarPosition.TopAttached
-
-        }
-        return UIBarPosition.TopAttached
-    }
-    @IBAction func backButtonPressed(sender: UIBarButtonItem) {
+        @IBAction func backButtonPressed(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: {});
         //self.performSegueWithIdentifier("finishAlarm", sender: self)
         UIApplication.sharedApplication().cancelAllLocalNotifications()
@@ -163,14 +161,22 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
            numberOfQuestion = numberOfQuestion - 1
             numOfQuestionLabel.text = "\(numberOfQuestion)"
-            correctLabel.hidden = false
-            wrongLabel.hidden = true
+
+
+            answerLabel.backgroundColor = UIColor.greenColor()
+            answerLabel.hidden = false
+            answerLabel.text = "Correct"
+            answerLabel.textColor = UIColor.whiteColor()
 
         }else{
             //numberOfQuestion = numberOfQuestion + 1
              numOfQuestionLabel.text = "\(numberOfQuestion)"
-            wrongLabel.hidden = false
-            correctLabel.hidden = true
+
+
+            answerLabel.backgroundColor = UIColor.redColor()
+            answerLabel.hidden = false
+            answerLabel.text = "Incorrect"
+            answerLabel.textColor = UIColor.whiteColor()
 
         }
 
@@ -194,14 +200,21 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
             numberOfQuestion = numberOfQuestion  - 1
             numOfQuestionLabel.text = "\(numberOfQuestion)"
-            correctLabel.hidden = false
-            wrongLabel.hidden = false
+
+            answerLabel.backgroundColor = UIColor.greenColor()
+            answerLabel.hidden = false
+            answerLabel.text = "Correct"
+            answerLabel.textColor = UIColor.whiteColor()
 
         }else{
             //numberOfQuestion = numberOfQuestion + 1
              numOfQuestionLabel.text = "\(numberOfQuestion)"
-            wrongLabel.hidden = false
-            correctLabel.hidden = true
+
+            answerLabel.backgroundColor = UIColor.redColor()
+            answerLabel.hidden = false
+            answerLabel.text = "Incorrect"
+            answerLabel.textColor = UIColor.whiteColor()
+
 
         }
         randomIndex()
@@ -225,14 +238,18 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
             numberOfQuestion = numberOfQuestion - 1
             numOfQuestionLabel.text = "\(numberOfQuestion)"
-            correctLabel.hidden = false
-            wrongLabel.hidden = true
+            answerLabel.backgroundColor = UIColor.greenColor()
+            answerLabel.hidden = false
+            answerLabel.text = "Correct"
+            answerLabel.textColor = UIColor.whiteColor()
 
         }else{
             //numberOfQuestion = numberOfQuestion + 1
              numOfQuestionLabel.text = "\(numberOfQuestion)"
-            wrongLabel.hidden = false
-            correctLabel.hidden = true
+            answerLabel.backgroundColor = UIColor.redColor()
+            answerLabel.hidden = false
+            answerLabel.text = "Incorrect"
+            answerLabel.textColor = UIColor.whiteColor()
 
         }
         randomIndex()
@@ -256,15 +273,19 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
             numberOfQuestion = numberOfQuestion - 1
             numOfQuestionLabel.text = "\(numberOfQuestion)"
-            correctLabel.hidden = false
-            wrongLabel.hidden = true
+            answerLabel.backgroundColor = UIColor.greenColor()
+            answerLabel.hidden = false
+            answerLabel.text = "Correct"
+            answerLabel.textColor = UIColor.whiteColor()
 
 
         }else{
             //numberOfQuestion = numberOfQuestion
              numOfQuestionLabel.text = "\(numberOfQuestion)"
-            wrongLabel.hidden = false
-            correctLabel.hidden = true
+            answerLabel.backgroundColor = UIColor.redColor()
+            answerLabel.hidden = false
+            answerLabel.text = "Incorrect"
+            answerLabel.textColor = UIColor.whiteColor()
 
 
         }
@@ -348,6 +369,9 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         }
     }
 
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
 
 func fetchAlarm() {
     let fetchAlarm = NSFetchRequest(entityName: "Alarms")
@@ -362,4 +386,11 @@ func fetchAlarm() {
         theAlarm = alarm[0]
          }
 }
+}
+
+
+extension QuestionViewController : UIBarPositioningDelegate {
+    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
+        return UIBarPosition.TopAttached
+    }
 }

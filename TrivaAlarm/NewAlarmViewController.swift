@@ -29,6 +29,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     @IBOutlet weak var cancel: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
+        datePicker.backgroundColor = UIColor(red: (49/255), green: (128/255), blue: (197/255), alpha: 1)
 
         // Do any additional setup after loading the view.
                subtractQuesitonButton.hidden = true
@@ -51,7 +52,10 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
     override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
+
+
         if numberOfQuestions == 1 {
+
             subtractQuesitonButton.hidden = true
         }else{
             subtractQuesitonButton.hidden = false
@@ -133,6 +137,10 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         } catch _ {
         }
 
+    }
+
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
 
     func createAlarm(alarmDate:NSDate) {
