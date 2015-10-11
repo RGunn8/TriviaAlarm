@@ -86,6 +86,8 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
         let components = calendar.components([.Year, .Day, .Hour, .Minute, .Month], fromDate: datePicker.date)
 
+         let nowComponents = calendar.components([.Year, .Day, .Hour, .Minute, .Month], fromDate: now)
+
         components.second = 0
         let zeroSecondDate:NSDate = calendar.dateFromComponents(components)!
         var alarmDate:NSDate
@@ -102,7 +104,30 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
             let nowString = formatter.stringFromDate(now)
             print("\(nowString)")
 
-        }else{
+        }else if components.hour > nowComponents.hour {
+
+                components.day = nowComponents.day
+
+              alarmDate = calendar.dateFromComponents(components)!
+
+            print("\(components.hour) and now \(nowComponents.hour)")
+
+            print("\(components)")
+
+        }else if components.hour == nowComponents.hour && components.minute > nowComponents.minute{
+
+
+
+                components.day = nowComponents.day
+                alarmDate = calendar.dateFromComponents(components)!
+
+                print("\(components.minute) and now \(nowComponents.minute)")
+
+                print("\(components)")
+                 alarmDate = calendar.dateFromComponents(components)!
+            
+        }
+        else{
             alarmDate = zeroSecondDate
         }
 
