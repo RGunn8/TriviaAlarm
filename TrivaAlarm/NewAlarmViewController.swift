@@ -30,7 +30,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         datePicker.backgroundColor = UIColor(red: (49/255), green: (128/255), blue: (197/255), alpha: 1)
-
+        datePicker.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
         // Do any additional setup after loading the view.
                subtractQuesitonButton.hidden = true
         self.navigationItem.leftBarButtonItem = cancel
@@ -95,44 +95,75 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         formatter.dateStyle = NSDateFormatterStyle.ShortStyle
         formatter.timeStyle = .MediumStyle
 
-        if datePicker.date.compare(now) == NSComparisonResult.OrderedAscending{
 
-            let dayComponent = NSDateComponents()
-            dayComponent.day = 1
-            alarmDate = calendar.dateByAddingComponents(dayComponent, toDate: zeroSecondDate, options: NSCalendarOptions(rawValue: 0))!
-//            let theNewDateString = formatter.stringFromDate(alarmDate)
-            let nowString = formatter.stringFromDate(now)
-            print("\(nowString)")
+            if calendar.isDate(zeroSecondDate, equalToDate: now, toUnitGranularity: .Hour) {
+                if components.minute <= nowComponents.minute{
 
-        }else if components.hour > nowComponents.hour {
+                    components.day = nowComponents.day + 1
+                    alarmDate = calendar.dateFromComponents(components)!
 
-                components.day = nowComponents.day
+                    print("\(components.hour) and now \(nowComponents.hour)")
 
-              alarmDate = calendar.dateFromComponents(components)!
-
-            print("\(components.hour) and now \(nowComponents.hour)")
-
-            print("\(components)")
-
-        }else if components.hour == nowComponents.hour && components.minute > nowComponents.minute{
+                    print("\(components)")
+                }else{
+                     alarmDate = calendar.dateFromComponents(components)!
+                }
 
 
-
-                components.day = nowComponents.day
+            }else if components.hour < nowComponents.hour{
+                components.day = nowComponents.day + 1
                 alarmDate = calendar.dateFromComponents(components)!
 
-                print("\(components.minute) and now \(nowComponents.minute)")
+                print("\(components.hour) and now \(nowComponents.hour)")
 
                 print("\(components)")
-                 alarmDate = calendar.dateFromComponents(components)!
-            
-        }
-        else{
-            alarmDate = zeroSecondDate
-        }
+            }else{
+                alarmDate = zeroSecondDate
+            }
+        
+
+
+
+//        if datePicker.date.compare(now) == NSComparisonResult.OrderedAscending{
+//
+//            components.day = nowComponents.day
+//
+//            alarmDate = calendar.dateFromComponents(components)!
+//
+//            print("\(components.hour) and now \(nowComponents.hour)")
+//
+//            print("\(components)")
+//
+//        }else if components.hour > nowComponents.hour {
+//
+//                components.day = nowComponents.day
+//
+//              alarmDate = calendar.dateFromComponents(components)!
+//
+//            print("\(components.hour) and now \(nowComponents.hour)")
+//
+//            print("\(components)")
+//
+//        }else if components.hour == nowComponents.hour && components.minute > nowComponents.minute{
+//
+//
+//
+//                components.day = nowComponents.day
+//                alarmDate = calendar.dateFromComponents(components)!
+//
+//                print("\(components.minute) and now \(nowComponents.minute)")
+//
+//                print("\(components)")
+//                 alarmDate = calendar.dateFromComponents(components)!
+//            
+//        }
+//        else{
+//            alarmDate = zeroSecondDate
+//        }
 
 //        let dateString = formatter.stringFromDate(datePicker.date)
 //        let newDateString = formatter.stringFromDate(zeroSecondDate)
+
 
         if segueAlarm != nil{
             editAlarm(alarmDate)

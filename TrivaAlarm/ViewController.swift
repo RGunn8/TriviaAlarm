@@ -247,58 +247,161 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         let indexPath = NSIndexPath(forRow: senderTag, inSection: 0)
        let alarmAtIndex:Alarms = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
         let now = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let nowComponents = calendar.components([.Year, .Day, .Hour, .Minute, .Month], fromDate: now)
+        let alarmComponents = calendar.components([.Year, .Day, .Hour, .Minute, .Month], fromDate: alarmAtIndex.time)
+
+
+        let formatter = NSDateFormatter()
+        formatter.dateStyle = NSDateFormatterStyle.ShortStyle
+        formatter.timeStyle = .MediumStyle
         if sender.on {
            alarmAtIndex.on = true
-            if alarmAtIndex.time.compare(now) == NSComparisonResult.OrderedAscending{
-                let calendar = NSCalendar.currentCalendar()
+            var alarmDate:NSDate
 
 
-//                let components = calendar.components([.Month, .Year, .Hour, .Minute, .Second, .Nanosecond], fromDate: now)
+            if calendar.isDate(alarmAtIndex.time, inSameDayAsDate: now){
+                if calendar.isDate(now, equalToDate: alarmAtIndex.time, toUnitGranularity: .Hour) {
 
-                let year = calendar.component(.Year, fromDate: now)
-                let month = calendar.component(.Month, fromDate: now)
-                var day = calendar.component(.Day, fromDate: now)
-                let hour = calendar.component(.Hour, fromDate: alarmAtIndex.time)
-                let mins = calendar.component(.Minute, fromDate: alarmAtIndex.time)
-                let nowHour = calendar.component(.Hour, fromDate: now)
-                let nowmin = calendar.component(.Minute, fromDate: now)
+                    if alarmComponents.minute <= nowComponents.minute{
 
-                if nowHour > hour {
-                    day++
+                        alarmComponents.day = nowComponents.day + 1
+                        alarmDate = calendar.dateFromComponents(alarmComponents)!
 
-                }else if nowHour == hour{
-                    if nowmin > mins{
-                        day++
+                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+
+                        print("\(alarmComponents)")
                     }
 
+                    else{
+                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+
+                        print("\(alarmComponents)")
+                    }
+                } else if alarmComponents.hour < nowComponents.hour{
+                    alarmComponents.day = nowComponents.day + 1
+                    alarmDate = calendar.dateFromComponents(alarmComponents)!
+
+                    print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+                    
+                    print("\(alarmComponents)")
+                }else{
+                    alarmDate = calendar.dateFromComponents(alarmComponents)!
+                    print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+
+                    print("\(alarmComponents)")
                 }
-//                let second = 0
-                let newAlarmDateComponents = NSDateComponents()
-                newAlarmDateComponents.year = year
-                newAlarmDateComponents.month = month
-                newAlarmDateComponents.day = day
-                newAlarmDateComponents.hour = hour
-                newAlarmDateComponents.minute = mins
-                newAlarmDateComponents.second = 0
-
-
-                let alarmDate:NSDate = calendar.dateFromComponents(newAlarmDateComponents)!
-
-
-                alarmAtIndex.time = alarmDate
-
-                let formatter = NSDateFormatter()
-                formatter.dateStyle = NSDateFormatterStyle.LongStyle
-                formatter.timeStyle = .MediumStyle
-               let alarmStirng = formatter.stringFromDate(alarmDate)
-//                let datestring = formatter.stringFromDate(alarmAtIndex.time)
-//                let nowstring = formatter.stringFromDate(now)
-//                let theAalrm = calendar.getTimeFromDate(alarmDate)
-                print("\(alarmStirng)");
-                save()
-                onAlarmsNotification()
-
             }
+            else{
+                    if alarmComponents.hour == nowComponents.hour{
+                        if alarmComponents.minute <= nowComponents.minute{
+                            alarmComponents.day = nowComponents.day + 1
+                            alarmDate = calendar.dateFromComponents(alarmComponents)!
+
+                            print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+
+                            print("\(alarmComponents)")
+                        }else{
+                            alarmComponents.day = nowComponents.day
+                            alarmDate = calendar.dateFromComponents(alarmComponents)!
+
+                            print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+
+                            print("\(alarmComponents)")
+                        }
+                    }else if alarmComponents.hour < nowComponents.hour{
+                        alarmComponents.day = nowComponents.day + 1
+                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+
+                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+
+                        print("\(alarmComponents)")
+                    }else{
+                        alarmComponents.day = nowComponents.day
+                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+
+                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+
+                        print("\(alarmComponents)")
+                }
+                    
+                }
+
+            alarmAtIndex.time = alarmDate
+            save()
+            onAlarmsNotification()
+
+//            }else{
+//                if alarmComponents.hour == nowComponents.hour{
+//                    if alarmComponents.minute <= nowComponents.minute{
+//                        alarmComponents.day = nowComponents.day + 1
+//                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+//                    }else{
+//                        alarmComponents.day = nowComponents.day
+//                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+//                    }
+//                }
+//
+//                else{
+//                    alarmComponents.day = nowComponents.day
+//                    alarmDate = calendar.dateFromComponents(alarmComponents)!
+//                }
+
+
+
+
+            
+
+//            if alarmAtIndex.time.compare(now) == NSComparisonResult.OrderedAscending{
+//                let calendar = NSCalendar.currentCalendar()
+//
+//
+////                let components = calendar.components([.Month, .Year, .Hour, .Minute, .Second, .Nanosecond], fromDate: now)
+//
+//                let year = calendar.component(.Year, fromDate: now)
+//                let month = calendar.component(.Month, fromDate: now)
+//                var day = calendar.component(.Day, fromDate: now)
+//                let hour = calendar.component(.Hour, fromDate: alarmAtIndex.time)
+//                let mins = calendar.component(.Minute, fromDate: alarmAtIndex.time)
+//                let nowHour = calendar.component(.Hour, fromDate: now)
+//                let nowmin = calendar.component(.Minute, fromDate: now)
+//
+//                if nowHour > hour {
+//                    day++
+//
+//                }else if nowHour == hour{
+//                    if nowmin > mins{
+//                        day++
+//                    }
+//
+//                }
+////                let second = 0
+//                let newAlarmDateComponents = NSDateComponents()
+//                newAlarmDateComponents.year = year
+//                newAlarmDateComponents.month = month
+//                newAlarmDateComponents.day = day
+//                newAlarmDateComponents.hour = hour
+//                newAlarmDateComponents.minute = mins
+//                newAlarmDateComponents.second = 0
+//
+//
+//                let alarmDate:NSDate = calendar.dateFromComponents(newAlarmDateComponents)!
+//
+//
+//                alarmAtIndex.time = alarmDate
+//
+//                let formatter = NSDateFormatter()
+//                formatter.dateStyle = NSDateFormatterStyle.LongStyle
+//                formatter.timeStyle = .MediumStyle
+//               let alarmStirng = formatter.stringFromDate(alarmDate)
+////                let datestring = formatter.stringFromDate(alarmAtIndex.time)
+////                let nowstring = formatter.stringFromDate(now)
+////                let theAalrm = calendar.getTimeFromDate(alarmDate)
+//                print("\(alarmStirng)");
+
+//
+//            }
 
 
 

@@ -24,11 +24,10 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
     var timer = NSTimer()
     var isZero = false
 
+    @IBOutlet var alarmNumberOfQuestionLeftView: UIView!
     
     @IBOutlet var answerLabel: UILabel!
     var theAlarm:Alarms?
-    @IBOutlet weak var wrongLabel: UILabel!
-    @IBOutlet weak var correctLabel: UILabel!
     @IBOutlet weak var optionAButton: UIButton!
     @IBOutlet weak var numOfQuestionLabel: UILabel!
 
@@ -40,8 +39,8 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "One"
-      
+
+      alarmNumberOfQuestionLeftView.layer.borderColor = UIColor(red: (49/255), green: (128/255), blue: (197/255), alpha: 1).CGColor
         self.navBar.delegate = self
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVC:", name: "localNotficaionUserInfo", object: nil)
         optionAButton.titleLabel?.numberOfLines = 0
