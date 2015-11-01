@@ -187,7 +187,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pL7-ri-Nmz">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mainBg" translatesAutoresizingMaskIntoConstraints="NO" id="pL7-ri-Nmz">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <animations/>
                             </imageView>
@@ -767,39 +767,39 @@
                                 <exclude reference="FeU-yW-0uB"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="5R3-cZ-P2J"/>
-                                <exclude reference="pbW-gk-ExM"/>
-                                <exclude reference="y3I-nR-Xmn"/>
+                                <exclude reference="GIj-fj-ojo"/>
+                                <exclude reference="Zst-r0-TNM"/>
+                                <exclude reference="P6Y-LY-eHf"/>
+                                <exclude reference="gJL-68-beG"/>
+                                <exclude reference="q5B-Eu-vHp"/>
                                 <exclude reference="VcC-hd-yvM"/>
                                 <exclude reference="ZdP-sf-oiH"/>
                                 <exclude reference="vGL-Jg-L43"/>
-                                <exclude reference="4wr-pu-ph9"/>
-                                <exclude reference="8ja-Ek-D7h"/>
-                                <exclude reference="YDE-z4-7He"/>
+                                <exclude reference="4VI-YG-VsB"/>
+                                <exclude reference="ivx-Tz-kmw"/>
                                 <exclude reference="Tcz-Vn-Dqh"/>
                                 <exclude reference="fHT-7h-fjp"/>
                                 <exclude reference="yyc-Qw-9jQ"/>
-                                <exclude reference="4VI-YG-VsB"/>
-                                <exclude reference="ivx-Tz-kmw"/>
                                 <exclude reference="CMo-aQ-KEC"/>
                                 <exclude reference="New-Ra-jWe"/>
                                 <exclude reference="gj6-Al-14v"/>
                                 <exclude reference="koE-5e-jFQ"/>
                                 <exclude reference="v0F-2Y-o5K"/>
-                                <exclude reference="cOM-KK-Gfk"/>
-                                <exclude reference="hXR-CQ-uVs"/>
-                                <exclude reference="tWK-ea-7Ty"/>
                                 <exclude reference="Qrx-t4-ljJ"/>
                                 <exclude reference="hkc-cI-wrd"/>
                                 <exclude reference="rhp-MN-Zzo"/>
+                                <exclude reference="4wr-pu-ph9"/>
+                                <exclude reference="8ja-Ek-D7h"/>
+                                <exclude reference="YDE-z4-7He"/>
+                                <exclude reference="cOM-KK-Gfk"/>
+                                <exclude reference="hXR-CQ-uVs"/>
+                                <exclude reference="tWK-ea-7Ty"/>
+                                <exclude reference="5R3-cZ-P2J"/>
+                                <exclude reference="pbW-gk-ExM"/>
+                                <exclude reference="y3I-nR-Xmn"/>
                                 <exclude reference="SM6-uq-Ado"/>
                                 <exclude reference="g6D-ib-cra"/>
                                 <exclude reference="iRD-tH-Bp7"/>
-                                <exclude reference="P6Y-LY-eHf"/>
-                                <exclude reference="gJL-68-beG"/>
-                                <exclude reference="q5B-Eu-vHp"/>
-                                <exclude reference="GIj-fj-ojo"/>
-                                <exclude reference="Zst-r0-TNM"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -816,39 +816,39 @@
                                 <include reference="FeU-yW-0uB"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="5R3-cZ-P2J"/>
-                                <include reference="pbW-gk-ExM"/>
-                                <include reference="y3I-nR-Xmn"/>
+                                <include reference="GIj-fj-ojo"/>
+                                <include reference="Zst-r0-TNM"/>
+                                <include reference="P6Y-LY-eHf"/>
+                                <include reference="gJL-68-beG"/>
+                                <include reference="q5B-Eu-vHp"/>
                                 <include reference="VcC-hd-yvM"/>
                                 <include reference="ZdP-sf-oiH"/>
                                 <include reference="vGL-Jg-L43"/>
-                                <include reference="4wr-pu-ph9"/>
-                                <include reference="8ja-Ek-D7h"/>
-                                <include reference="YDE-z4-7He"/>
+                                <include reference="4VI-YG-VsB"/>
+                                <include reference="ivx-Tz-kmw"/>
                                 <include reference="Tcz-Vn-Dqh"/>
                                 <include reference="fHT-7h-fjp"/>
                                 <include reference="yyc-Qw-9jQ"/>
-                                <include reference="4VI-YG-VsB"/>
-                                <include reference="ivx-Tz-kmw"/>
                                 <include reference="CMo-aQ-KEC"/>
                                 <include reference="New-Ra-jWe"/>
                                 <include reference="gj6-Al-14v"/>
                                 <include reference="koE-5e-jFQ"/>
                                 <include reference="v0F-2Y-o5K"/>
-                                <include reference="cOM-KK-Gfk"/>
-                                <include reference="hXR-CQ-uVs"/>
-                                <include reference="tWK-ea-7Ty"/>
                                 <include reference="Qrx-t4-ljJ"/>
                                 <include reference="hkc-cI-wrd"/>
                                 <include reference="rhp-MN-Zzo"/>
+                                <include reference="4wr-pu-ph9"/>
+                                <include reference="8ja-Ek-D7h"/>
+                                <include reference="YDE-z4-7He"/>
+                                <include reference="cOM-KK-Gfk"/>
+                                <include reference="hXR-CQ-uVs"/>
+                                <include reference="tWK-ea-7Ty"/>
+                                <include reference="5R3-cZ-P2J"/>
+                                <include reference="pbW-gk-ExM"/>
+                                <include reference="y3I-nR-Xmn"/>
                                 <include reference="SM6-uq-Ado"/>
                                 <include reference="g6D-ib-cra"/>
                                 <include reference="iRD-tH-Bp7"/>
-                                <include reference="P6Y-LY-eHf"/>
-                                <include reference="gJL-68-beG"/>
-                                <include reference="q5B-Eu-vHp"/>
-                                <include reference="GIj-fj-ojo"/>
-                                <include reference="Zst-r0-TNM"/>
                             </mask>
                         </variation>
                     </view>
@@ -914,7 +914,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="748" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wXC-8b-PwP">
                                                 <rect key="frame" x="131" y="0.0" width="798" height="216"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" ambiguous="YES" text="Number of Questioins to disable the alarm" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-dS-4xu">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" ambiguous="YES" misplaced="YES" text="Number of Questioins to disable the alarm" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-dS-4xu">
                                                         <rect key="frame" x="0.0" y="0.0" width="399" height="216"/>
                                                         <animations/>
                                                         <color key="backgroundColor" red="0.59999999999999998" green="0.80000000000000004" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -1155,6 +1155,7 @@
     <resources>
         <image name="btmLeft" width="350" height="200"/>
         <image name="btmRight" width="351" height="200"/>
+        <image name="mainBg" width="753" height="1335"/>
         <image name="tpLeft" width="350" height="200"/>
         <image name="tpRight" width="351" height="200"/>
     </resources>

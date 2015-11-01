@@ -22,14 +22,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = UIColor(red: 49, green: 128, blue: 197, alpha: 1)
-        //let swift color =
 
-//        tableView.backgroundView?.backgroundColor = UIColor(red: 0, green: (128/255), blue: (255/255), alpha: 1)
-//        tableView.backgroundColor =  UIColor(red: 0, green: (128/255), blue: (255/255), alpha: 1)
-
-
-//        self.nav.barStyle = UIBarStyle.Black
-//        self.navigationBar.tintColor = UIColor.whiteColor()
               fetchedResultController = getFetchedResultController()
         fetchedResultController.delegate = self
         do {
@@ -44,6 +37,12 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             tableview.allowsSelectionDuringEditing = true
             tableview.allowsSelection = false
         }
+
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "questionSegue",
+            name: "questionSegue",
+            object: nil)
 
     }
 
@@ -73,6 +72,8 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             tableView.reloadData()
 
         }
+
+
 
 
     }
@@ -265,12 +266,16 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
                     if alarmComponents.minute <= nowComponents.minute{
 
-                        alarmComponents.day = nowComponents.day + 1
-                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+                       alarmDate = calendar.nextDateAfterDate(now, matchingHour: alarmComponents.hour, minute: alarmComponents.minute, second: 0, options: .MatchNextTime)!
 
-                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+                        print(formatter.stringFromDate(alarmDate))
 
-                        print("\(alarmComponents)")
+//                        alarmComponents.day = nowComponents.day + 1
+//                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+//
+//                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+//
+//                        print("\(alarmComponents)")
                     }
 
                     else{
@@ -280,12 +285,16 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
                         print("\(alarmComponents)")
                     }
                 } else if alarmComponents.hour < nowComponents.hour{
-                    alarmComponents.day = nowComponents.day + 1
-                    alarmDate = calendar.dateFromComponents(alarmComponents)!
+//                    alarmComponents.day = nowComponents.day + 1
+//                    alarmDate = calendar.dateFromComponents(alarmComponents)!
+//
+//                    print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+//                    
+//                    print("\(alarmComponents)")
 
-                    print("\(alarmComponents.hour) and now \(nowComponents.hour)")
-                    
-                    print("\(alarmComponents)")
+                    alarmDate = calendar.nextDateAfterDate(now, matchingHour: alarmComponents.hour, minute: alarmComponents.minute, second: 0, options: .MatchNextTime)!
+
+                    print(formatter.stringFromDate(alarmDate))
                 }else{
                     alarmDate = calendar.dateFromComponents(alarmComponents)!
                     print("\(alarmComponents.hour) and now \(nowComponents.hour)")
@@ -296,12 +305,16 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             else{
                     if alarmComponents.hour == nowComponents.hour{
                         if alarmComponents.minute <= nowComponents.minute{
-                            alarmComponents.day = nowComponents.day + 1
-                            alarmDate = calendar.dateFromComponents(alarmComponents)!
+//                            alarmComponents.day = nowComponents.day + 1
+//                            alarmDate = calendar.dateFromComponents(alarmComponents)!
+//
+//                            print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+//
+//                            print("\(alarmComponents)")
 
-                            print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+                            alarmDate = calendar.nextDateAfterDate(now, matchingHour: alarmComponents.hour, minute: alarmComponents.minute, second: 0, options: .MatchNextTime)!
 
-                            print("\(alarmComponents)")
+                            print(formatter.stringFromDate(alarmDate))
                         }else{
                             alarmComponents.day = nowComponents.day
                             alarmDate = calendar.dateFromComponents(alarmComponents)!
@@ -311,12 +324,15 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
                             print("\(alarmComponents)")
                         }
                     }else if alarmComponents.hour < nowComponents.hour{
-                        alarmComponents.day = nowComponents.day + 1
-                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+//                        alarmComponents.day = nowComponents.day + 1
+//                        alarmDate = calendar.dateFromComponents(alarmComponents)!
+//
+//                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
+//
+//                        print("\(alarmComponents)")
+                        alarmDate = calendar.nextDateAfterDate(now, matchingHour: alarmComponents.hour, minute: alarmComponents.minute, second: 0, options: .MatchNextTime)!
 
-                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
-
-                        print("\(alarmComponents)")
+                        print(formatter.stringFromDate(alarmDate))
                     }else{
                         alarmComponents.day = nowComponents.day
                         alarmDate = calendar.dateFromComponents(alarmComponents)!
@@ -332,76 +348,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             save()
             onAlarmsNotification()
 
-//            }else{
-//                if alarmComponents.hour == nowComponents.hour{
-//                    if alarmComponents.minute <= nowComponents.minute{
-//                        alarmComponents.day = nowComponents.day + 1
-//                        alarmDate = calendar.dateFromComponents(alarmComponents)!
-//                    }else{
-//                        alarmComponents.day = nowComponents.day
-//                        alarmDate = calendar.dateFromComponents(alarmComponents)!
-//                    }
-//                }
-//
-//                else{
-//                    alarmComponents.day = nowComponents.day
-//                    alarmDate = calendar.dateFromComponents(alarmComponents)!
-//                }
 
-
-
-
-            
-
-//            if alarmAtIndex.time.compare(now) == NSComparisonResult.OrderedAscending{
-//                let calendar = NSCalendar.currentCalendar()
-//
-//
-////                let components = calendar.components([.Month, .Year, .Hour, .Minute, .Second, .Nanosecond], fromDate: now)
-//
-//                let year = calendar.component(.Year, fromDate: now)
-//                let month = calendar.component(.Month, fromDate: now)
-//                var day = calendar.component(.Day, fromDate: now)
-//                let hour = calendar.component(.Hour, fromDate: alarmAtIndex.time)
-//                let mins = calendar.component(.Minute, fromDate: alarmAtIndex.time)
-//                let nowHour = calendar.component(.Hour, fromDate: now)
-//                let nowmin = calendar.component(.Minute, fromDate: now)
-//
-//                if nowHour > hour {
-//                    day++
-//
-//                }else if nowHour == hour{
-//                    if nowmin > mins{
-//                        day++
-//                    }
-//
-//                }
-////                let second = 0
-//                let newAlarmDateComponents = NSDateComponents()
-//                newAlarmDateComponents.year = year
-//                newAlarmDateComponents.month = month
-//                newAlarmDateComponents.day = day
-//                newAlarmDateComponents.hour = hour
-//                newAlarmDateComponents.minute = mins
-//                newAlarmDateComponents.second = 0
-//
-//
-//                let alarmDate:NSDate = calendar.dateFromComponents(newAlarmDateComponents)!
-//
-//
-//                alarmAtIndex.time = alarmDate
-//
-//                let formatter = NSDateFormatter()
-//                formatter.dateStyle = NSDateFormatterStyle.LongStyle
-//                formatter.timeStyle = .MediumStyle
-//               let alarmStirng = formatter.stringFromDate(alarmDate)
-////                let datestring = formatter.stringFromDate(alarmAtIndex.time)
-////                let nowstring = formatter.stringFromDate(now)
-////                let theAalrm = calendar.getTimeFromDate(alarmDate)
-//                print("\(alarmStirng)");
-
-//
-//            }
 
 
 

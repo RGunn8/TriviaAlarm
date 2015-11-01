@@ -77,6 +77,13 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
     }
 
+    func setRootController(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! ViewController
+        let frame = UIScreen.mainScreen().bounds
+       let appDelegate = UIApplication.sharedApplication().delegate
+    }
+
     func save() {
         var error:NSError?
         do {
