@@ -33,7 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         UINavigationBar.appearance().barStyle = .Black
-      
+
+
        
 //        let nc = NSNotificationCenter.defaultCenter()
         application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge], categories: nil))
@@ -42,14 +43,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             if let notification = options[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
 
-                            NSNotificationCenter.defaultCenter().postNotificationName("questionSegue", object: nil)
-                let numbOfQuestion:AnyObject = notification.userInfo!["NumberOfQuestion"]!
-                let typeOfQuestion:AnyObject = notification.userInfo!["TypeOfQuestion"]!
-                let alarmDate:AnyObject = notification.userInfo!["AlarmDate"]!
-                let alarmSound:AnyObject = notification.userInfo!["AlarmSound"]!
-                let nc = NSNotificationCenter.defaultCenter()
-                nc.postNotificationName("localNotficaionUserInfo", object: nil, userInfo: ["NumberOfQuestion":numbOfQuestion , "TypeOfQuestion": typeOfQuestion, "AlarmDate": alarmDate, "AlarmSound":alarmSound])
-                application.cancelLocalNotification(notification)
+
+                      dispatch_async(dispatch_get_main_queue(), {
+
+
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
+                        self.window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
+                        // NSNotificationCenter.defaultCenter().postNotificationName("questionSegue", object: nil)
+                        let numbOfQuestion:AnyObject = notification.userInfo!["NumberOfQuestion"]!
+                        let typeOfQuestion:AnyObject = notification.userInfo!["TypeOfQuestion"]!
+                        let alarmDate:AnyObject = notification.userInfo!["AlarmDate"]!
+                        let alarmSound:AnyObject = notification.userInfo!["AlarmSound"]!
+                        let nc = NSNotificationCenter.defaultCenter()
+                        nc.postNotificationName("localNotficaionUserInfo", object: nil, userInfo: ["NumberOfQuestion":numbOfQuestion , "TypeOfQuestion": typeOfQuestion, "AlarmDate": alarmDate, "AlarmSound":alarmSound])
+                        application.cancelLocalNotification(notification)
+
+                })
+
+                 application.cancelLocalNotification(notification)
 
 
 
@@ -62,10 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
         func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
             application.cancelAllLocalNotifications()
-
-
-
-
 
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController

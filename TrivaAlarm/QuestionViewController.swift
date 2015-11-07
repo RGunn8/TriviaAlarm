@@ -24,6 +24,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
     var timer = NSTimer()
     var isZero = false
 
+
     @IBOutlet var alarmNumberOfQuestionLeftView: UIView!
     
     @IBOutlet var answerLabel: UILabel!
@@ -42,14 +43,15 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
       alarmNumberOfQuestionLeftView.layer.borderColor = UIColor(red: (49/255), green: (128/255), blue: (197/255), alpha: 1).CGColor
         self.navBar.delegate = self
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVC:", name: "localNotficaionUserInfo", object: nil)
+
         optionAButton.titleLabel?.numberOfLines = 0
         optionBButton.titleLabel?.numberOfLines = 0
         optionCButton.titleLabel?.numberOfLines = 0
         optionDButton.titleLabel?.numberOfLines = 0
-      
-//        wrongLabel.hidden = true
-//        correctLabel.hidden = true
+
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVC:", name: "localNotficaionUserInfo", object: nil)
+
+ 
         answerLabel.hidden = true
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
@@ -65,6 +67,11 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+    }
+
         @IBAction func backButtonPressed(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: {});
         //self.performSegueWithIdentifier("finishAlarm", sender: self)
@@ -77,12 +84,6 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
     }
 
-    func setRootController(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! ViewController
-        let frame = UIScreen.mainScreen().bounds
-       let appDelegate = UIApplication.sharedApplication().delegate
-    }
 
     func save() {
         var error:NSError?

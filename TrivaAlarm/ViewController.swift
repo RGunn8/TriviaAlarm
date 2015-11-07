@@ -38,11 +38,11 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             tableview.allowsSelection = false
         }
 
-        NSNotificationCenter.defaultCenter().addObserver(
-            self,
-            selector: "questionSegue",
-            name: "questionSegue",
-            object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self,
+//            selector: "questionSegue",
+//            name: "questionSegue",
+//            object: nil)
 
     }
 
@@ -53,16 +53,10 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
      override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-       
-         //if let moc = self.managedObjectContext {
-       //let appDelegate =
+
         UIApplication.sharedApplication().delegate as! AppDelegate
             onAlarmsNotification()
 
-        //3
-        //var error: NSError?
-
-        //}
 
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle
@@ -73,10 +67,9 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
         }
 
-
-
-
     }
+
+
 
     func save() {
         var error:NSError?
@@ -90,7 +83,6 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         }
 
     }
-    //NSFetchController Methods
 
     func getFetchedResultController() -> NSFetchedResultsController {
         fetchedResultController = NSFetchedResultsController(fetchRequest: fetchAlarms(), managedObjectContext: managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
@@ -112,17 +104,6 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         }
     }
 
-    func questionSegue(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
-       self.presentViewController(vc, animated: true, completion: nil)
-
-    }
-
-
-
-
-    //Editing TableView Methods
 
     override func  setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
@@ -148,7 +129,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
                 try managedObjectContext?.save()
             } catch _ {
             }
-            //println("\(deleteAlarms.on)")
+         
             save()
         }
     }
@@ -415,7 +396,6 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             let theAlarm:Alarms = self.fetchedResultController.objectAtIndexPath(indexPath!) as! Alarms
              viewController.segueAlarm = theAlarm
          
-           
         }
     }
 
