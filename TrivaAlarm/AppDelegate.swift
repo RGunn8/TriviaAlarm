@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.setBool(true, forKey: "isPreloaded")
         }
 
+        
         UINavigationBar.appearance().barStyle = .Black
 
 

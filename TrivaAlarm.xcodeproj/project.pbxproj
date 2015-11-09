@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		F703FE981B66F9C5002308C4 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F703FE971B66F9C5002308C4 /* QuestionViewController.swift */; };
-		F705C1431BC21D0C00C5A813 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F705C1421BC21D0C00C5A813 /* Image.xcassets */; settings = {ASSET_TAGS = (); }; };
+		F705C1431BC21D0C00C5A813 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F705C1421BC21D0C00C5A813 /* Image.xcassets */; };
 		F71992871B76992500E91FDE /* railRoadSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992841B76992500E91FDE /* railRoadSound.wav */; };
 		F71992881B76992500E91FDE /* LoudAlarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992851B76992500E91FDE /* LoudAlarm.wav */; };
 		F71992891B76992500E91FDE /* BombSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992861B76992500E91FDE /* BombSound.wav */; };
-		F73703931B77FAB600FEE940 /* questionCSV.csv in Resources */ = {isa = PBXBuildFile; fileRef = F73703921B77FAB600FEE940 /* questionCSV.csv */; };
+		F744CA3F1BF05BD200629977 /* questionCSV.csv in Resources */ = {isa = PBXBuildFile; fileRef = F744CA3E1BF05BD200629977 /* questionCSV.csv */; };
 		F77470731B6366E500D289F1 /* Alarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77470721B6366E500D289F1 /* Alarms.swift */; };
 		F7D27EDE1B5F700300EEF085 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */; };
 		F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */; };
@@ -41,7 +41,7 @@
 		F71992841B76992500E91FDE /* railRoadSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = railRoadSound.wav; sourceTree = "<group>"; };
 		F71992851B76992500E91FDE /* LoudAlarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = LoudAlarm.wav; sourceTree = "<group>"; };
 		F71992861B76992500E91FDE /* BombSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BombSound.wav; sourceTree = "<group>"; };
-		F73703921B77FAB600FEE940 /* questionCSV.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = questionCSV.csv; sourceTree = "<group>"; };
+		F744CA3E1BF05BD200629977 /* questionCSV.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = questionCSV.csv; sourceTree = "<group>"; };
 		F77470721B6366E500D289F1 /* Alarms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alarms.swift; path = ../Alarms.swift; sourceTree = "<group>"; };
 		F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrivaAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7D27EDC1B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 				F7D27EE41B5F700300EEF085 /* Main.storyboard */,
 				F7D27EE91B5F700300EEF085 /* LaunchScreen.xib */,
 				F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */,
-				F73703921B77FAB600FEE940 /* questionCSV.csv */,
+				F744CA3E1BF05BD200629977 /* questionCSV.csv */,
 				F71992841B76992500E91FDE /* railRoadSound.wav */,
 				F71992851B76992500E91FDE /* LoudAlarm.wav */,
 				F71992861B76992500E91FDE /* BombSound.wav */,
@@ -230,7 +230,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F73703931B77FAB600FEE940 /* questionCSV.csv in Resources */,
+				F744CA3F1BF05BD200629977 /* questionCSV.csv in Resources */,
 				F71992881B76992500E91FDE /* LoudAlarm.wav in Resources */,
 				F7D27EE61B5F700300EEF085 /* Main.storyboard in Resources */,
 				F71992871B76992500E91FDE /* railRoadSound.wav in Resources */,
