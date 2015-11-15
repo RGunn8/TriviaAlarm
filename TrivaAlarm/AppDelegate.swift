@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.setBool(true, forKey: "isPreloaded")
         }
 
-        
+
         UINavigationBar.appearance().barStyle = .Black
 
 
@@ -87,12 +87,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let nc = NSNotificationCenter.defaultCenter()
                 nc.postNotificationName("localNotficaionUserInfo", object: nil, userInfo: ["NumberOfQuestion":numbOfQuestion , "TypeOfQuestion": typeOfQuestion, "AlarmDate": alarmDate, "AlarmSound":alarmSound])
                 application.cancelLocalNotification(notification)
-
-
-
-
-
-
 
 
     }
@@ -190,7 +184,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 }
             } catch let error1 as NSError {
-               print("\(error1)")
+                let alertController = UIAlertController(title: "Default Style", message: "Error has Occur. \(error1)", preferredStyle: .Alert)
+
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                    // ...
+                }
+                alertController.addAction(cancelAction)
+
+                let OKAction = UIAlertAction(title: "Ok", style: .Default) { (action) in
+                    // ...
+                }
+                alertController.addAction(OKAction)                                //Present the AlertController
+               UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }
@@ -211,7 +216,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             }
             catch{
-                print(error)
+                let alertController = UIAlertController(title: "Default Style", message: "Error has Occur.", preferredStyle: .Alert)
+
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                    // ...
+                }
+                alertController.addAction(cancelAction)
+
+                let OKAction = UIAlertAction(title: "Ok", style: .Default) { (action) in
+                    // ...
+                }
+                alertController.addAction(OKAction)                                //Present the AlertController
+                UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+
             }
 
 
@@ -221,11 +238,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+        NSNotificationCenter.defaultCenter().postNotificationName("alarmGoesToBackground", object: nil)
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

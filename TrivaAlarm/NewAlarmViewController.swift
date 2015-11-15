@@ -102,9 +102,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
                     components.day = nowComponents.day + 1
                     alarmDate = calendar.dateFromComponents(components)!
 
-                    print("\(components.hour) and now \(nowComponents.hour)")
 
-                    print("\(components)")
                 }else{
                      alarmDate = calendar.dateFromComponents(components)!
                 }
@@ -114,57 +112,11 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
                 components.day = nowComponents.day + 1
                 alarmDate = calendar.dateFromComponents(components)!
 
-                print("\(components.hour) and now \(nowComponents.hour)")
 
-                print("\(components)")
             }else{
                 alarmDate = zeroSecondDate
             }
         
-
-
-
-//        if datePicker.date.compare(now) == NSComparisonResult.OrderedAscending{
-//
-//            components.day = nowComponents.day
-//
-//            alarmDate = calendar.dateFromComponents(components)!
-//
-//            print("\(components.hour) and now \(nowComponents.hour)")
-//
-//            print("\(components)")
-//
-//        }else if components.hour > nowComponents.hour {
-//
-//                components.day = nowComponents.day
-//
-//              alarmDate = calendar.dateFromComponents(components)!
-//
-//            print("\(components.hour) and now \(nowComponents.hour)")
-//
-//            print("\(components)")
-//
-//        }else if components.hour == nowComponents.hour && components.minute > nowComponents.minute{
-//
-//
-//
-//                components.day = nowComponents.day
-//                alarmDate = calendar.dateFromComponents(components)!
-//
-//                print("\(components.minute) and now \(nowComponents.minute)")
-//
-//                print("\(components)")
-//                 alarmDate = calendar.dateFromComponents(components)!
-//            
-//        }
-//        else{
-//            alarmDate = zeroSecondDate
-//        }
-
-//        let dateString = formatter.stringFromDate(datePicker.date)
-//        let newDateString = formatter.stringFromDate(zeroSecondDate)
-
-
         if segueAlarm != nil{
             editAlarm(alarmDate)
         }else{
@@ -201,7 +153,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
 
     func createAlarm(alarmDate:NSDate) {
 
-//        let alarmName = alarmNameTextField.text as String!
+
         let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext:managedObjectContext!)
         let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
         if alarmNameTextField.text == ""{

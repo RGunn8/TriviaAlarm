@@ -38,11 +38,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             tableview.allowsSelection = false
         }
 
-//        NSNotificationCenter.defaultCenter().addObserver(
-//            self,
-//            selector: "questionSegue",
-//            name: "questionSegue",
-//            object: nil)
+    
 
     }
 
@@ -69,17 +65,27 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
     }
 
-
+  
 
     func save() {
-        var error:NSError?
+
         do {
             try managedObjectContext!.save()
-            if error != nil{
-                print("\(error)")
-            }
+
         } catch let error1 as NSError {
-            error = error1
+            let alertController = UIAlertController(title: "Default Style", message: "Error has Occur. \(error1)", preferredStyle: .Alert)
+
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                // ...
+            }
+            alertController.addAction(cancelAction)
+
+            let OKAction = UIAlertAction(title: "Ok", style: .Default) { (action) in
+                // ...
+            }
+            alertController.addAction(OKAction)                                //Present the AlertController
+            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+
         }
 
     }
@@ -153,7 +159,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
                 if let notifDate = notificaion.userInfo?["AlarmDate"] as? String{
                     if alarmDate == notifDate{
                          UIApplication.sharedApplication().cancelLocalNotification(notificaion)
-                        print("\(notificaion)")
+
                     }
                 }
             }
@@ -221,10 +227,6 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
     @IBAction func onAlarmClockSwitch(sender: UISwitch) {
 
-
-//         var notifications = UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]!
-
-        //println("\(notifications)")
         let senderTag = sender.tag as Int
         let indexPath = NSIndexPath(forRow: senderTag, inSection: 0)
        let alarmAtIndex:Alarms = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
@@ -249,78 +251,47 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
                        alarmDate = calendar.nextDateAfterDate(now, matchingHour: alarmComponents.hour, minute: alarmComponents.minute, second: 0, options: .MatchNextTime)!
 
-                        print(formatter.stringFromDate(alarmDate))
 
-//                        alarmComponents.day = nowComponents.day + 1
-//                        alarmDate = calendar.dateFromComponents(alarmComponents)!
-//
-//                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
-//
-//                        print("\(alarmComponents)")
                     }
 
                     else{
                         alarmDate = calendar.dateFromComponents(alarmComponents)!
-                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
 
-                        print("\(alarmComponents)")
                     }
                 } else if alarmComponents.hour < nowComponents.hour{
-//                    alarmComponents.day = nowComponents.day + 1
-//                    alarmDate = calendar.dateFromComponents(alarmComponents)!
-//
-//                    print("\(alarmComponents.hour) and now \(nowComponents.hour)")
-//                    
-//                    print("\(alarmComponents)")
+
 
                     alarmDate = calendar.nextDateAfterDate(now, matchingHour: alarmComponents.hour, minute: alarmComponents.minute, second: 0, options: .MatchNextTime)!
 
-                    print(formatter.stringFromDate(alarmDate))
                 }else{
                     alarmDate = calendar.dateFromComponents(alarmComponents)!
-                    print("\(alarmComponents.hour) and now \(nowComponents.hour)")
 
-                    print("\(alarmComponents)")
                 }
             }
             else{
                     if alarmComponents.hour == nowComponents.hour{
                         if alarmComponents.minute <= nowComponents.minute{
-//                            alarmComponents.day = nowComponents.day + 1
-//                            alarmDate = calendar.dateFromComponents(alarmComponents)!
-//
-//                            print("\(alarmComponents.hour) and now \(nowComponents.hour)")
-//
-//                            print("\(alarmComponents)")
+
 
                             alarmDate = calendar.nextDateAfterDate(now, matchingHour: alarmComponents.hour, minute: alarmComponents.minute, second: 0, options: .MatchNextTime)!
 
-                            print(formatter.stringFromDate(alarmDate))
+
                         }else{
                             alarmComponents.day = nowComponents.day
                             alarmDate = calendar.dateFromComponents(alarmComponents)!
 
-                            print("\(alarmComponents.hour) and now \(nowComponents.hour)")
 
-                            print("\(alarmComponents)")
                         }
                     }else if alarmComponents.hour < nowComponents.hour{
-//                        alarmComponents.day = nowComponents.day + 1
-//                        alarmDate = calendar.dateFromComponents(alarmComponents)!
-//
-//                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
-//
-//                        print("\(alarmComponents)")
+
                         alarmDate = calendar.nextDateAfterDate(now, matchingHour: alarmComponents.hour, minute: alarmComponents.minute, second: 0, options: .MatchNextTime)!
 
-                        print(formatter.stringFromDate(alarmDate))
+
                     }else{
                         alarmComponents.day = nowComponents.day
                         alarmDate = calendar.dateFromComponents(alarmComponents)!
 
-                        print("\(alarmComponents.hour) and now \(nowComponents.hour)")
 
-                        print("\(alarmComponents)")
                 }
                     
                 }
@@ -335,11 +306,9 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
         }else{
             alarmAtIndex.on = false
-//            var error:NSError?
-           save()
-           //onAlarmsNotification()
-            offAlarmsNotificaion()
 
+           save()
+            offAlarmsNotificaion()
         }
 
     }
@@ -356,10 +325,10 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:AlarmTableViewCell = tableView.dequeueReusableCellWithIdentifier("MyCellID") as! AlarmTableViewCell
         let theAlarm = fetchedResultController.objectAtIndexPath(indexPath) as! Alarms
-//        cell.backgroundColor = UIColor.redColor()
+
         cell.alarmNameLabel.text = theAlarm.name
         let alarmDate = theAlarm.valueForKey("time") as! NSDate
-        //let alarmIsOn = alarm.valueForKey("on") as! Bool
+
 
         cell.loadItem(alarmDate, isOn:theAlarm.on);
         cell.alarmSwitch.tag = indexPath.row
@@ -367,16 +336,15 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
 
         if theAlarm.on{
-           //cell.backgroundColor = UIColor.redColor()
+
 
          let imageView = UIImageView(image: UIImage(named: "enabledAlarm_Bg"))
             cell.backgroundView = imageView
 
         }else{
-             //cell.backgroundColor = UIColor(red: 49, green: 128, blue: 197, alpha: 1)
+
             let imageView = UIImageView(image: UIImage(named: "disabledAlarm_Bg"))
-            //cell.backgroundView = UIView()
-            //cell.backgroundView = imageView
+
 
             cell.backgroundView = imageView
 
@@ -384,7 +352,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
         return cell
     }
-    //Segue to NewAlarmVC
+
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "oldAlarm") {

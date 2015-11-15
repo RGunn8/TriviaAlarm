@@ -43,6 +43,7 @@
 		F71992861B76992500E91FDE /* BombSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BombSound.wav; sourceTree = "<group>"; };
 		F744CA3E1BF05BD200629977 /* questionCSV.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = questionCSV.csv; sourceTree = "<group>"; };
 		F77470721B6366E500D289F1 /* Alarms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alarms.swift; path = ../Alarms.swift; sourceTree = "<group>"; };
+		F778DB331BF866A500DEE848 /* TrivaAlarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TrivaAlarm.entitlements; sourceTree = "<group>"; };
 		F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrivaAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7D27EDC1B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +98,7 @@
 		F7D27EDA1B5F700300EEF085 /* TrivaAlarm */ = {
 			isa = PBXGroup;
 			children = (
+				F778DB331BF866A500DEE848 /* TrivaAlarm.entitlements */,
 				F705C1421BC21D0C00C5A813 /* Image.xcassets */,
 				F77470721B6366E500D289F1 /* Alarms.swift */,
 				F7F88BB71B6BD0B600EA36E8 /* Questions.swift */,
@@ -195,8 +197,11 @@
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = Z45ZUG2EW7;
 						SystemCapabilities = {
-							com.apple.BackgroundModes = {
+							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
+							};
+							com.apple.BackgroundModes = {
+								enabled = 0;
 							};
 						};
 					};
@@ -389,11 +394,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TrivaAlarm/TrivaAlarm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TrivaAlarm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.RyanGunn.TriviaAlarm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -401,11 +409,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TrivaAlarm/TrivaAlarm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TrivaAlarm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.RyanGunn.TriviaAlarm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

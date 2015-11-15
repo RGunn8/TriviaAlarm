@@ -17,6 +17,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
      var managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     var questions = [Questions]()
     var alarmSound = String()
+    var notficationSound = String()
     var correctAnswer = String()
     var theQuestion:Questions?
     var alarm = [Alarms]()
@@ -51,6 +52,14 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
          NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVC:", name: "localNotficaionUserInfo", object: nil)
 
+
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "alarmToBack",
+            name: "alarmGoesToBackground",
+            object: nil)
+
+
  
         answerLabel.hidden = true
         do {
@@ -83,17 +92,78 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         save()
 
     }
+    
+    func alarmToBack() {
+        let notification = UILocalNotification()
+
+        notification.alertBody = "You Still have Questions Left" // text that will be displayed in the notification
+        notification.fireDate =  NSDate() // todo item due date (when notification will be fired)
+        notification.soundName = notficationSound
+        notification.timeZone = NSCalendar.currentCalendar().timeZone
+        notification.repeatInterval = NSCalendarUnit.Minute
+        var userInfo:[String:String] = [String:String]()
+
+        let numOfQuestion = "\(numberOfQuestion)" as String
+        let formatter = NSDateFormatter()
+        formatter.dateStyle = NSDateFormatterStyle.LongStyle
+        formatter.timeStyle = NSDateFormatterStyle.LongStyle
+        let alarmDate = formatter.stringFromDate(theAlarmDate)
+
+        userInfo["NumberOfQuestion"] = numOfQuestion ?? "1"
+
+        userInfo["TypeOfQuestion"] = typeOfQuestion ?? "Random"
+
+        userInfo["AlarmDate"] = alarmDate ?? "nil"
+
+        userInfo["AlarmSound"] = notficationSound ?? "LoudAlarm.wav"
+
+        notification.userInfo = userInfo
+
+
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        let notification2 = UILocalNotification()
+
+        let notification2Date:NSDate = NSDate().dateByAddingTimeInterval(30)
+        notification2.alertBody = "You Still have Questions Left" // text that will be displayed in the notification
+        notification2.fireDate =  notification2Date // todo item due date (when notification will be fired)
+        notification2.soundName = notficationSound
+        notification2.timeZone = NSCalendar.currentCalendar().timeZone
+        notification2.repeatInterval = NSCalendarUnit.Minute
+
+        notification2.userInfo = userInfo
+        UIApplication.sharedApplication().scheduleLocalNotification(notification2)
+
+        self.dismissViewControllerAnimated(true, completion: {});
+        // self.performSegueWithIdentifier("finishAlarm", sender: self)
+        //cancelAlarmNotificaion()
+       timer.invalidate()
+//        theAlarm!.on = false
+       // isZero = true
+        audioPlayer.stop()
+       // save()
+    }
+
 
 
     func save() {
-        var error:NSError?
+
         do {
             try managedObjectContext!.save()
-            if error != nil {
-            print(error?.localizedDescription)
-            }
+
         } catch let error1 as NSError {
-            error = error1
+            let alertController = UIAlertController(title: "Default Style", message: "Error has Occur. \(error1)", preferredStyle: .Alert)
+
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                // ...
+            }
+            alertController.addAction(cancelAction)
+
+            let OKAction = UIAlertAction(title: "Ok", style: .Default) { (action) in
+                // ...
+            }
+            alertController.addAction(OKAction)                                //Present the AlertController
+            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+
         }
     }
 
@@ -107,7 +177,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
             if let notifDate = notificaion.userInfo?["AlarmDate"] as? String{
                 if alarmDate == notifDate{
                     UIApplication.sharedApplication().cancelLocalNotification(notificaion)
-                    print("\(notificaion)")
+
                 }
             }
         }
@@ -121,11 +191,11 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         typeOfQuestion = userInfo["TypeOfQuestion"]!
         let numberOfQuestionString = userInfo["NumberOfQuestion"]
 
-        print("The type of question is " + typeOfQuestion)
 
         let date = userInfo["AlarmDate"]!
 
         let alarmSoundWav = userInfo["AlarmSound"]!
+        notficationSound = userInfo["AlarmSound"]!
         let rangeOfWav = Range(start: alarmSoundWav.startIndex,
             end: alarmSoundWav.endIndex.advancedBy(-4))
         alarmSound = alarmSoundWav.substringWithRange(rangeOfWav)

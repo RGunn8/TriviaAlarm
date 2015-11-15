@@ -924,7 +924,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="748" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wXC-8b-PwP">
                                                 <rect key="frame" x="131" y="0.0" width="798" height="216"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" misplaced="YES" text="Number of Questioins to disable the alarm" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-dS-4xu">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" ambiguous="YES" misplaced="YES" text="Number of Questioins to disable the alarm" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-dS-4xu">
                                                         <rect key="frame" x="0.0" y="0.0" width="399" height="216"/>
                                                         <animations/>
                                                         <color key="backgroundColor" red="0.59999999999999998" green="0.80000000000000004" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -1041,28 +1041,7 @@
                                                     </view>
                                                 </subviews>
                                                 <animations/>
-                                                <constraints>
-                                                    <constraint firstItem="Ofg-dS-4xu" firstAttribute="top" secondItem="wXC-8b-PwP" secondAttribute="top" id="5dF-T2-tHu"/>
-                                                    <constraint firstAttribute="trailing" secondItem="Ofg-dS-4xu" secondAttribute="trailing" id="U3U-sw-LL9"/>
-                                                    <constraint firstItem="Ofg-dS-4xu" firstAttribute="leading" secondItem="wXC-8b-PwP" secondAttribute="leading" id="Z0p-gf-8zw"/>
-                                                    <constraint firstItem="R6l-e7-EXN" firstAttribute="top" secondItem="Ofg-dS-4xu" secondAttribute="bottom" id="hz0-vR-odr"/>
-                                                </constraints>
-                                                <variation key="default">
-                                                    <mask key="constraints">
-                                                        <exclude reference="5dF-T2-tHu"/>
-                                                        <exclude reference="U3U-sw-LL9"/>
-                                                        <exclude reference="Z0p-gf-8zw"/>
-                                                        <exclude reference="hz0-vR-odr"/>
-                                                    </mask>
-                                                </variation>
-                                                <variation key="widthClass=compact" axis="vertical">
-                                                    <mask key="constraints">
-                                                        <include reference="5dF-T2-tHu"/>
-                                                        <include reference="U3U-sw-LL9"/>
-                                                        <include reference="Z0p-gf-8zw"/>
-                                                        <include reference="hz0-vR-odr"/>
-                                                    </mask>
-                                                </variation>
+                                                <variation key="widthClass=compact" axis="vertical"/>
                                             </stackView>
                                         </subviews>
                                         <animations/>
