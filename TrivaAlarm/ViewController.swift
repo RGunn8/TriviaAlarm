@@ -16,7 +16,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     var offAlarms = [Alarms]()
      var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController()
 
-    let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    var coreDataStack: CoreDataStack!
 
     @IBOutlet var tableView: UITableView!
     override func viewDidLoad() {
@@ -27,7 +27,23 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         fetchedResultController.delegate = self
         do {
             try fetchedResultController.performFetch()
-        } catch _ {
+        } catch let error as NSError {
+
+            let alertViewControler = UIAlertController(title: "Error has Occured", message: "Cannot fetch alarms try again has occued \(error)", preferredStyle: .Alert)
+
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                // ...
+            }
+            alertViewControler.addAction(cancelAction)
+
+            let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                // ...
+            }
+            alertViewControler.addAction(OKAction)
+
+            self.presentViewController(alertViewControler, animated: true, completion: nil)
+            
+            
         }
 
 
@@ -41,6 +57,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     
 
     }
+    //Status bar white
 
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
@@ -66,32 +83,22 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     }
 
   
+    // On add button tapped pass the coredate stack object to NewAlarmVC
+    @IBAction func onAddButtonTapped(sender: AnyObject) {
 
-    func save() {
 
-        do {
-            try managedObjectContext!.save()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("newAlarmVC") as! NewAlarmViewController
 
-        } catch let error1 as NSError {
-            let alertController = UIAlertController(title: "Default Style", message: "Error has Occur. \(error1)", preferredStyle: .Alert)
-
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-                // ...
-            }
-            alertController.addAction(cancelAction)
-
-            let OKAction = UIAlertAction(title: "Ok", style: .Default) { (action) in
-                // ...
-            }
-            alertController.addAction(OKAction)                                //Present the AlertController
-            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
-
-        }
-
+        vc.theCoreDataStack = coreDataStack
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
 
+
+    //Fetch Results Controllers methods
     func getFetchedResultController() -> NSFetchedResultsController {
-        fetchedResultController = NSFetchedResultsController(fetchRequest: fetchAlarms(), managedObjectContext: managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultController = NSFetchedResultsController(fetchRequest: fetchAlarms(), managedObjectContext: coreDataStack.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         return fetchedResultController
     }
 
@@ -101,6 +108,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
         let sortDescriptor = NSSortDescriptor(key: "time", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
+
         return fetchRequest
     }
 
@@ -125,20 +133,17 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             deleteAlarms.on = false
 
             // Delete it from the managedObjectContext
-            managedObjectContext?.deleteObject(deleteAlarms)
+            coreDataStack.managedObjectContext.deleteObject(deleteAlarms)
 
             // Refresh the table view to indicate that it's deleted
 
             onAlarmsNotification()
 
-            do {
-                try managedObjectContext?.save()
-            } catch _ {
-            }
-         
-            save()
+          coreDataStack.saveMainContext()
         }
     }
+
+    //When the users switchs the alarm add the alarm to the offAlarm array and turn off the notificaion
     func offAlarmsNotificaion() {
         let fetchRequest = NSFetchRequest(entityName: "Alarms")
         let predicate = NSPredicate(format: "on == %@", "0")
@@ -146,7 +151,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         fetchRequest.predicate = predicate
         let notifications = UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]!
 
-        if let fetchResults = (try? managedObjectContext!.executeFetchRequest(fetchRequest)) as? [Alarms] {
+        if let fetchResults = (try? coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest)) as? [Alarms] {
             offAlarms = fetchResults
         }
 
@@ -176,7 +181,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         // Set the predicate on the fetch request
         fetchRequest.predicate = predicate
 
-        if let fetchResults = (try? managedObjectContext!.executeFetchRequest(fetchRequest)) as? [Alarms] {
+        if let fetchResults = (try? coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest)) as? [Alarms] {
             onAlarms = fetchResults
         }
         for alarm in onAlarms {
@@ -235,7 +240,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         let nowComponents = calendar.components([.Year, .Day, .Hour, .Minute, .Month], fromDate: now)
         let alarmComponents = calendar.components([.Year, .Day, .Hour, .Minute, .Month], fromDate: alarmAtIndex.time)
 
-
+        // Set the alarm date and add it to the alarm and save it
         let formatter = NSDateFormatter()
         formatter.dateStyle = NSDateFormatterStyle.ShortStyle
         formatter.timeStyle = .MediumStyle
@@ -297,17 +302,14 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
                 }
 
             alarmAtIndex.time = alarmDate
-            save()
+            coreDataStack.saveMainContext()
             onAlarmsNotification()
-
-
-
 
 
         }else{
             alarmAtIndex.on = false
 
-           save()
+           coreDataStack.saveMainContext()
             offAlarmsNotificaion()
         }
 
@@ -345,7 +347,6 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
             let imageView = UIImageView(image: UIImage(named: "disabledAlarm_Bg"))
 
-
             cell.backgroundView = imageView
 
         }
@@ -363,9 +364,11 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
 
             let theAlarm:Alarms = self.fetchedResultController.objectAtIndexPath(indexPath!) as! Alarms
              viewController.segueAlarm = theAlarm
-         
+            viewController.theCoreDataStack = coreDataStack
+
         }
-    }
+
+           }
 
 }
 

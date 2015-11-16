@@ -14,6 +14,7 @@
 		F71992891B76992500E91FDE /* BombSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992861B76992500E91FDE /* BombSound.wav */; };
 		F744CA3F1BF05BD200629977 /* questionCSV.csv in Resources */ = {isa = PBXBuildFile; fileRef = F744CA3E1BF05BD200629977 /* questionCSV.csv */; };
 		F77470731B6366E500D289F1 /* Alarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77470721B6366E500D289F1 /* Alarms.swift */; };
+		F7C063581BF8FDCA002A16AF /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C063571BF8FDCA002A16AF /* CoreDataStack.swift */; };
 		F7D27EDE1B5F700300EEF085 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */; };
 		F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */; };
 		F7D27EE31B5F700300EEF085 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EE21B5F700300EEF085 /* ViewController.swift */; };
@@ -44,6 +45,7 @@
 		F744CA3E1BF05BD200629977 /* questionCSV.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = questionCSV.csv; sourceTree = "<group>"; };
 		F77470721B6366E500D289F1 /* Alarms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alarms.swift; path = ../Alarms.swift; sourceTree = "<group>"; };
 		F778DB331BF866A500DEE848 /* TrivaAlarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TrivaAlarm.entitlements; sourceTree = "<group>"; };
+		F7C063571BF8FDCA002A16AF /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrivaAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7D27EDC1B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				F7F88BB71B6BD0B600EA36E8 /* Questions.swift */,
 				F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */,
 				F703FE971B66F9C5002308C4 /* QuestionViewController.swift */,
+				F7C063571BF8FDCA002A16AF /* CoreDataStack.swift */,
 				F7D27EE21B5F700300EEF085 /* ViewController.swift */,
 				F7D85A131B60863800CB2AA0 /* AlarmTableViewCell.swift */,
 				F7D85A111B604E1B00CB2AA0 /* NewAlarmViewController.swift */,
@@ -262,6 +265,7 @@
 				F7D85A141B60863800CB2AA0 /* AlarmTableViewCell.swift in Sources */,
 				F7D27EE31B5F700300EEF085 /* ViewController.swift in Sources */,
 				F703FE981B66F9C5002308C4 /* QuestionViewController.swift in Sources */,
+				F7C063581BF8FDCA002A16AF /* CoreDataStack.swift in Sources */,
 				F7D85A121B604E1B00CB2AA0 /* NewAlarmViewController.swift in Sources */,
 				F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */,
 				F7F88BB81B6BD0B600EA36E8 /* Questions.swift in Sources */,

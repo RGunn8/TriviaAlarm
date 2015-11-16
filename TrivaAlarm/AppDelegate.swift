@@ -14,11 +14,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+     lazy var coreDataStack = CoreDataStack()
+
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.cancelAllLocalNotifications()
        let defualts = NSUserDefaults.standardUserDefaults()
         defualts.setValue(22.5, forKey: "boss")
+
+
+
+        let rootViewController = self.window?.rootViewController as! UINavigationController
+
+        let viewController = rootViewController.topViewController as! ViewController
+        if viewController.respondsToSelector("setCoreDataStack:"){
+            viewController.performSelector("setCoreDataStack:", withObject: coreDataStack)
+        }
+
 
         UINavigationBar.appearance().barTintColor = UIColor(red: (49/255), green: (128/255), blue: (197/255), alpha: 1)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
@@ -36,8 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barStyle = .Black
 
 
-       
-//        let nc = NSNotificationCenter.defaultCenter()
         application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge], categories: nil))
 
         if let options = launchOptions {
@@ -167,9 +177,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 let items = try parseCSV(contentsOfURL, encoding: NSUTF8StringEncoding)
                 // Preload the menu items
-                if let managedObjectContext = self.managedObjectContext {
+
                     for item in items {
-                        let questionItem = NSEntityDescription.insertNewObjectForEntityForName("Questions", inManagedObjectContext: managedObjectContext) as! Questions
+                        let questionItem = NSEntityDescription.insertNewObjectForEntityForName("Questions", inManagedObjectContext: coreDataStack.managedObjectContext) as! Questions
                         questionItem.question = item.question
                         questionItem.type = item.type
                         questionItem.optionA = item.optionA
@@ -178,11 +188,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         questionItem.optionD = item.optionD
                         questionItem.correctAnswer = item.correctAnswer
 
-                        try self.managedObjectContext!.save()
-
+                        coreDataStack.saveMainContext()
                     
                 }
-                }
+
             } catch let error1 as NSError {
                 let alertController = UIAlertController(title: "Default Style", message: "Error has Occur. \(error1)", preferredStyle: .Alert)
 
@@ -202,17 +211,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func removeData () {
         // Remove the existing items
-        if let managedObjectContext = self.managedObjectContext {
+
             let fetchRequest = NSFetchRequest(entityName: "Questions")
 
             do{
-            let questionItems = (try! managedObjectContext.executeFetchRequest(fetchRequest)) as! [Questions]
+            let questionItems = (try! coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest)) as! [Questions]
 
                 for question in questionItems {
-                    managedObjectContext.deleteObject(question)
+                    coreDataStack.managedObjectContext.deleteObject(question)
                 }
 
-                try self.managedObjectContext!.save()
+                try coreDataStack.managedObjectContext.save()
 
             }
             catch{
@@ -232,7 +241,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
 
 
-        }
+
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -260,81 +269,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         application.cancelAllLocalNotifications()
-        self.saveContext()
+        coreDataStack.saveMainContext()
     }
 
-    // MARK: - Core Data stack
 
-    lazy var applicationDocumentsDirectory: NSURL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "Ryan-Gunn.TrivaAlarm" in the application's documents Application Support directory.
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] 
-    }()
 
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("TrivaAlarm", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
-    }()
-
-    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
-        // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-        // Create the coordinator and store
-        var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("TrivaAlarm.sqlite")
-        var error: NSError? = nil
-        var failureReason = "There was an error creating or loading the application's saved data."
-        do {
-            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-        } catch var error1 as NSError {
-            error = error1
-            coordinator = nil
-            // Report any error we got.
-            var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason
-            dict[NSUnderlyingErrorKey] = error
-            error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-            // Replace this with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        } catch {
-            fatalError()
-        }
-        
-        return coordinator
-    }()
-
-    lazy var managedObjectContext: NSManagedObjectContext? = {
-        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
-        let coordinator = self.persistentStoreCoordinator
-        if coordinator == nil {
-            return nil
-        }
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = coordinator
-        return managedObjectContext
-    }()
-
-    // MARK: - Core Data Saving support
-
-    func saveContext () {
-        if let moc = self.managedObjectContext {
-            var error: NSError? = nil
-            if moc.hasChanges {
-                do {
-                    try moc.save()
-                } catch let error1 as NSError {
-                    error = error1
-                    // Replace this implementation with code to handle the error appropriately.
-                    // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                    NSLog("Unresolved error \(error), \(error!.userInfo)")
-                    abort()
-                }
-            }
-        }
-    }
 
 }
 

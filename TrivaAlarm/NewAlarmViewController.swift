@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NewAlarmViewController: ViewController, UITextFieldDelegate {
+class NewAlarmViewController: UIViewController, UITextFieldDelegate {
 
 
     @IBOutlet var alarmNameTextField: UITextField!
@@ -24,7 +24,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     var typeOfQuestion = "Random"
     var theAlarmSound = "LoudAlarm.wav"
     var segueAlarm:Alarms?
-    let theManagedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    var theCoreDataStack: CoreDataStack!
 
     @IBOutlet weak var cancel: UIBarButtonItem!
     override func viewDidLoad() {
@@ -35,10 +35,14 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
                subtractQuesitonButton.hidden = true
         self.navigationItem.leftBarButtonItem = cancel
 
+
+        // set the Cancel button to white
       cancel.tintColor = UIColor.whiteColor()
 
 
         alarmNameTextField.delegate = self
+
+        // if the User is segueing from an Alarm then take the info and add it to the VC
 
             if let segueAlarm = segueAlarm {
             numberOfQuestions = segueAlarm.numOfQuestionsToEnd as Int
@@ -53,7 +57,7 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
 
-
+        // Hide the subtract button if the num of questions is 1
         if numberOfQuestions == 1 {
 
             subtractQuesitonButton.hidden = true
@@ -75,6 +79,8 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     func dismissViewController() {
         navigationController?.popViewControllerAnimated(true)
     }
+
+
     @IBAction func cancelButtonPressed(sender: AnyObject) {
         dismissViewController()
     }
@@ -116,7 +122,8 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
             }else{
                 alarmDate = zeroSecondDate
             }
-        
+
+        // if the segueAlarm is not nil then update it, other wise create a new alarm
         if segueAlarm != nil{
             editAlarm(alarmDate)
         }else{
@@ -140,10 +147,8 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         segueAlarm?.setValue(theAlarmSound, forKey: "alertSound")
         segueAlarm?.setValue(true, forKey: "on")
 
-        do {
-            try managedObjectContext?.save()
-        } catch _ {
-        }
+
+            theCoreDataStack.saveMainContext()
 
     }
 
@@ -154,8 +159,8 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
     func createAlarm(alarmDate:NSDate) {
 
 
-        let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext:managedObjectContext!)
-        let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext:theCoreDataStack.managedObjectContext)
+        let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: theCoreDataStack.managedObjectContext)
         if alarmNameTextField.text == ""{
             alarm.setValue("Wake Up", forKey: "name")
         }else{
@@ -168,13 +173,8 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
         alarm.setValue(selectSegmented(), forKey: "questionType")
         alarm.setValue(theAlarmSound, forKey: "alertSound")
         alarm.setValue(true, forKey: "on")
-
-
        
-        do {
-            try managedObjectContext?.save()
-        } catch _ {
-        }
+      theCoreDataStack.saveMainContext()
 
     }
 
@@ -278,9 +278,6 @@ class NewAlarmViewController: ViewController, UITextFieldDelegate {
             (alert: UIAlertAction) -> Void in
 
         })
-
-
-
 
         optionMenu.addAction(cancelAction)
         
