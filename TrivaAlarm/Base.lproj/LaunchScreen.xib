@@ -15,7 +15,7 @@
                     <animations/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Triva Alarm" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnl-ar-YCp">
-                    <rect key="frame" x="156" y="391" width="168" height="28"/>
+                    <rect key="frame" x="103" y="369" width="281" height="28"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="23"/>
                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -25,12 +25,12 @@
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="hnl-ar-YCp" secondAttribute="trailing" constant="156" id="3kN-Cb-7da"/>
+                <constraint firstAttribute="trailing" secondItem="hnl-ar-YCp" secondAttribute="trailing" constant="96" id="3kN-Cb-7da"/>
                 <constraint firstItem="gEy-Bg-H04" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="H8N-7F-RKd"/>
-                <constraint firstItem="hnl-ar-YCp" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="156" id="I1s-Eq-Lso"/>
-                <constraint firstItem="hnl-ar-YCp" firstAttribute="centerX" secondItem="gEy-Bg-H04" secondAttribute="centerX" id="bQV-u8-que"/>
+                <constraint firstItem="hnl-ar-YCp" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="103" id="I1s-Eq-Lso"/>
+                <constraint firstItem="hnl-ar-YCp" firstAttribute="centerX" secondItem="gEy-Bg-H04" secondAttribute="centerX" constant="3" id="bQV-u8-que"/>
                 <constraint firstItem="gEy-Bg-H04" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="nm9-MX-Ouk"/>
-                <constraint firstAttribute="bottom" secondItem="hnl-ar-YCp" secondAttribute="bottom" constant="61" id="ovm-eP-8sP"/>
+                <constraint firstAttribute="bottom" secondItem="hnl-ar-YCp" secondAttribute="bottom" constant="83" id="ovm-eP-8sP"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

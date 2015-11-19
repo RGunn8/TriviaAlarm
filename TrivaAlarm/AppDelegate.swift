@@ -36,12 +36,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
 
-
         let defaults = NSUserDefaults.standardUserDefaults()
         let isPreloaded = defaults.boolForKey("isPreloaded")
         if !isPreloaded {
             preloadData()
             defaults.setBool(true, forKey: "isPreloaded")
+        }
+
+        let firstLoad = defaults.boolForKey("firstLoad")
+        if !firstLoad {
+            createFirstAlarm()
+            defaults.setBool(true, forKey: "firstLoad")
         }
 
 
@@ -60,7 +65,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
+
+                        vc.coreDataStack = self.coreDataStack
                         self.window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
+
+
                         // NSNotificationCenter.defaultCenter().postNotificationName("questionSegue", object: nil)
                         let numbOfQuestion:AnyObject = notification.userInfo!["NumberOfQuestion"]!
                         let typeOfQuestion:AnyObject = notification.userInfo!["TypeOfQuestion"]!
@@ -82,14 +91,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+
+    func createFirstAlarm() {
+        let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext:coreDataStack.managedObjectContext)
+        let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: coreDataStack.managedObjectContext)
+
+        alarm.setValue("Wake Up", forKey: "name")
+        alarm.setValue(NSDate(), forKey: "time")
+        alarm.setValue(1, forKey: "numOfQuestionsToEnd")
+        alarm.setValue(false, forKey: "snooze")
+        alarm.setValue("Random", forKey: "questionType")
+        alarm.setValue("LoudAlarm.wav", forKey: "alertSound")
+        alarm.setValue(false, forKey: "on")
+
+        coreDataStack.saveMainContext()
+    }
   
         func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
             application.cancelAllLocalNotifications()
 
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyboard.instantiateViewControllerWithIdentifier("QuestionVC") as! QuestionViewController
+             vc.coreDataStack = self.coreDataStack
                 self.window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
-                // NSNotificationCenter.defaultCenter().postNotificationName("questionSegue", object: nil)
+
                 let numbOfQuestion:AnyObject = notification.userInfo!["NumberOfQuestion"]!
                 let typeOfQuestion:AnyObject = notification.userInfo!["TypeOfQuestion"]!
                 let alarmDate:AnyObject = notification.userInfo!["AlarmDate"]!

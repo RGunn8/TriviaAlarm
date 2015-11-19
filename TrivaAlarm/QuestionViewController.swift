@@ -14,7 +14,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
     var numberOfQuestion = Int()
     var typeOfQuestion = "Random"
     var audioPlayer:AVAudioPlayer!
-    var coreDataStack =  CoreDataStack()
+    var coreDataStack: CoreDataStack!
     var questions = [Questions]()
     var alarmSound = String()
     var notficationSound = String()
