@@ -54,6 +54,4 @@ class CoreDataStack: NSObject {
         managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
         return managedObjectContext
     }()
-    
 }
-

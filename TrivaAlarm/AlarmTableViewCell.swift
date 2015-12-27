@@ -15,17 +15,17 @@ class AlarmTableViewCell: UITableViewCell {
 
     @IBOutlet weak var alarmNameLabel: UILabel!
 
-    func loadItem(time:NSDate, isOn:Bool){
+    func loadItem(time: NSDate, isOn: Bool) {
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle
        let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = .ShortStyle
 
         timeLabel.text = formatter.stringFromDate(time)
-        
-       
+
         alarmSwitch.setOn(isOn, animated: true)
     }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

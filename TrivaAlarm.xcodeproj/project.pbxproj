@@ -7,14 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB32CB291855B090E6C18632 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E862A76364CE5AE17EB4DDE5 /* Pods.framework */; };
 		F703FE981B66F9C5002308C4 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F703FE971B66F9C5002308C4 /* QuestionViewController.swift */; };
 		F705C1431BC21D0C00C5A813 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F705C1421BC21D0C00C5A813 /* Image.xcassets */; };
 		F71992871B76992500E91FDE /* railRoadSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992841B76992500E91FDE /* railRoadSound.wav */; };
 		F71992881B76992500E91FDE /* LoudAlarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992851B76992500E91FDE /* LoudAlarm.wav */; };
 		F71992891B76992500E91FDE /* BombSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F71992861B76992500E91FDE /* BombSound.wav */; };
 		F744CA3F1BF05BD200629977 /* questionCSV.csv in Resources */ = {isa = PBXBuildFile; fileRef = F744CA3E1BF05BD200629977 /* questionCSV.csv */; };
-		F77470731B6366E500D289F1 /* Alarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77470721B6366E500D289F1 /* Alarms.swift */; };
+		F76776821C2F4D8C00DE4C9C /* Alarms+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76776801C2F4D8C00DE4C9C /* Alarms+CoreDataProperties.swift */; };
+		F76776831C2F4D8C00DE4C9C /* Alarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76776811C2F4D8C00DE4C9C /* Alarms.swift */; };
 		F7C063581BF8FDCA002A16AF /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C063571BF8FDCA002A16AF /* CoreDataStack.swift */; };
+		F7C60ECA1C2E73FA00B20350 /* RemindersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C60EC91C2E73FA00B20350 /* RemindersViewController.swift */; };
 		F7D27EDE1B5F700300EEF085 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */; };
 		F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */; };
 		F7D27EE31B5F700300EEF085 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D27EE21B5F700300EEF085 /* ViewController.swift */; };
@@ -37,15 +40,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C57FC2972B2B89D90FCD9623 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		E862A76364CE5AE17EB4DDE5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0B4CE134B1838D41CD1F4E5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F703FE971B66F9C5002308C4 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		F705C1421BC21D0C00C5A813 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Image.xcassets; path = ../Image.xcassets; sourceTree = "<group>"; };
 		F71992841B76992500E91FDE /* railRoadSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = railRoadSound.wav; sourceTree = "<group>"; };
 		F71992851B76992500E91FDE /* LoudAlarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = LoudAlarm.wav; sourceTree = "<group>"; };
 		F71992861B76992500E91FDE /* BombSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BombSound.wav; sourceTree = "<group>"; };
 		F744CA3E1BF05BD200629977 /* questionCSV.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = questionCSV.csv; sourceTree = "<group>"; };
-		F77470721B6366E500D289F1 /* Alarms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alarms.swift; path = ../Alarms.swift; sourceTree = "<group>"; };
+		F76776801C2F4D8C00DE4C9C /* Alarms+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alarms+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		F76776811C2F4D8C00DE4C9C /* Alarms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alarms.swift; sourceTree = "<group>"; };
 		F778DB331BF866A500DEE848 /* TrivaAlarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TrivaAlarm.entitlements; sourceTree = "<group>"; };
 		F7C063571BF8FDCA002A16AF /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		F7C60EC91C2E73FA00B20350 /* RemindersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemindersViewController.swift; sourceTree = "<group>"; };
 		F7D27ED81B5F700300EEF085 /* TrivaAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrivaAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7D27EDC1B5F700300EEF085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB32CB291855B090E6C18632 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,12 +88,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1EDDC6436F5F0E1B278BBDC1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C57FC2972B2B89D90FCD9623 /* Pods.debug.xcconfig */,
+				F0B4CE134B1838D41CD1F4E5 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B25B991A26B51EA972CA738A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E862A76364CE5AE17EB4DDE5 /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F7246D9A1C2FA17F0089FD75 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F7D27EE21B5F700300EEF085 /* ViewController.swift */,
+				F7D85A111B604E1B00CB2AA0 /* NewAlarmViewController.swift */,
+				F7C60EC91C2E73FA00B20350 /* RemindersViewController.swift */,
+				F703FE971B66F9C5002308C4 /* QuestionViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		F7246D9B1C2FA18B0089FD75 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F76776801C2F4D8C00DE4C9C /* Alarms+CoreDataProperties.swift */,
+				F76776811C2F4D8C00DE4C9C /* Alarms.swift */,
+				F7F88BB71B6BD0B600EA36E8 /* Questions.swift */,
+				F7C063571BF8FDCA002A16AF /* CoreDataStack.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		F7D27ECF1B5F700300EEF085 = {
 			isa = PBXGroup;
 			children = (
 				F7D27EDA1B5F700300EEF085 /* TrivaAlarm */,
 				F7D27EF31B5F700300EEF085 /* TrivaAlarmTests */,
 				F7D27ED91B5F700300EEF085 /* Products */,
+				1EDDC6436F5F0E1B278BBDC1 /* Pods */,
+				B25B991A26B51EA972CA738A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,16 +150,12 @@
 		F7D27EDA1B5F700300EEF085 /* TrivaAlarm */ = {
 			isa = PBXGroup;
 			children = (
+				F7246D9B1C2FA18B0089FD75 /* Models */,
 				F778DB331BF866A500DEE848 /* TrivaAlarm.entitlements */,
 				F705C1421BC21D0C00C5A813 /* Image.xcassets */,
-				F77470721B6366E500D289F1 /* Alarms.swift */,
-				F7F88BB71B6BD0B600EA36E8 /* Questions.swift */,
 				F7D27EDD1B5F700300EEF085 /* AppDelegate.swift */,
-				F703FE971B66F9C5002308C4 /* QuestionViewController.swift */,
-				F7C063571BF8FDCA002A16AF /* CoreDataStack.swift */,
-				F7D27EE21B5F700300EEF085 /* ViewController.swift */,
 				F7D85A131B60863800CB2AA0 /* AlarmTableViewCell.swift */,
-				F7D85A111B604E1B00CB2AA0 /* NewAlarmViewController.swift */,
+				F7246D9A1C2FA17F0089FD75 /* View Controllers */,
 				F7D27EE41B5F700300EEF085 /* Main.storyboard */,
 				F7D27EE91B5F700300EEF085 /* LaunchScreen.xib */,
 				F7D27EDF1B5F700300EEF085 /* TrivaAlarm.xcdatamodeld */,
@@ -154,9 +200,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F7D27EFA1B5F700300EEF085 /* Build configuration list for PBXNativeTarget "TrivaAlarm" */;
 			buildPhases = (
+				A826A23A86AE1B5083745D05 /* Check Pods Manifest.lock */,
 				F7D27ED41B5F700300EEF085 /* Sources */,
 				F7D27ED51B5F700300EEF085 /* Frameworks */,
 				F7D27ED61B5F700300EEF085 /* Resources */,
+				SWIFCLEANCUSTOMRUNSCRIPT /* Swift-Clean Run Script */,
+				F025E7B3D1911042318C496C /* Tailor */,
+				851F730ABE7D9719C05CAEEE /* Embed Pods Frameworks */,
+				FD25B6F43742B778589D25E6 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -201,7 +252,7 @@
 						DevelopmentTeam = Z45ZUG2EW7;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -257,6 +308,82 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		851F730ABE7D9719C05CAEEE /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A826A23A86AE1B5083745D05 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F025E7B3D1911042318C496C /* Tailor */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Tailor;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "if hash tailor 2>/dev/null; then\n  tailor\nelse\n  echo \"warning: Please install Tailor from https://tailor.sh\"\nfi";
+		};
+		FD25B6F43742B778589D25E6 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		SWIFCLEANCUSTOMRUNSCRIPT /* Swift-Clean Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift-Clean Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/bash;
+			shellScript = "if [[ -z ${SKIP_SWIFTCLEAN} || ${SKIP_SWIFTCLEAN} != 1 ]]; then\nif [[ -d \"${LOCAL_APPS_DIR}/Swift-Clean.app\" ]]; then \n\"${LOCAL_APPS_DIR}\"/Swift-Clean.app/Contents/Resources/SwiftClean.app/Contents/MacOS/SwiftClean \"${SRCROOT}\"?@autoFix \nelse\necho \"warning: You have to install and set up Swift-Clean to use its features!\" \nfi\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F7D27ED41B5F700300EEF085 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -266,11 +393,13 @@
 				F7D27EE31B5F700300EEF085 /* ViewController.swift in Sources */,
 				F703FE981B66F9C5002308C4 /* QuestionViewController.swift in Sources */,
 				F7C063581BF8FDCA002A16AF /* CoreDataStack.swift in Sources */,
+				F7C60ECA1C2E73FA00B20350 /* RemindersViewController.swift in Sources */,
 				F7D85A121B604E1B00CB2AA0 /* NewAlarmViewController.swift in Sources */,
 				F7D27EE11B5F700300EEF085 /* TrivaAlarm.xcdatamodeld in Sources */,
 				F7F88BB81B6BD0B600EA36E8 /* Questions.swift in Sources */,
 				F7D27EDE1B5F700300EEF085 /* AppDelegate.swift in Sources */,
-				F77470731B6366E500D289F1 /* Alarms.swift in Sources */,
+				F76776831C2F4D8C00DE4C9C /* Alarms.swift in Sources */,
+				F76776821C2F4D8C00DE4C9C /* Alarms+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,9 +525,9 @@
 		};
 		F7D27EFB1B5F700300EEF085 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C57FC2972B2B89D90FCD9623 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TrivaAlarm/TrivaAlarm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TrivaAlarm/Info.plist;
@@ -411,9 +540,9 @@
 		};
 		F7D27EFC1B5F700300EEF085 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F0B4CE134B1838D41CD1F4E5 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TrivaAlarm/TrivaAlarm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TrivaAlarm/Info.plist;
