@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+@testable import TrivaAlarm
 
 class TrivaAlarmTests: XCTestCase {
     override func setUp() { // tailor:disable
@@ -18,14 +19,13 @@ class TrivaAlarmTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }// tailor:disable
-    func testExample() { // tailor:disable
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }// tailor:disable
-    func testPerformanceExample() { // tailor:disable
-        // This is an example of a performance test case.
-        self.measureBlock() {// tailor:disable
-            // Put the code you want to measure the time of here.
-        }
-    }// tailor:disable
+
+
+    func testAlarmTurnsOn() {
+       
+    }
+
+
+
+
 }

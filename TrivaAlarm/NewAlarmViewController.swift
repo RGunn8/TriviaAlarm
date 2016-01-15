@@ -9,9 +9,8 @@
 import UIKit
 import CoreData
 
-class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPickerDelegate {
+class NewAlarmViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var alarmNameTextField: UITextField!
-    @IBOutlet var reminderLabel: UILabel!
     @IBOutlet var datePicker: UIDatePicker!
     @IBOutlet var numberOfQuestionLabel: UILabel!
     @IBOutlet var addQuestionButton: UIButton!
@@ -22,39 +21,46 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
     var theAlarmSound = "LoudAlarm.wav"
     var segueAlarm: Alarms?
     var theCoreDataStack: CoreDataStack!
-    var reminderString: String?
-    var hasReminder = false
     @IBOutlet weak var cancel: UIBarButtonItem!
+    @IBOutlet var repeatSwitchButton: UISwitch!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        datePicker.backgroundColor = UIColor(red: (49/255), green: (128/255), blue: (197/255), alpha: 1)
-        datePicker.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
-        // Do any additional setup after loading the view.
+        setDatePicker()
                subtractQuesitonButton.hidden = true
         self.navigationItem.leftBarButtonItem = cancel
-        // set the Cancel button to white
-      cancel.tintColor = UIColor.whiteColor()
 
+      cancel.tintColor = UIColor.whiteColor()
         alarmNameTextField.delegate = self
 
-        // if the User is segueing from an Alarm then take the info and add it to the VC
+    }
 
-            if let segueAlarm = segueAlarm {
+    func setDatePicker() {
+        datePicker.backgroundColor = UIColor(red: (49/255), green: (128/255), blue: (197/255), alpha: 1)
+        datePicker.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
+
+    }
+
+    func loadSegueAlarm() {
+        if let segueAlarm = segueAlarm {
             numberOfQuestions = segueAlarm.numOfQuestionsToEnd as Int
             typeOfQuestion = segueAlarm.questionType
             alarmNameTextField.text = segueAlarm.name
             theAlarmSound = segueAlarm.alertSound
             datePicker.date = segueAlarm.time
-             numberOfQuestionLabel.text? = String(numberOfQuestions)
-                reminderLabel.text = segueAlarm.reminder
-        }
-    }
+            numberOfQuestionLabel.text? = String(numberOfQuestions)
 
+        }
+
+    }
     override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
 
-        // Hide the subtract button if the num of questions is 1
+        setSubtractButton()
+
+    }
+
+    func setSubtractButton() {
         if numberOfQuestions == 1 {
 
             subtractQuesitonButton.hidden = true
@@ -67,24 +73,21 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
         } else {
             addQuestionButton.hidden = false
         }
+
     }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
 
-        // delegate method
         textField.resignFirstResponder()
         return true
     }
 
-    func dismissViewController() {
-        navigationController?.popViewControllerAnimated(true)
-    }
 
     @IBAction func cancelButtonPressed(sender: AnyObject) {
-        dismissViewController()
+       navigationController?.popViewControllerAnimated(true)
     }
 
-    @IBAction func saveButton(sender: UIBarButtonItem) {
+    func setAlarmDate() -> NSDate {
         let now = NSDate()
         let calendar = NSCalendar.currentCalendar()
         let components = calendar.components([.Year, .Day, .Hour, .Minute, .Month], fromDate: datePicker.date)
@@ -96,89 +99,53 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
         let formatter = NSDateFormatter()
         formatter.dateStyle = NSDateFormatterStyle.ShortStyle
         formatter.timeStyle = .MediumStyle
-            if calendar.isDate(zeroSecondDate, equalToDate: now, toUnitGranularity: .Hour) {
-                if components.minute <= nowComponents.minute {
+        if calendar.isDate(zeroSecondDate, equalToDate: now, toUnitGranularity: .Hour) {
+            if components.minute <= nowComponents.minute {
 
-                    components.day = nowComponents.day + 1
-                    alarmDate = calendar.dateFromComponents(components)!
-                }else {
-                     alarmDate = calendar.dateFromComponents(components)!
-                }
-
-            }else if components.hour < nowComponents.hour {
                 components.day = nowComponents.day + 1
                 alarmDate = calendar.dateFromComponents(components)!
-            } else {
-                alarmDate = zeroSecondDate
+            }else {
+                alarmDate = calendar.dateFromComponents(components)!
             }
+
+        }else if components.hour < nowComponents.hour {
+            components.day = nowComponents.day + 1
+            alarmDate = calendar.dateFromComponents(components)!
+        } else {
+            alarmDate = zeroSecondDate
+        }
+
+        return alarmDate
+    }
+
+    @IBAction func saveButton(sender: UIBarButtonItem) {
 
         // if the segueAlarm is not nil then update it, other wise create a new alarm
         if segueAlarm != nil {
-            editAlarm(alarmDate)
+            editAlarm()
         }else {
-            createAlarm(alarmDate)
+            createAlarm()
         }
-
         navigationController?.popViewControllerAnimated(true)
-
     }
 
-        func editAlarm(alarmDate: NSDate) {
+    func editAlarm() {
             if alarmNameTextField.text == "" {
                 segueAlarm?.setValue("Wake Up", forKey: "name")
             } else {
                 segueAlarm?.setValue(alarmNameTextField.text, forKey: "name")
             }
 
-        segueAlarm?.setValue(alarmDate, forKey: "time")
+        segueAlarm?.setValue(setAlarmDate(), forKey: "time")
         segueAlarm?.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
         segueAlarm?.setValue(selectSegmented(), forKey: "questionType")
         segueAlarm?.setValue(theAlarmSound, forKey: "alertSound")
         segueAlarm?.setValue(true, forKey: "on")
-            if let reminderString = reminderString {
-                segueAlarm?.setValue(reminderString, forKey: "reminder")
-
-            }
-            segueAlarm?.setValue(hasReminder, forKey: "hasReminder")
-            print(segueAlarm)
-
-            theCoreDataStack.saveMainContext()
+        theCoreDataStack.saveMainContext()
 
     }
 
-    func didSelectedReminder(reminderArray: Array<ReminderStruct>) {
-        var labelString = ""
-
-        if reminderArray.isEmpty {
-           hasReminder = false
-           reminderLabel.text = "None"
-            reminderString = ""
-        }else {
-        for reminder in reminderArray {
-            print(reminder)
-            if let abb = reminder.abbreviation {
-                labelString = labelString + " " + abb.dayAbbreviation(abb)
-                reminderString = labelString
-                reminderLabel.text = labelString
-                hasReminder = true
-
-                if labelString == " Sun Mon Tues Wed Thur Fri Sat" {
-                    reminderLabel.text = "Every Day"
-                }
-
-                if labelString == " Mon Tues Wed Thur Fri" {
-                    reminderLabel.text = "Week Days"
-                }
-            }
-        }
-        }
-    }
-
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
-    }
-
-    func createAlarm(alarmDate: NSDate) {
+    func createAlarm() {
         let entity = NSEntityDescription.entityForName("Alarms", inManagedObjectContext: theCoreDataStack.managedObjectContext)
         let alarm = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: theCoreDataStack.managedObjectContext)
         if alarmNameTextField.text == "" {
@@ -186,22 +153,14 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
         }else {
             alarm.setValue(alarmNameTextField.text, forKey: "name")
         }
-        alarm.setValue(alarmDate, forKey: "time")
+        alarm.setValue(setAlarmDate(), forKey: "time")
         alarm.setValue(numberOfQuestions, forKey: "numOfQuestionsToEnd")
         alarm.setValue(selectSegmented(), forKey: "questionType")
         alarm.setValue(theAlarmSound, forKey: "alertSound")
         alarm.setValue(true, forKey: "on")
-        if let reminderString = reminderString {
-        alarm.setValue(reminderString, forKey: "reminder")
-
-        }
-         alarm.setValue(hasReminder, forKey: "hasReminder")
-        print(alarm)
-
       theCoreDataStack.saveMainContext()
 
     }
-
 
     func selectSegmented () -> NSString {
         if questionTypeSegmentedControl.selectedSegmentIndex == 0 {
@@ -218,28 +177,12 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
     }
 
     @IBAction func subtractQuestionButtonPressed(sender: UIButton) {
-        if numberOfQuestions == 1 {
-            subtractQuesitonButton.hidden = true
-            addQuestionButton.hidden = false
-        }else if numberOfQuestions <= 5 {
-            numberOfQuestions -= 1
-            subtractQuesitonButton.hidden = false
-            addQuestionButton.hidden = false
-        }
+       setSubtractButton()
         numberOfQuestionLabel.text? = String(numberOfQuestions)
-
     }
 
     @IBAction func addQuestionButtonPressed(sender: UIButton) {
-        if numberOfQuestions == 5 {
-            addQuestionButton.hidden = true
-            subtractQuesitonButton.hidden = false
-        }else if numberOfQuestions <= 4 {
-            numberOfQuestions += 1
-            subtractQuesitonButton.hidden = false
-            addQuestionButton.hidden = false
-        }
-
+      setSubtractButton()
         numberOfQuestionLabel.text? = String(numberOfQuestions)
     }
 
@@ -253,7 +196,7 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
 
         })
              optionMenu.addAction(bombSound)
-        }else {
+        } else {
             let bombSound = UIAlertAction(title: "Bomb Sound", style: .Default, handler: {
                 (alert: UIAlertAction) -> Void in
                 self.theAlarmSound = "BombSound.wav"
@@ -277,8 +220,6 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
                 self.theAlarmSound = "railRoadSound.wav"
             })
             optionMenu.addAction(railRoad)
-
-
         }
 
         if theAlarmSound == "LoudAlarm.wav" {
@@ -297,7 +238,6 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
 
         }
 
-        //
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
             (alert: UIAlertAction) -> Void in
 
@@ -308,16 +248,8 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate, RemindersPi
         self.presentViewController(optionMenu, animated: true, completion: nil)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if segue.identifier == "reminderSegue" {
-            guard let newAlarmVc = segue.destinationViewController as? RemindersViewController else {
-                return
-            }
 
-
-            newAlarmVc.delegate = self
-
-        }
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
-    
 }

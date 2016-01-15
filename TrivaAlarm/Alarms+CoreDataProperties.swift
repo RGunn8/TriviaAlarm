@@ -20,7 +20,5 @@ extension Alarms {
     @NSManaged var on: Bool
     @NSManaged var questionType: String
     @NSManaged var time: NSDate
-    @NSManaged var reminder: String?
-    @NSManaged var hasReminder: Bool
 
 }

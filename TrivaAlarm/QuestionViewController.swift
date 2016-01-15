@@ -20,7 +20,6 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
     var notficationSound = String()
     var correctAnswer = String()
     var theQuestion: Questions?
-    var alarm = [Alarms]()
     var theAlarmDate = NSDate()
     var timer = NSTimer()
     var isZero = false
@@ -29,8 +28,6 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
     var theAlarm: Alarms?
     @IBOutlet weak var optionAButton: UIButton!
     @IBOutlet weak var numOfQuestionLabel: UILabel!
-
-
     @IBOutlet weak var optionCButton: UIButton!
     @IBOutlet weak var optionDButton: UIButton!
     @IBOutlet weak var optionBButton: UIButton!
@@ -43,11 +40,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         // Set navbar 20 points and then set delegeate to attach to the top
         self.navBar.delegate = self
 
-        optionAButton.titleLabel?.numberOfLines = 0
-        optionBButton.titleLabel?.numberOfLines = 0
-        optionCButton.titleLabel?.numberOfLines = 0
-        optionDButton.titleLabel?.numberOfLines = 0
-
+        setTitleLabels()
         // Add notfication to get questions and update the view controller
 
          NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVC:", name: "localNotficaionUserInfo", object: nil)
@@ -59,25 +52,33 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
             name: "alarmGoesToBackground",
             object: nil)
 
-
         answerLabel.hidden = true
+
+        playAudio()
+    }
+
+    func setTitleLabels() {
+        optionAButton.titleLabel?.numberOfLines = 0
+        optionBButton.titleLabel?.numberOfLines = 0
+        optionCButton.titleLabel?.numberOfLines = 0
+        optionDButton.titleLabel?.numberOfLines = 0
+    }
+
+    func playAudio() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         } catch let error as NSError {
 
             let alertViewControler = UIAlertController(title: "Error has Occured", message: "An audio issues has occued \(error)", preferredStyle: .Alert)
 
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-                // ...
-            }
-           alertViewControler.addAction(cancelAction)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel , handler: nil)
+            alertViewControler.addAction(cancelAction)
 
-            let oKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                // ...
-            }
+            let oKAction = UIAlertAction(title: "Okay", style: .Cancel , handler: nil)
             alertViewControler.addAction(oKAction)
             self.presentViewController(alertViewControler, animated: true, completion: nil)
         }
+
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -85,40 +86,41 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
             NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
     // Give a user a chance to exit without answer the questions if they are need to turn it off
 
         @IBAction func backButtonPressed(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: {})
         UIApplication.sharedApplication().cancelAllLocalNotifications()
-        timer.invalidate()
-
-            if let theAlarm = theAlarm {
-                if theAlarm.hasReminder {
-                    theAlarm.on = true
-                } else {
-                    theAlarm.on = false
-                }
-            }
-
-        isZero = true
-        audioPlayer.stop()
-        coreDataStack.saveMainContext()
+      numOfQuestionIsZero()
 
     }
 
     // When the app goes to the background create two local notfication so they can return to the app
 
     func alarmToBack() {
+
+        createNotification(NSDate())
+        createNotification(NSDate().dateByAddingTimeInterval(30))
+
+        self.dismissViewControllerAnimated(true, completion: {})
+        // Stop timer so the sound will stop
+       timer.invalidate()
+        audioPlayer.stop()
+    }
+
+    func createNotification(date:NSDate) {
         let notification = UILocalNotification()
         notification.alertBody = "You Still have Questions Left" // text that will be displayed in the notification
-        notification.fireDate =  NSDate() // notficaiton fire off right when app goes into forgeground
+        notification.fireDate = date // notficaiton fire off right when app goes into forgeground
         notification.soundName = notficationSound
         notification.timeZone = NSCalendar.currentCalendar().timeZone
         notification.repeatInterval = NSCalendarUnit.Minute
+        notification.userInfo = setUserInfoForNotification()
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+    }
+
+
+    func setUserInfoForNotification() -> [String: String]{
         var userInfo: [String: String] = [String: String]()
 
         let numOfQuestion = "\(numberOfQuestion)" as String
@@ -127,58 +129,13 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         formatter.timeStyle = NSDateFormatterStyle.LongStyle
         let alarmDate = formatter.stringFromDate(theAlarmDate)
 
-        print("alarm to back has been called")
-
         // Fill in the userinfo dictonary so when the user comes back they know how info for the VC
-
         userInfo["NumberOfQuestion"] = numOfQuestion ?? "1"
-
         userInfo["TypeOfQuestion"] = typeOfQuestion ?? "Random"
-
         userInfo["AlarmDate"] = alarmDate ?? "nil"
-
         userInfo["AlarmSound"] = notficationSound ?? "LoudAlarm.wav"
-
-        notification.userInfo = userInfo
-
-
-        UIApplication.sharedApplication().scheduleLocalNotification(notification)
-        let notification2 = UILocalNotification()
-
-        let notification2Date: NSDate = NSDate().dateByAddingTimeInterval(30)
-        notification2.alertBody = "You Still have Questions Left" // text that will be displayed in the notification
-        notification2.fireDate =  notification2Date
-        notification2.soundName = notficationSound
-        notification2.timeZone = NSCalendar.currentCalendar().timeZone
-        notification2.repeatInterval = NSCalendarUnit.Minute
-
-        notification2.userInfo = userInfo
-        UIApplication.sharedApplication().scheduleLocalNotification(notification2)
-
-        // Dimiss view controller so a new VC can be created
-
-        self.dismissViewControllerAnimated(true, completion: {})
-        // Stop timer so the sound will stop
-       timer.invalidate()
-        audioPlayer.stop()
-    }
-
-
-
-
-    func cancelAlarmNotificaion() {
-        let notifications = UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]!
-        for notificaion in notifications {
-            let formatter = NSDateFormatter()
-            formatter.dateStyle = NSDateFormatterStyle.LongStyle
-            formatter.timeStyle = NSDateFormatterStyle.LongStyle
-            let alarmDate = formatter.stringFromDate(theAlarm!.time)
-            if let notifDate = notificaion.userInfo?["AlarmDate"] as? String {
-                if alarmDate == notifDate {
-                    UIApplication.sharedApplication().cancelLocalNotification(notificaion)
-                }
-            }
-        }
+        
+        return userInfo
     }
 
 // Load View controller with alarm info
@@ -199,13 +156,10 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
             let rangeOfWav = Range(start: alarmSoundWav.startIndex,
                 end: alarmSoundWav.endIndex.advancedBy(-4))
             alarmSound = alarmSoundWav.substringWithRange(rangeOfWav)
-
-
             let soundURL = NSBundle.mainBundle().URLForResource(alarmSound, withExtension: "wav")
 
             audioPlayer = try? AVAudioPlayer(contentsOfURL: soundURL!)
             audioPlayer.play()
-
 
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
@@ -242,10 +196,10 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
         }
 
-       randomIndex()
-
         if numberOfQuestion == 0 {
          numOfQuestionIsZero()
+        } else {
+              randomIndex()
         }
     }
 
@@ -255,12 +209,12 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
         }else {
            wrongAnswer()
-
-
         }
-        randomIndex()
+
         if numberOfQuestion == 0 {
            numOfQuestionIsZero()
+        }else {
+             randomIndex()
         }
 
     }
@@ -273,11 +227,12 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
            wrongAnswer()
 
         }
-        randomIndex()
 
         if numberOfQuestion == 0 {
         numOfQuestionIsZero()
 
+        }else {
+             randomIndex()
         }
 
     }
@@ -288,12 +243,13 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         }else {
             wrongAnswer()
         }
-        randomIndex()
+
         if numberOfQuestion == 0 {
           numOfQuestionIsZero()
 
+        } else {
+             randomIndex()
         }
-
 
     }
 
@@ -318,19 +274,24 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 
     func numOfQuestionIsZero() {
         self.dismissViewControllerAnimated(true, completion: {})
-        cancelAlarmNotificaion()
+         theAlarm!.turnOffAlarmNotification()
         timer.invalidate()
         if let theAlarm = theAlarm {
-            if theAlarm.hasReminder {
-                theAlarm.on = true
-            } else {
                 theAlarm.on = false
             }
-        }
 
         isZero = true
         audioPlayer.stop()
         coreDataStack.saveMainContext()
+    }
+
+    func setOptionsButtons(theQuestion: Questions) {
+        questionLabel.text = theQuestion.question
+        optionAButton.setTitle(theQuestion.optionA, forState: .Normal)
+        optionBButton.setTitle(theQuestion.optionB, forState: .Normal)
+        optionCButton.setTitle(theQuestion.optionC, forState: .Normal)
+        optionDButton.setTitle(theQuestion.optionD, forState: .Normal)
+        correctAnswer = theQuestion.correctAnswer
     }
 
 // Get a random Questions form the questions Array
@@ -338,12 +299,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         let randomIndex = Int(arc4random_uniform(UInt32(questions.count)))
         theQuestion = questions[randomIndex]
         if let theQuestion = theQuestion {
-            questionLabel.text = theQuestion.question
-            optionAButton.setTitle(theQuestion.optionA, forState: .Normal)
-            optionBButton.setTitle(theQuestion.optionB, forState: .Normal)
-            optionCButton.setTitle(theQuestion.optionC, forState: .Normal)
-            optionDButton.setTitle(theQuestion.optionD, forState: .Normal)
-            correctAnswer = theQuestion.correctAnswer
+          setOptionsButtons(theQuestion)
 
         }
     }
@@ -351,8 +307,6 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
 // Fetched Questions and alrms
     func fetchQuestions() {
         let fetchRequest = NSFetchRequest(entityName: "Questions")
-
-        // If it random then selected any question, other wise seleced a question from a category
 
         if typeOfQuestion != "Random" {
             let firstPredicate = NSPredicate(format: "type == %@", typeOfQuestion)
@@ -364,13 +318,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
                 let randomIndex = Int(arc4random_uniform(UInt32(questions.count)))
                 theQuestion = questions[randomIndex]
                 if let theQuestion = theQuestion {
-
-                    questionLabel.text = theQuestion.question
-                    optionAButton.setTitle(theQuestion.optionA, forState: .Normal)
-                    optionBButton.setTitle(theQuestion.optionB, forState: .Normal)
-                    optionCButton.setTitle(theQuestion.optionC, forState: .Normal)
-                    optionDButton.setTitle(theQuestion.optionD, forState: .Normal)
-                    correctAnswer = theQuestion.correctAnswer
+                  setOptionsButtons(theQuestion)
                 }
 
             }
@@ -382,13 +330,7 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
             let randomIndex = Int(arc4random_uniform(UInt32(questions.count)))
             theQuestion = questions[randomIndex]
             if let theQuestion = theQuestion {
-
-                questionLabel.text = theQuestion.question
-                optionAButton.setTitle(theQuestion.optionA, forState: .Normal)
-                optionBButton.setTitle(theQuestion.optionB, forState: .Normal)
-                optionCButton.setTitle(theQuestion.optionC, forState: .Normal)
-                optionDButton.setTitle(theQuestion.optionD, forState: .Normal)
-                correctAnswer = theQuestion.correctAnswer
+              setOptionsButtons(theQuestion)
                 }
             }
         }
@@ -400,16 +342,10 @@ class QuestionViewController: UIViewController, UINavigationBarDelegate {
         let firstPredicate = NSPredicate(format: "time == %@", theAlarmDate)
         fetchAlarm.predicate = firstPredicate
 
-
         if let fetchAlarm = (try? coreDataStack.managedObjectContext.executeFetchRequest(fetchAlarm)) as? [Alarms] {
-            alarm = fetchAlarm
-            theAlarm = alarm[0]
+            theAlarm = fetchAlarm[0]
         }
     }
-
-
-
-    // Status bar turns to white
 
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
