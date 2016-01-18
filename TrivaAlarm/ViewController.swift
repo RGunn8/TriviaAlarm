@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var onAlarms = [Alarms]()
     var offAlarms = [Alarms]()
     var remindersAlarms = [Alarms]()
-     var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController()
+    var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController()
 
     var coreDataStack: CoreDataStack!
 
@@ -25,8 +25,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = UIColor(red: 49, green: 128, blue: 197, alpha: 1)
-        performFetch()
         fetchedResultController = getFetchedResultController()
+        performFetch()
+
         fetchedResultController.delegate = self
         editButtonItem().tintColor = UIColor.whiteColor()
          navigationItem.leftBarButtonItem = editButtonItem()
@@ -70,14 +71,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func fetchAlarms() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: "Alarms")
         fetchRequest.returnsObjectsAsFaults = false
+
         let sortDescriptor = NSSortDescriptor(key: "time", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
+
         return fetchRequest
     }
 
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        if let tableview = tableView {
-        tableview.reloadData()
+        if let tableview = tableView{
+            tableview.reloadData()
         }
     }
 
