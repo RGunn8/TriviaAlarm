@@ -177,12 +177,16 @@ class NewAlarmViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func subtractQuestionButtonPressed(sender: UIButton) {
-       setSubtractButton()
+        numberOfQuestions -= 1
+        setSubtractButton()
+
         numberOfQuestionLabel.text? = String(numberOfQuestions)
     }
 
     @IBAction func addQuestionButtonPressed(sender: UIButton) {
-      setSubtractButton()
+
+          numberOfQuestions += 1
+        setSubtractButton()
         numberOfQuestionLabel.text? = String(numberOfQuestions)
     }
 

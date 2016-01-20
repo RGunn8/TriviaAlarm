@@ -1,0 +1,6 @@
+framework module Pods_TrivaAlarmTests {
+  umbrella header "Pods-TrivaAlarmTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

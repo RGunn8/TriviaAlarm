@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>DZNEmptyDataSet.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-TrivaAlarm.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-TrivaAlarmTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>16FB872D0D2D4BA0F378AB34D47CF95F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3C3D0D6A941A531EDDD2AFC024F4AFE9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7E8EE91B97218205ED0FA819255D773C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A298E04EFD96CD0860115F5D676CAA91</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
